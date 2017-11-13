@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{273458BA-46CB-4C65-8F97-B8FC0497708E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PFile_Empire</RootNamespace>
+    <AssemblyName>PFile_Empire</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\..\..\sixnet\pfiles\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Empire.cs" />
+    <Compile Include="EmpireUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SixNet_BBS_Data\SixNet_BBS_Data.csproj">
+      <Project>{705D3DAC-C065-4963-9E59-4E8C251BE1EC}</Project>
+      <Name>SixNet_BBS_Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SixNet_Common\SixNet_BBS.csproj">
+      <Project>{B67DE77E-6DA8-4DD4-BE13-4361169DA5CC}</Project>
+      <Name>SixNet_BBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SixNet_Comm\SixNet_Comm.csproj">
+      <Project>{775EF877-29EC-4064-84DF-DABF1D39BDC0}</Project>
+      <Name>SixNet_Comm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SixNet_Logger\SixNet_Logger.csproj">
+      <Project>{95E92DA1-8EF0-4EC1-B72C-48487B5C528C}</Project>
+      <Name>SixNet_Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SixNet_StringUtils\SixNet_StringUtils.csproj">
+      <Project>{8BBAC13C-5019-4174-95B3-2668682D2313}</Project>
+      <Name>SixNet_StringUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
