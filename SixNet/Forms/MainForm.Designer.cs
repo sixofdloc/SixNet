@@ -178,7 +178,6 @@
             this.btStopServer.TabIndex = 1;
             this.btStopServer.Text = "Stop";
             this.btStopServer.UseVisualStyleBackColor = true;
-            this.btStopServer.Click += new System.EventHandler(this.button2_Click);
             // 
             // dataGridView1
             // 
@@ -225,7 +224,6 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(870, 235);
             this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // clmSocketNum
             // 
@@ -274,7 +272,6 @@
             this.chatToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(134, 92);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // spyToolStripMenuItem
             // 
@@ -1061,7 +1058,6 @@
             this.dg_Users.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dg_Users.Size = new System.Drawing.Size(876, 241);
             this.dg_Users.TabIndex = 8;
-            this.dg_Users.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_Users_CellContentClick);
             this.dg_Users.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_Users_CellDoubleClick);
             // 
             // UserId
@@ -1122,7 +1118,6 @@
             this.button15.TabIndex = 3;
             this.button15.Text = "Add";
             this.button15.UseVisualStyleBackColor = true;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // btRefreshUsers
             // 
@@ -1239,7 +1234,7 @@
             this.Name = "MainForm";
             this.Text = "DLoC BBS V1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

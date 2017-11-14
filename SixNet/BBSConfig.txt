@@ -1,0 +1,1 @@
+﻿ConnectionString|Data Source=DLOCPRIME\DLOCSQL;Initial Catalog=SixNet_BBS;Persist Security Info=True;User ID=sixnet_bbs;Password=CBM1581

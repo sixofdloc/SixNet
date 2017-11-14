@@ -22,7 +22,7 @@ namespace SixNet_BBS
             _dataInterface = dataInterface;
             Current_Pfile_Area = -1;
             Current_Parent_Area = -1;
-            _bbs.SendFileForTermType("pfile_entry_root", true);
+            _bbs.SendFileForTermType("pfile_entry_root", false);
             CMD_List();
         }
 
@@ -128,7 +128,7 @@ namespace SixNet_BBS
                 method = t.GetMethod("Main");
                 i++;
             }
-            Object[] param = new Object[] { _bbs };
+            Object[] param = new Object[] { _bbs,_dataInterface };
             method.Invoke(Activator.CreateInstance(pfiletype), param);
         }
 

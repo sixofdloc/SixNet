@@ -11,7 +11,7 @@ namespace SixNet_Comm
 {
     public class Server
     {
-        public int portNumber;
+        private readonly int _portNumber;
         protected int maxSockets;
         protected int sockCount = 0;
         private int convID;
@@ -40,7 +40,7 @@ namespace SixNet_Comm
         public Server(int port, string title, string attr,Action<StateObject> onconnect, Action<StateObject>  ondisconnect)
         {
             Console.WriteLine("Server initialized on port: " + port.ToString());
-            this.portNumber = port;
+            _portNumber = port;
             this.title = title;
             this.maxSockets =10000;
             //this.parentForm = parentform;
@@ -150,7 +150,7 @@ private void CheckSockets(object eventState)
         ShuttingDown = true;
         // Create a connection to the port to unblock the listener thread
         Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.portNumber);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, _portNumber);
         sock.Connect(endPoint);
         sock.Close();
         sock = null;
@@ -166,7 +166,7 @@ private void CheckSockets(object eventState)
     private void StartListening()
     {
         // Establish the local endpoint for the socket.
-        IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, this.portNumber);
+        IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, _portNumber);
         // Create a TCP/IP socket.
         Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         // Bind the socket to the local endpoint and listen for incoming connections.

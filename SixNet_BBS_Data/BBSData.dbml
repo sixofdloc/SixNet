@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SixNet_BBS" Class="BBSDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=dloczero;Initial Catalog=SixNet_BBS;Persist Security Info=True;User ID=sixnet_bbs" SettingsObjectName="SixNet_BBS_Data.Properties.Settings" SettingsPropertyName="SixNet_BBSConnectionString1" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DLOCPRIME\DLOCSQL;Initial Catalog=SixNet_BBS;Persist Security Info=True;User ID=sixnet_bbs" SettingsObjectName="SixNet_BBS_Data.Properties.Settings" SettingsPropertyName="SixNet_BBSConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AccessGroups" Member="AccessGroups">
     <Type Name="AccessGroup">
       <Column Name="AccessGroupId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -26,11 +26,12 @@
     <Type Name="BBSConfig">
       <Column Name="BBSConfigId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="SysOpUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="BBS_Name" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
-      <Column Name="BBS_URL" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="BBS_Name" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BBS_URL" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="BBS_Port" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SysOp_Handle" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
-      <Column Name="SysOp_Email" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="SysOp_Handle" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SysOp_Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SysopMenuPass" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.CallLogs" Member="CallLogs">

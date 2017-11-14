@@ -30,6 +30,10 @@ namespace SixNet_BBS_Data
             return new BBSDataDataContext(_connectionString);
         }
 
+        public BBSConfig GetBBSConfig()
+        {
+            return GetDataContext().BBSConfigs.First(p => true);
+        }
 
         #region GFiles
         public int GFile_ParentArea(int area)

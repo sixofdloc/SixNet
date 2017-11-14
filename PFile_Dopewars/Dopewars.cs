@@ -151,6 +151,11 @@ namespace PFile_Dopewars
 
         #region Main Loop
 
+        public Dopewars()
+        {
+            //For compatability.
+        }
+
         public Dopewars(BBS bbs, DataInterface dataInterface)
         {
             _bbs = bbs;

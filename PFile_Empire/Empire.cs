@@ -70,6 +70,11 @@ namespace PFile_Empire
         private int Columns = 40;
         private EmpireUser CurrentUser = null;
 
+        public Empire()
+        {
+
+        }
+
         public Empire(BBS bbs, DataInterface dataInterface)
         {
             _bbs = bbs;

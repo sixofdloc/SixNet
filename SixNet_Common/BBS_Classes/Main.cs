@@ -10,11 +10,13 @@ namespace SixNet_BBS.BBS_Classes
     {
         private readonly BBS _bbs;
         private readonly DataInterface _dataInterface;
+        private readonly BBSConfig _bbsConfig;
 
         public Main(BBS bbs, DataInterface dataInterface)
         {
             _bbs = bbs;
             _dataInterface = dataInterface;
+            _bbsConfig = _dataInterface.GetBBSConfig();
         }
 
         public void MainPrompt()
@@ -112,7 +114,7 @@ namespace SixNet_BBS.BBS_Classes
                             {
                                 _bbs.Write("~l1~c1Password:~c7");
                                 string sy = _bbs.Input(true, true, false);
-                                if (sy.ToUpper() == "BELLMASTER")
+                                if (sy.ToUpper() == _bbsConfig.SysopMenuPass.ToUpper())
                                 {
                                     _bbs.Sysop_Identified = true;
                                     SysOp sys = new SysOp(_bbs, _dataInterface);

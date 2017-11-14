@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ANSI.cs" />
-    <Compile Include="Comm.cs" />
     <Compile Include="Communicator.cs" />
     <Compile Include="I_TerminalType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

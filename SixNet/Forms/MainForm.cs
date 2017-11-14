@@ -13,6 +13,7 @@ using SixNet_Comm;
 using SixNet_BBS.Interfaces;
 using SixNet_Logger;
 using SixNet_BBS_Data;
+using System.IO;
 
 namespace SixNet
 {
@@ -21,23 +22,33 @@ namespace SixNet
 
         private readonly FormUtils _formUtils;
         private readonly DataInterface _dataInterface;
+        private readonly string _dbConfigStr;
+        private readonly BBSConfig _bbsConfig;
 
         #region Public Interface
 
         public Server testserv;
         public List<BBS> bbs_instances;
         
-        //public List<BBS> BBS_Ports { get; set; }
-
         delegate void GenericStateObjectCallback(StateObject so);
         delegate void GenericCallback();
 
+
+        public MainForm()
+        {
+            InitializeComponent();
+            _dbConfigStr = File.ReadAllText("BBSConfig.txt").Split('|')[1];
+            _dataInterface = new DataInterface(_dbConfigStr);
+            _formUtils = new FormUtils(_dataInterface);
+            _bbsConfig = _dataInterface.GetBBSConfig();
+            bbs_instances = new List<BBS>();
+        }
+
         private void StartBBS(StateObject so)
         {
-            BBS bbs =  new BBS(this, so,Settings.Default.BBSDataContext);
+            BBS bbs =  new BBS(this, so,_dbConfigStr);
             if (bbs_instances == null) bbs_instances = new List<BBS>();
             bbs_instances.Add(bbs);
-          //  BBS_Ports.Add(bbs);
             Thread thread = new Thread(()=>bbs.Go());
             thread.Start();
             RefreshGrid();
@@ -48,9 +59,6 @@ namespace SixNet
         {
             try
             {
-                    //Thread thread = new Thread(()=>StartBBS(so));
-                    //thread.Start();
-                   // RefreshGrid();
                 StartBBS(so);
             }
             catch (Exception e)
@@ -71,38 +79,12 @@ namespace SixNet
 
         #endregion
 
-
-
-
-
-
-
-        public MainForm()
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            _dataInterface = new DataInterface(Settings.Default.BBSDataContext);
-            _formUtils = new FormUtils(_dataInterface);
-           // BBS_Ports = new List<BBS>();
-            bbs_instances = new List<BBS>();
-            //SixNet_BBS_Data.DataInterface.Initialize(Settings.Default.BBSDataContext);
-
-        }
-
-
-
-
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            testserv = new Server(Settings.Default.Port, "Client Session", "", AddConnection, DropConnection);
+            testserv = new Server(_bbsConfig.BBS_Port, "Client Session", "", AddConnection, DropConnection);
             SetServerStatusLabel("RUNNING");
             this.Text = "DLoCBBS Control GUI V" + typeof(MainForm).Assembly.GetName().Version;
-            //dataGridView1.DataSource = testserv.connectedSocks;
             testserv.Start();
-            //MUD.Initialize();
-            //btStartServer.Enabled = false;
-            //btStopServer.Enabled = true;
             GridUpdateTimer.Enabled = true;
             SetServerStatusLabel("RUNNING");
             _formUtils.RefreshUsers(dg_Users);
@@ -110,17 +92,8 @@ namespace SixNet
             _formUtils.RefreshCallLog(dgCallLog);
             _formUtils.RefreshMessageAreas(dgMessageBaseAreas);
             _formUtils.RefreshMessageBases(dgMessageBases);
-
-
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
 
         private void RefreshGrid()
         {
@@ -131,19 +104,9 @@ namespace SixNet
             }
             else
             {
-                //BBS bbs = BBS_Ports.FirstOrDefault(p => p.State_Object.Equals(so));
-                //if (bbs !=null) BBS_Ports.Remove(bbs);
-                //for (int i = 1; i < dataGridView1.Rows.Count; i++)
-                //{
-                //    if ((int)dataGridView1.Rows[i].Cells[1].Value == so.GetHashCode())
-                //    {
-                //        dataGridView1.Rows.Remove(dataGridView1.Rows[i]);
-                //    }
-                //}
 
                 try
                 {
-                    //                dataGridView1.BindingContext.
                     dataGridView1.Rows.Clear();
                     int i = 0;
                     foreach (BBS bbs in bbs_instances)
@@ -172,10 +135,6 @@ namespace SixNet
             RefreshGrid();
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-            
-        }
 
         private void messageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -266,17 +225,6 @@ namespace SixNet
             _formUtils.RefreshUsers(dg_Users);
         }
 
-
-
-
-
-
-
-        private void dg_Users_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void dg_Users_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             _formUtils.EditUser(int.Parse(dg_Users.SelectedRows[0].Cells[0].Value.ToString()));
@@ -302,10 +250,6 @@ namespace SixNet
             _formUtils.RefreshCallLog(dgCallLog);
         }
 
-        private void button15_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -327,10 +271,6 @@ namespace SixNet
 
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
     }
 }

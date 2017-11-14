@@ -99,7 +99,7 @@ namespace SixNet_BBS
                     TerminalType = td.Detect();
                     Write("~s1");
                     //Welcome Screen
-                    SendFileForTermType("Welcome", true);
+                    SendFileForTermType("Welcome", false);
                     if (TerminalType.C64_Color())
                     {
                         AnyKey(true,false);

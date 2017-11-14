@@ -117,7 +117,6 @@
     <Compile Include="BBS_Classes\TermDetect.cs" />
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Interfaces\IBBSHost.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -125,12 +124,12 @@
     </Compile>
     <Compile Include="Classes\ANSI.cs" />
     <Compile Include="Objects\AccessTokenTypes.cs" />
-    <Compile Include="Objects\Globals.cs" />
     <Compile Include="Objects\ResourceTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logs\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

@@ -108,7 +108,7 @@ namespace SixNet_BBS_Data
     #endregion
 		
 		public BBSDataDataContext() : 
-				base(global::SixNet_BBS_Data.Properties.Settings.Default.SixNet_BBSConnectionString1, mappingSource)
+				base("Insert Connection String Here", mappingSource)
 		{
 			OnCreated();
 		}
@@ -804,6 +804,8 @@ namespace SixNet_BBS_Data
 		
 		private string _SysOp_Email;
 		
+		private string _SysopMenuPass;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -822,6 +824,8 @@ namespace SixNet_BBS_Data
     partial void OnSysOp_HandleChanged();
     partial void OnSysOp_EmailChanging(string value);
     partial void OnSysOp_EmailChanged();
+    partial void OnSysopMenuPassChanging(string value);
+    partial void OnSysopMenuPassChanged();
     #endregion
 		
 		public BBSConfig()
@@ -869,7 +873,7 @@ namespace SixNet_BBS_Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BBS_Name", DbType="NVarChar(4000)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BBS_Name", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string BBS_Name
 		{
 			get
@@ -889,7 +893,7 @@ namespace SixNet_BBS_Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BBS_URL", DbType="NVarChar(4000)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BBS_URL", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string BBS_URL
 		{
 			get
@@ -929,7 +933,7 @@ namespace SixNet_BBS_Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SysOp_Handle", DbType="NVarChar(4000)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SysOp_Handle", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string SysOp_Handle
 		{
 			get
@@ -949,7 +953,7 @@ namespace SixNet_BBS_Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SysOp_Email", DbType="NVarChar(4000)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SysOp_Email", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string SysOp_Email
 		{
 			get
@@ -965,6 +969,26 @@ namespace SixNet_BBS_Data
 					this._SysOp_Email = value;
 					this.SendPropertyChanged("SysOp_Email");
 					this.OnSysOp_EmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SysopMenuPass", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SysopMenuPass
+		{
+			get
+			{
+				return this._SysopMenuPass;
+			}
+			set
+			{
+				if ((this._SysopMenuPass != value))
+				{
+					this.OnSysopMenuPassChanging(value);
+					this.SendPropertyChanging();
+					this._SysopMenuPass = value;
+					this.SendPropertyChanged("SysopMenuPass");
+					this.OnSysopMenuPassChanged();
 				}
 			}
 		}
