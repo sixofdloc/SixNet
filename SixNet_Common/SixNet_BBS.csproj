@@ -172,12 +172,18 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Systext\gfile_entry_root.ans">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Systext\Goodbye.ans">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Systext\MainMenu.ans">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Systext\pfile_entry_root.ans">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Systext\Welcome.ans">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

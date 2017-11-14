@@ -129,7 +129,8 @@ namespace SixNet_BBS
                 i++;
             }
             Object[] param = new Object[] { _bbs,_dataInterface };
-            method.Invoke(Activator.CreateInstance(pfiletype), param);
+            var instance = Activator.CreateInstance(pfiletype, param);
+            method.Invoke(instance,new object[] { });
         }
 
     }
