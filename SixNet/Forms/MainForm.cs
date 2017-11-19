@@ -14,6 +14,7 @@ using SixNet_BBS.Interfaces;
 using SixNet_Logger;
 using SixNet_BBS_Data;
 using System.IO;
+using SixNet_GUI.Forms.Editors;
 
 namespace SixNet
 {
@@ -23,7 +24,7 @@ namespace SixNet
         private readonly FormUtils _formUtils;
         private readonly DataInterface _dataInterface;
         private readonly string _dbConfigStr;
-        private readonly BBSConfig _bbsConfig;
+        private BBSConfig _bbsConfig;
 
         #region Public Interface
 
@@ -271,6 +272,17 @@ namespace SixNet
 
         }
 
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            BBSConfigEditor bce = new BBSConfigEditor();
+            bce.SetValues(_bbsConfig);
+            
+            if (bce.ShowDialog() == DialogResult.OK)
+            {
+                bce.ReturnValues(ref _bbsConfig);
+                _dataInterface.SaveBBSConfig(_bbsConfig);
 
+            }
+        }
     }
 }

@@ -266,6 +266,19 @@ namespace SixNet_BBS_Data
             }
         }
 
+        public void SaveBBSConfig(BBSConfig bbsConfig)
+        {
+            var dataContext = GetDataContext();
+            var bc = dataContext.BBSConfigs.First(p => true);
+            bc.BBS_Name = bbsConfig.BBS_Name;
+            bc.BBS_Port = bbsConfig.BBS_Port;
+            bc.BBS_URL = bbsConfig.BBS_URL;
+            bc.SysopMenuPass = bbsConfig.SysopMenuPass;
+            bc.SysOp_Email = bbsConfig.SysOp_Email;
+            bc.SysOp_Handle = bbsConfig.SysOp_Handle;
+            dataContext.SubmitChanges();
+        }
+
         public IdAndKeys MessageBase_ParentArea(int area)
         {
             IdAndKeys idak = new IdAndKeys()
