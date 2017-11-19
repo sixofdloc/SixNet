@@ -23,7 +23,7 @@ namespace SixNet_BBS
             _bbs.CurrentArea = "GFiles";
             Current_Gfile_Area = -1;
             Current_Parent_Area = -1;
-            _bbs.SendFileForTermType("gfile_entry_root", true);
+            _bbs.SendFileForTermType("gfile_entry_root", false);
             CMD_List();
         }
 

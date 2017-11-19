@@ -73,18 +73,6 @@ namespace SixNet_BBS.BBS_Classes
                                 //Log this?
                             }
                             break;
-                        //case "MUD":
-                        //    try
-                        //    {
-                        //        bbs.CurrentArea = "Running MUD";
-                        //        MUD_Client mc = new MUD_Client(bbs.State_Object);
-                        //        mc.Go(bbs.CurrentUser.Username);
-                        //    }
-                        //    catch (Exception e)
-                        //    {
-                        //        //Log this?
-                        //    }
-                        //    break;
                         case "P":
                             try
                             {
