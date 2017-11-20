@@ -626,16 +626,61 @@ namespace SixNet_BBS_Data
         #endregion
 
         #region Access Groups
+
+        public AccessGroup GetAccessGroupById(int id)
+        {
+            try
+            {
+                return GetDataContext().AccessGroups.FirstOrDefault(p => p.AccessGroupId.Equals(id));
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Exception in DataInterface.GetAccessGroupById(" + id + ")",e);
+                return null;
+            }
+        }
+
+
         public AccessGroup GetAccessGroup(int level)
         {
-            BBSDataDataContext bbs = GetDataContext();
-            return bbs.AccessGroups.FirstOrDefault(p => p.AccessGroupNumber.Equals(level));
+            try
+            {
+                return GetDataContext().AccessGroups.FirstOrDefault(p => p.AccessGroupNumber.Equals(level));
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.LogEntry("Exception in DataInterface.GetAccessGroup(" + level + "): " + e);
+                return null;
+            }
         }
 
         public List<AccessGroup> ListAccessGroups()
         {
-            BBSDataDataContext bbs = GetDataContext();
-            return bbs.AccessGroups.ToList();
+            try
+            {
+                return GetDataContext().AccessGroups.ToList();
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.LogEntry("Exception in DataInterface.ListAccessGroups()",e);
+                return null;
+            }
+        }
+
+        public bool CreateAccessGroup(AccessGroup accessGroup)
+        {
+            bool b = false;
+            try
+            {
+                var dataContext = GetDataContext();
+                dataContext.AccessGroups.InsertOnSubmit(accessGroup);
+                dataContext.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Exception in DataInterface.CreateAccessGroup()",accessGroup,e);
+            }
+            return b;
         }
 
         #endregion

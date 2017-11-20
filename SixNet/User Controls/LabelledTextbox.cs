@@ -25,6 +25,18 @@ namespace SixNet_GUI.User_Controls
             set => textBox1.Text = value;
         }
 
+        public int MaxLength
+        {
+            get => textBox1.MaxLength;
+            set => textBox1.MaxLength = value;
+        }
+
+        public int EditWidth
+        {
+            get => textBox1.Width;
+            set => SetTextBoxWidth(value);
+        }
+
         public new bool TabStop
         {
             get => textBox1.TabStop;
@@ -37,9 +49,26 @@ namespace SixNet_GUI.User_Controls
             set => textBox1.TabIndex = value;
         }
 
+
         public LabelledTextbox()
         {
             InitializeComponent();
+        }
+
+        private void SetTextBoxWidth(int w)
+        {
+            if (w == 0)
+            {
+                textBox1.Dock = DockStyle.Bottom;
+            }
+            else
+            {
+                if (textBox1.Dock == DockStyle.Bottom)
+                {
+                    textBox1.Dock = DockStyle.None;
+                }
+                textBox1.Width = w;
+            }
         }
 
         private void LabelledTextbox_Click(object sender, EventArgs e)

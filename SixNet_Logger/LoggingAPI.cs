@@ -2,77 +2,76 @@
 using System.Collections.Generic;
 using System.Timers;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SixNet_Logger
 {
     public static class LoggingAPI
     {
-        private static List<string> logqueue = null;
-        private static Timer logtick = null;
-        private static object loglock = null;
-        public static string ErrMsg = "";
-        public static string LogPath = "Logs//";
-        public static bool Init(string logpath)
+        private static Logger _debugLog;
+        private static Logger _errorLog;
+        private static Logger _sysLog;
+
+        public static bool Init(string logPath)
         {
-            bool b = false;
-            try
-            {
-                LogPath = logpath;
-                logqueue = new List<string>();
-                logtick = new Timer(1000);
-                logtick.Elapsed += new ElapsedEventHandler(logtick_Elapsed);
-                loglock = new Object();
-                logtick.Enabled = true;
-                b = true;
-            }
-            catch (Exception e)
-            {
-                ErrMsg = e.Message;
-                b = false;
-            }
+            bool b = true;
+            _debugLog = new Logger("DEBUG", logPath);
+            _errorLog = new Logger("ERROR", logPath);
+            _sysLog = new Logger("SYSLOG", logPath);
             return b;
         }
 
         public static void FlushQueue()
         {
-            lock (loglock)
-            {
-                TextWriter tw = new StreamWriter(LogPath + DateTime.Today.ToString("yyyy-MM-dd") + ".log", true);
-                foreach (string s in logqueue)
-                {
-                    tw.WriteLine(s);
-                }
-                tw.Close();
-                logqueue.Clear();
-            }
-
+            _debugLog.FlushQueue();
+            _errorLog.FlushQueue();
+            _sysLog.FlushQueue();
         }
 
-        static void logtick_Elapsed(object sender, ElapsedEventArgs e)
+        public static void LogEntry(string entryText)
         {
-            logtick.Enabled = false;
-            try
-            {
-                FlushQueue();
-            }
-#pragma warning disable 168
-            catch (Exception ex)
-            {
-                //Really nothing we can do here?  Notify someone?
-                //Logger.LogEntry("Game1.DebounceKey Exception - " + e.Message + " | " + e.StackTrace);
-            }
-#pragma warning restore 168
-            logtick.Enabled = true;
+            _debugLog.Entry(entryText);
         }
 
-        public static void LogEntry(string s)
+        public static void LogEntry(string entryText, params Object[] attachments)
         {
-            DateTime Start = DateTime.Now;
-            if (logtick == null) Init("Logs//");
-            lock (loglock)
+            var attachText = "";
+            foreach(Object attachment in attachments)
             {
-                logqueue.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " " + s);
+                attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
             }
+            _debugLog.Entry(entryText + ", " + attachText );
         }
+
+        public static void Error(string errorMessage)
+        {
+            _errorLog.Entry(errorMessage);
+        }
+
+        public static void Error(string errorMessage, params Object[] attachments)
+        {
+            var attachText = "";
+            foreach (Object attachment in attachments)
+            {
+                attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
+            }
+            _errorLog.Entry(errorMessage + ", " + attachText);
+        }
+
+        public static void SysLogEntry(string entryText)
+        {
+            _sysLog.Entry(entryText);
+        }
+
+        public static void SysLogEntry(string entryText, params Object[] attachments)
+        {
+            var attachText = "";
+            foreach (Object attachment in attachments)
+            {
+                attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
+            }
+            _sysLog.Entry(entryText + ", " + attachText);
+        }
+
     }
 }

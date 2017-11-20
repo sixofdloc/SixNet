@@ -37,7 +37,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Location = new System.Drawing.Point(3, 23);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(194, 20);
+            this.textBox1.Size = new System.Drawing.Size(228, 20);
             this.textBox1.TabIndex = 4;
             this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
@@ -57,10 +57,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
-            this.MinimumSize = new System.Drawing.Size(200, 46);
+            this.MinimumSize = new System.Drawing.Size(50, 46);
             this.Name = "LabelledTextbox";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(200, 46);
+            this.Size = new System.Drawing.Size(234, 46);
             this.Click += new System.EventHandler(this.LabelledTextbox_Click);
             this.ResumeLayout(false);
             this.PerformLayout();

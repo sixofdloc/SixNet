@@ -76,8 +76,10 @@
             // 
             this.ltbBBSName.Dock = System.Windows.Forms.DockStyle.Top;
             this.ltbBBSName.EditText = "";
+            this.ltbBBSName.EditWidth = 377;
             this.ltbBBSName.LabelText = "BBS Name";
             this.ltbBBSName.Location = new System.Drawing.Point(0, 0);
+            this.ltbBBSName.MaxLength = 32767;
             this.ltbBBSName.MinimumSize = new System.Drawing.Size(200, 46);
             this.ltbBBSName.Name = "ltbBBSName";
             this.ltbBBSName.Padding = new System.Windows.Forms.Padding(3);
@@ -88,8 +90,10 @@
             // 
             this.ltbBBSUrl.Dock = System.Windows.Forms.DockStyle.Top;
             this.ltbBBSUrl.EditText = "";
+            this.ltbBBSUrl.EditWidth = 377;
             this.ltbBBSUrl.LabelText = "BBS URL";
             this.ltbBBSUrl.Location = new System.Drawing.Point(0, 46);
+            this.ltbBBSUrl.MaxLength = 32767;
             this.ltbBBSUrl.MinimumSize = new System.Drawing.Size(200, 46);
             this.ltbBBSUrl.Name = "ltbBBSUrl";
             this.ltbBBSUrl.Padding = new System.Windows.Forms.Padding(3);
@@ -100,8 +104,10 @@
             // 
             this.ltbBBSPort.Dock = System.Windows.Forms.DockStyle.Top;
             this.ltbBBSPort.EditText = "";
+            this.ltbBBSPort.EditWidth = 100;
             this.ltbBBSPort.LabelText = "BBS Port";
             this.ltbBBSPort.Location = new System.Drawing.Point(0, 92);
+            this.ltbBBSPort.MaxLength = 5;
             this.ltbBBSPort.MinimumSize = new System.Drawing.Size(200, 46);
             this.ltbBBSPort.Name = "ltbBBSPort";
             this.ltbBBSPort.Padding = new System.Windows.Forms.Padding(3);
@@ -113,8 +119,10 @@
             // 
             this.ltbSysOpHandle.Dock = System.Windows.Forms.DockStyle.Top;
             this.ltbSysOpHandle.EditText = "";
+            this.ltbSysOpHandle.EditWidth = 377;
             this.ltbSysOpHandle.LabelText = "SysOp Handle";
             this.ltbSysOpHandle.Location = new System.Drawing.Point(0, 138);
+            this.ltbSysOpHandle.MaxLength = 32767;
             this.ltbSysOpHandle.MinimumSize = new System.Drawing.Size(200, 46);
             this.ltbSysOpHandle.Name = "ltbSysOpHandle";
             this.ltbSysOpHandle.Padding = new System.Windows.Forms.Padding(3);
@@ -125,8 +133,10 @@
             // 
             this.ltbSysOpEmail.Dock = System.Windows.Forms.DockStyle.Top;
             this.ltbSysOpEmail.EditText = "";
+            this.ltbSysOpEmail.EditWidth = 377;
             this.ltbSysOpEmail.LabelText = "SysOp Email";
             this.ltbSysOpEmail.Location = new System.Drawing.Point(0, 184);
+            this.ltbSysOpEmail.MaxLength = 32767;
             this.ltbSysOpEmail.MinimumSize = new System.Drawing.Size(200, 46);
             this.ltbSysOpEmail.Name = "ltbSysOpEmail";
             this.ltbSysOpEmail.Padding = new System.Windows.Forms.Padding(3);
@@ -137,8 +147,10 @@
             // 
             this.ltbSysOpMenuPassword.Dock = System.Windows.Forms.DockStyle.Top;
             this.ltbSysOpMenuPassword.EditText = "";
+            this.ltbSysOpMenuPassword.EditWidth = 377;
             this.ltbSysOpMenuPassword.LabelText = "SysOp Menu Password";
             this.ltbSysOpMenuPassword.Location = new System.Drawing.Point(0, 230);
+            this.ltbSysOpMenuPassword.MaxLength = 32767;
             this.ltbSysOpMenuPassword.MinimumSize = new System.Drawing.Size(200, 46);
             this.ltbSysOpMenuPassword.Name = "ltbSysOpMenuPassword";
             this.ltbSysOpMenuPassword.Padding = new System.Windows.Forms.Padding(3);

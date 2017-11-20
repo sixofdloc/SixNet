@@ -274,14 +274,25 @@ namespace SixNet
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            BBSConfigEditor bce = new BBSConfigEditor();
-            bce.SetValues(_bbsConfig);
+            BBSConfigEditor bbsConfigEditor = new BBSConfigEditor();
+            bbsConfigEditor.SetValues(_bbsConfig);
             
-            if (bce.ShowDialog() == DialogResult.OK)
+            if (bbsConfigEditor.ShowDialog() == DialogResult.OK)
             {
-                bce.ReturnValues(ref _bbsConfig);
+                bbsConfigEditor.ReturnValues(ref _bbsConfig);
                 _dataInterface.SaveBBSConfig(_bbsConfig);
 
+            }
+        }
+
+        private void btAddAccessGroup_Click(object sender, EventArgs e)
+        {
+            var accessGroupEditor = new AccessGroupEditor();
+            if (accessGroupEditor.ShowDialog() == DialogResult.OK)
+            {
+                var accessGroup = new AccessGroup();
+                accessGroupEditor.ReturnValues(ref accessGroup);
+                _dataInterface.CreateAccessGroup(accessGroup);
             }
         }
     }

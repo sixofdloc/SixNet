@@ -86,8 +86,8 @@
             this.Is_SysOp = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Flag_Remote_Maintenance = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btEditAccessGroup = new System.Windows.Forms.Button();
+            this.btAddAccessGroup = new System.Windows.Forms.Button();
             this.bt_RefreshAccessGroups = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dgMessageBaseAreas = new System.Windows.Forms.DataGridView();
@@ -380,7 +380,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -556,8 +556,8 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button2);
+            this.panel2.Controls.Add(this.btEditAccessGroup);
+            this.panel2.Controls.Add(this.btAddAccessGroup);
             this.panel2.Controls.Add(this.bt_RefreshAccessGroups);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel2.Location = new System.Drawing.Point(873, 3);
@@ -565,23 +565,24 @@
             this.panel2.Size = new System.Drawing.Size(87, 235);
             this.panel2.TabIndex = 5;
             // 
-            // button3
+            // btEditAccessGroup
             // 
-            this.button3.Location = new System.Drawing.Point(7, 61);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Edit";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btEditAccessGroup.Location = new System.Drawing.Point(7, 61);
+            this.btEditAccessGroup.Name = "btEditAccessGroup";
+            this.btEditAccessGroup.Size = new System.Drawing.Size(75, 23);
+            this.btEditAccessGroup.TabIndex = 4;
+            this.btEditAccessGroup.Text = "Edit";
+            this.btEditAccessGroup.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btAddAccessGroup
             // 
-            this.button2.Location = new System.Drawing.Point(7, 32);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Add";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btAddAccessGroup.Location = new System.Drawing.Point(7, 32);
+            this.btAddAccessGroup.Name = "btAddAccessGroup";
+            this.btAddAccessGroup.Size = new System.Drawing.Size(75, 23);
+            this.btAddAccessGroup.TabIndex = 3;
+            this.btAddAccessGroup.Text = "Add";
+            this.btAddAccessGroup.UseVisualStyleBackColor = true;
+            this.btAddAccessGroup.Click += new System.EventHandler(this.btAddAccessGroup_Click);
             // 
             // bt_RefreshAccessGroups
             // 
@@ -1294,8 +1295,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView dg_AccessGroups;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btEditAccessGroup;
+        private System.Windows.Forms.Button btAddAccessGroup;
         private System.Windows.Forms.Button bt_RefreshAccessGroups;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.DataGridView dgMessageBaseAreas;
