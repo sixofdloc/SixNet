@@ -635,7 +635,7 @@ namespace SixNet_BBS_Data
             }
             catch (Exception e)
             {
-                LoggingAPI.Error("Exception in DataInterface.GetAccessGroupById(" + id + ")",e);
+                LoggingAPI.Error("(" + id + ")",e);
                 return null;
             }
         }
@@ -649,7 +649,7 @@ namespace SixNet_BBS_Data
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.GetAccessGroup(" + level + "): " + e);
+                LoggingAPI.Error("(" + level + "): " + e);
                 return null;
             }
         }
@@ -662,7 +662,7 @@ namespace SixNet_BBS_Data
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.ListAccessGroups()",e);
+                LoggingAPI.Error(e);
                 return null;
             }
         }
@@ -678,7 +678,7 @@ namespace SixNet_BBS_Data
             }
             catch (Exception e)
             {
-                LoggingAPI.Error("Exception in DataInterface.CreateAccessGroup()",accessGroup,e);
+                LoggingAPI.Error("Params, Exception: ",accessGroup,e);
             }
             return b;
         }
@@ -708,7 +708,7 @@ namespace SixNet_BBS_Data
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.NewFeedback: " + e.ToString());
+                LoggingAPI.Error("Exception",e);
             }
         }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Timers;
 using System.IO;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace SixNet_Logger
 {
@@ -45,7 +47,7 @@ namespace SixNet_Logger
 
         public static void Error(string errorMessage)
         {
-            _errorLog.Entry(errorMessage);
+            _errorLog.Entry(GetSendingMethod()+": "+errorMessage);
         }
 
         public static void Error(string errorMessage, params Object[] attachments)
@@ -55,7 +57,12 @@ namespace SixNet_Logger
             {
                 attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
             }
-            _errorLog.Entry(errorMessage + ", " + attachText);
+            _errorLog.Entry(GetSendingMethod() + ": " + errorMessage + ", ATTACHMENTS: " + attachText);
+        }
+
+        public static void Error(Exception exception)
+        {
+            _errorLog.Entry(GetSendingMethod() + ": \r\n\r\n" + JsonConvert.SerializeObject(exception));
         }
 
         public static void SysLogEntry(string entryText)
@@ -73,5 +80,14 @@ namespace SixNet_Logger
             _sysLog.Entry(entryText + ", " + attachText);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static string GetSendingMethod()
+        {
+            StackTrace stackTrace = new StackTrace();
+            StackFrame stackFrame = stackTrace.GetFrame(2);
+            //0 would be this, 1 would be the logging proc, 2 would be what called the logging proc.
+
+            return stackFrame.GetMethod().Name;
+        }
     }
 }

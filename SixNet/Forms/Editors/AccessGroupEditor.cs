@@ -17,7 +17,7 @@ namespace SixNet_GUI.Forms.Editors
             InitializeComponent();
         }
 
-        private void SetCaption(int mode)
+        public void SetCaption(int mode)
         {
             //0 = Add, 1 = Edit
             Text = (mode == 0) ? "Add Access Group" : "Edit Access Group";
@@ -45,6 +45,8 @@ namespace SixNet_GUI.Forms.Editors
 
         public void ReturnValues(ref AccessGroup accessGroup)
         {
+            accessGroup.AccessGroupNumber = int.Parse(ltbAccessGroupNumber.Text);
+            accessGroup.CallsPerDay = int.Parse(ltbCallsPerDay.Text);
            //bbsConfig.BBS_Name = ltbBBSName.EditText;
            //bbsConfig.BBS_Port  =     int.Parse(ltbBBSPort.EditText)           ;
            //bbsConfig.BBS_URL              =     ltbBBSUrl.EditText            ;

@@ -288,6 +288,7 @@ namespace SixNet
         private void btAddAccessGroup_Click(object sender, EventArgs e)
         {
             var accessGroupEditor = new AccessGroupEditor();
+            accessGroupEditor.SetCaption(0);
             if (accessGroupEditor.ShowDialog() == DialogResult.OK)
             {
                 var accessGroup = new AccessGroup();
