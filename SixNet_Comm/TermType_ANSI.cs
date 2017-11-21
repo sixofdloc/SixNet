@@ -2,6 +2,11 @@
 {
     public class TermType_ANSI : I_TerminalType
     {
+        public string TerminalTypeName()
+        {
+            return "ANSI";
+        }
+
         public string CRLF()
         {
             return "\r\n";
@@ -21,6 +26,7 @@
         {
             return "Systext\\";
         }
+
 
         public string MCI(string s)
         {

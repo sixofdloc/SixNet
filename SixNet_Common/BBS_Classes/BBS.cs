@@ -31,24 +31,21 @@ namespace SixNet_BBS
 
         private readonly DataInterface _dataInterface;
 
+        public readonly string _remoteAddress = "0.0.0.0";
+
         public GraffitiWall Gw { get; set; }
 
-        public BBS(IBBSHost host_system,StateObject so, string ConnectionString)
+        public BBS(IBBSHost host_system, StateObject so, string ConnectionString)
         {
-            //if (DBUpdater.InitializeDatabase())
-            //{
             ConnectionTimeStamp = DateTime.Now;
             _dataInterface = new DataInterface(ConnectionString);
-                Host_System = host_system;
-                State_Object = so;
-                MessageQueueTimer.Enabled = false;
-                MessageQueueTimer.Interval = 100;
-                MessageQueueTimer.Elapsed += new System.Timers.ElapsedEventHandler(MessageQueueTimer_Elapsed);
-            //}
-            //else
-            //{
-            //    State_Object = null;
-            //}
+            Host_System = host_system;
+            State_Object = so;
+            MessageQueueTimer.Enabled = false;
+            MessageQueueTimer.Interval = 100;
+            MessageQueueTimer.Elapsed += new System.Timers.ElapsedEventHandler(MessageQueueTimer_Elapsed);
+            _remoteAddress = so.workSocket.RemoteEndPoint.ToString();
+            LoggingAPI.SysLogEntry(_remoteAddress+": User Connected");
         }
 
         void MessageQueueTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -82,7 +79,6 @@ namespace SixNet_BBS
         {
             if (State_Object != null)
             {
-                
                 DoNotDisturb = true;
                 DND_Override = false;
                 MessageQueue = new List<string>();
@@ -97,6 +93,7 @@ namespace SixNet_BBS
                     TerminalType = new TermType_Default();
                     TermDetect td = new TermDetect(this);
                     TerminalType = td.Detect();
+                    LoggingAPI.SysLogEntry(_remoteAddress + ": "+ TerminalType.TerminalTypeName()+" terminal was detected");
                     Write("~s1");
                     //Welcome Screen
                     SendFileForTermType("Welcome", false);
@@ -115,6 +112,7 @@ namespace SixNet_BBS
                     CurrentUser = li.LogIn();
                     if (CurrentUser != null)
                     {
+                        LoggingAPI.SysLogEntry(_remoteAddress + ": " + CurrentUser.Username + "("+CurrentUser.UserId.ToString()+")" + " logged in.");
                         int CallLogId = _dataInterface.RecordConnection(CurrentUser.UserId);
                         
                         LastTen lt = new LastTen(this, _dataInterface);
@@ -141,12 +139,13 @@ namespace SixNet_BBS
                         catch (Exception e)
                         {
                             //Log this?
-                            LoggingAPI.LogEntry("Exception in BBS.Go: " + e);
+                            LoggingAPI.Error(e);
                         }
                         _dataInterface.RecordDisconnection(CallLogId);
                     }
                     //Close Out
                     WriteLine("~l1~c1Logging out~c2...");
+                    LoggingAPI.SysLogEntry(_remoteAddress + ": " + CurrentUser.Username + "(" + CurrentUser.UserId.ToString() + ")" + " logged out.");
                     CurrentArea = "Logging out";
                     //Send end screen
                     SendFileForTermType("Goodbye", true);
@@ -157,7 +156,7 @@ namespace SixNet_BBS
                 }
                 catch (Exception e)
                 {
-                    LoggingAPI.LogEntry("Exception in BBS.Go: " + e.Message);
+                    LoggingAPI.Error(e);
                 }
                 return true;
             }

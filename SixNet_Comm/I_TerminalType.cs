@@ -14,6 +14,9 @@ namespace SixNet_Comm
         bool ANSI_Color();
         bool C64_Color();
 
+        string TerminalTypeName();
+
+
         string MCI(String s); //Expects string to be pretranslated
         string TranlateToTerminal(string s); //In - ASCII, Out - translated to terminalType
         char TranslateToTerminal(char c);

@@ -52,11 +52,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btStopServer = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.clmSocketNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvConnections_Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmConnected = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.spyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,6 +136,12 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.clmSocketNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.concolIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvConnections_Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clmStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clmConnected = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -196,6 +197,7 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clmSocketNum,
             this.Id,
+            this.concolIP,
             this.dgvConnections_Username,
             this.clmStatus,
             this.clmConnected});
@@ -222,46 +224,8 @@
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(870, 235);
+            this.dataGridView1.Size = new System.Drawing.Size(1137, 235);
             this.dataGridView1.TabIndex = 3;
-            // 
-            // clmSocketNum
-            // 
-            this.clmSocketNum.FillWeight = 10.25347F;
-            this.clmSocketNum.HeaderText = "#";
-            this.clmSocketNum.Name = "clmSocketNum";
-            this.clmSocketNum.ReadOnly = true;
-            // 
-            // Id
-            // 
-            this.Id.FillWeight = 1F;
-            this.Id.HeaderText = "Id";
-            this.Id.MinimumWidth = 60;
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            // 
-            // dgvConnections_Username
-            // 
-            this.dgvConnections_Username.FillWeight = 4F;
-            this.dgvConnections_Username.HeaderText = "Username";
-            this.dgvConnections_Username.MinimumWidth = 200;
-            this.dgvConnections_Username.Name = "dgvConnections_Username";
-            this.dgvConnections_Username.ReadOnly = true;
-            // 
-            // clmStatus
-            // 
-            this.clmStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.clmStatus.HeaderText = "Status";
-            this.clmStatus.MinimumWidth = 200;
-            this.clmStatus.Name = "clmStatus";
-            this.clmStatus.ReadOnly = true;
-            // 
-            // clmConnected
-            // 
-            this.clmConnected.FillWeight = 10.25347F;
-            this.clmConnected.HeaderText = "Connected";
-            this.clmConnected.Name = "clmConnected";
-            this.clmConnected.ReadOnly = true;
             // 
             // contextMenuStrip1
             // 
@@ -305,7 +269,7 @@
             this.panel1.Controls.Add(this.btRefreshConnections);
             this.panel1.Controls.Add(this.btStopServer);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(873, 3);
+            this.panel1.Location = new System.Drawing.Point(1140, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(87, 235);
             this.panel1.TabIndex = 4;
@@ -326,7 +290,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 323);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(971, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1238, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -343,7 +307,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(971, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1238, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -407,7 +371,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 56);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(971, 267);
+            this.tabControl1.Size = new System.Drawing.Size(1238, 267);
             this.tabControl1.TabIndex = 7;
             // 
             // tabPage1
@@ -417,7 +381,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(963, 241);
+            this.tabPage1.Size = new System.Drawing.Size(1230, 241);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Connections";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1200,7 +1164,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel8.Location = new System.Drawing.Point(0, 24);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(971, 32);
+            this.panel8.Size = new System.Drawing.Size(1238, 32);
             this.panel8.TabIndex = 8;
             // 
             // checkBox2
@@ -1223,11 +1187,57 @@
             this.checkBox1.Text = "Sysop Available";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // clmSocketNum
+            // 
+            this.clmSocketNum.FillWeight = 10.25347F;
+            this.clmSocketNum.HeaderText = "#";
+            this.clmSocketNum.Name = "clmSocketNum";
+            this.clmSocketNum.ReadOnly = true;
+            // 
+            // Id
+            // 
+            this.Id.FillWeight = 1F;
+            this.Id.HeaderText = "Id";
+            this.Id.MinimumWidth = 60;
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            // 
+            // concolIP
+            // 
+            this.concolIP.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.concolIP.FillWeight = 20F;
+            this.concolIP.HeaderText = "IP";
+            this.concolIP.Name = "concolIP";
+            this.concolIP.ReadOnly = true;
+            // 
+            // dgvConnections_Username
+            // 
+            this.dgvConnections_Username.FillWeight = 4F;
+            this.dgvConnections_Username.HeaderText = "Username";
+            this.dgvConnections_Username.MinimumWidth = 200;
+            this.dgvConnections_Username.Name = "dgvConnections_Username";
+            this.dgvConnections_Username.ReadOnly = true;
+            // 
+            // clmStatus
+            // 
+            this.clmStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.clmStatus.HeaderText = "Status";
+            this.clmStatus.MinimumWidth = 200;
+            this.clmStatus.Name = "clmStatus";
+            this.clmStatus.ReadOnly = true;
+            // 
+            // clmConnected
+            // 
+            this.clmConnected.FillWeight = 10.25347F;
+            this.clmConnected.HeaderText = "Connected";
+            this.clmConnected.Name = "clmConnected";
+            this.clmConnected.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 345);
+            this.ClientSize = new System.Drawing.Size(1238, 345);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel8);
@@ -1352,11 +1362,6 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmSocketNum;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvConnections_Username;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmConnected;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
@@ -1364,6 +1369,12 @@
         private System.Windows.Forms.TabPage tabPage11;
         private System.Windows.Forms.TabPage tabPage12;
         private System.Windows.Forms.TabPage tabPage13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmSocketNum;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn concolIP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvConnections_Username;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmConnected;
     }
 }
 

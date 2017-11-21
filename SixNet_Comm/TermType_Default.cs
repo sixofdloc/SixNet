@@ -2,6 +2,10 @@
 {
     public class TermType_Default : I_TerminalType
     {
+        public string TerminalTypeName()
+        {
+            return "Default";
+        }
 
         public string CRLF()
         {

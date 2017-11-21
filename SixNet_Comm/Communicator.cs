@@ -53,7 +53,7 @@ namespace SixNet_Comm
             }
             else
             {
-                LoggingAPI.LogEntry("~l1File Not Found: " + filename);
+                LoggingAPI.Error("File Not Found: " + filename);
             }
         }
 
@@ -121,7 +121,7 @@ namespace SixNet_Comm
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in Communicator.Write: " + e);
+                LoggingAPI.Error(e);
             }
         }
 

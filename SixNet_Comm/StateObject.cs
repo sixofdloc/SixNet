@@ -27,14 +27,6 @@ namespace SixNet_Comm
             Disconnect_Handlers = new List<Action>();
         }
 
-        //public void Received(char c)
-        //{
-        //    foreach (Action<char> Receiver in Receivers)
-        //    {
-        //        Receiver(c);
-        //    }
-        //}
-
         public void Received(byte b)
         {
             foreach (Action<byte> Receiver in Receivers)

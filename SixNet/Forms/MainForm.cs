@@ -114,11 +114,11 @@ namespace SixNet
                     {
                         if (bbs.CurrentUser != null)
                         {
-                            dataGridView1.Rows.Add(i, bbs.State_Object.GetHashCode(), bbs.CurrentUser.Username,bbs.CurrentArea,(DateTime.Now.Subtract(bbs.ConnectionTimeStamp).ToString()));
+                            dataGridView1.Rows.Add(i, bbs.State_Object.GetHashCode(), bbs.State_Object.workSocket.RemoteEndPoint.ToString(), bbs.CurrentUser.Username,bbs.CurrentArea,(DateTime.Now.Subtract(bbs.ConnectionTimeStamp).ToString()));
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(i, bbs.State_Object.GetHashCode(), "Pending Login", "Login", (DateTime.Now.Subtract(bbs.ConnectionTimeStamp).ToString()));
+                            dataGridView1.Rows.Add(i, bbs.State_Object.GetHashCode(), bbs.State_Object.workSocket.RemoteEndPoint.ToString(), "Pending Login", "Login", (DateTime.Now.Subtract(bbs.ConnectionTimeStamp).ToString()));
                         }
                         i++;
                     }
