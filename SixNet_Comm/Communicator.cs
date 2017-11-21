@@ -11,7 +11,9 @@ namespace SixNet_Comm
         public StateObject State_Object { get; set; }
 
         public byte Currentchar { get; set; } //For prompts
-        public bool Connected { get; set; }  //Flag for loops 
+        public bool Connected {
+            get => State_Object.connected;
+             }  //Flag for loops 
         public I_TerminalType TerminalType { get; set; }
         public DateTime LastActivity { get; set; }
 
@@ -77,7 +79,10 @@ namespace SixNet_Comm
         public void WriteString(string s)
         {
             byte[] ca = s.Select(p => (byte)p).ToArray();
-            State_Object.workSocket.Send(ca);
+            if (State_Object.connected)
+            {
+                State_Object.workSocket.Send(ca);
+            }
         }
 
         public void Write(string s)
@@ -85,7 +90,7 @@ namespace SixNet_Comm
             try
             {
                 string t = TerminalType.TranlateToTerminal(s);
-                for (int i = 0; i < t.Length; i++)
+                for (int i = 0; i < t.Length && State_Object.connected; i++)
                 {
                     if (t.Substring(i, 1) != "~")
                     {
@@ -184,7 +189,7 @@ namespace SixNet_Comm
         public char GetChar()
         {
             Currentchar = 0x00;
-            while ((Currentchar == 0x00) && (Connected))
+            while ((Currentchar == 0x00) && (Connected) && State_Object.connected)
             {
                 Thread.Sleep(10);
             }
@@ -343,7 +348,7 @@ namespace SixNet_Comm
 
         public void Disconnect()
         {
-            Connected = false;
+            State_Object.Disconnect();
         }
         #endregion
 

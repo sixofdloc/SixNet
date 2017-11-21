@@ -1,4 +1,5 @@
 ﻿using SixNet_BBS_Data;
+using SixNet_GUI.User_Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,48 +31,35 @@ namespace SixNet_GUI.Forms.Editors
 
         private void btSave_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            bool formValid = ltbAccessGroupNumber.NumericValidation();
+            if (formValid) formValid = ltbMinutesPerCall.NumericValidation();
+            if (formValid) formValid = ltbCallsPerDay.NumericValidation();
+            if (formValid) formValid = ltbDescription.BasicValidation();
+            if (formValid) formValid = ltbTitle.BasicValidation();
+            if (formValid) this.DialogResult = DialogResult.OK;
         }
 
         public void SetValues(AccessGroup accessGroup)
         {
-            //ltbBBSName.EditText = bbsConfig.BBS_Name;
-            //ltbBBSPort.EditText = bbsConfig.BBS_Port.ToString();
-            //ltbBBSUrl.EditText = bbsConfig.BBS_URL;
-            //ltbSysOpEmail.EditText = bbsConfig.SysOp_Email;
-            //ltbSysOpHandle.EditText = bbsConfig.SysOp_Handle;
-            //ltbSysOpMenuPassword.EditText = bbsConfig.SysopMenuPass;
+            ltbAccessGroupNumber.EditText = accessGroup.AccessGroupNumber.ToString();
+            ltbCallsPerDay.EditText = accessGroup.CallsPerDay.ToString();
+            ltbDescription.EditText = accessGroup.Description;
+            cbRemoteMaint.Checked = accessGroup.Flag_Remote_Maintenance;
+            cbSysOp.Checked = accessGroup.Is_SysOp;
+            ltbMinutesPerCall.EditText = accessGroup.MinutesPerCall.ToString();
+            ltbTitle.EditText = accessGroup.Title;
         }
 
         public void ReturnValues(ref AccessGroup accessGroup)
         {
-            accessGroup.AccessGroupNumber = int.Parse(ltbAccessGroupNumber.Text);
-            accessGroup.CallsPerDay = int.Parse(ltbCallsPerDay.Text);
-           //bbsConfig.BBS_Name = ltbBBSName.EditText;
-           //bbsConfig.BBS_Port  =     int.Parse(ltbBBSPort.EditText)           ;
-           //bbsConfig.BBS_URL              =     ltbBBSUrl.EditText            ;
-           //bbsConfig.SysOp_Email          =     ltbSysOpEmail.EditText        ;
-           //bbsConfig.SysOp_Handle         =     ltbSysOpHandle.EditText       ;
-           //bbsConfig.SysopMenuPass        =     ltbSysOpMenuPassword.EditText ;
-
+            accessGroup.AccessGroupNumber = int.Parse(ltbAccessGroupNumber.EditText);
+            accessGroup.CallsPerDay = int.Parse(ltbCallsPerDay.EditText);
+            accessGroup.Description = ltbDescription.EditText;
+            accessGroup.Flag_Remote_Maintenance = cbRemoteMaint.Checked;
+            accessGroup.Is_SysOp = cbSysOp.Checked;
+            accessGroup.MinutesPerCall = int.Parse(ltbMinutesPerCall.EditText);
+            accessGroup.Title = ltbTitle.EditText;
         }
 
-        //private void ltbBBSPort_Edit_Finished(object sender, EventArgs e)
-        //{
-        //    //Validate port
-        //    int i = 0;
-        //    if (Int32.TryParse(ltbBBSPort.EditText,out i))
-        //    {
-        //        if (i <= 0 || i >= 65536)
-        //        {
-        //            MessageBox.Show("BBS Port must be a number between 1 and 65535");
-        //            ltbBBSPort.Focus();
-        //        }
-        //    } else {
-        //        MessageBox.Show("BBS Port must be a number.");
-        //        ltbBBSPort.Focus();
-
-        //    }
-        //}
     }
 }

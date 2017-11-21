@@ -24,7 +24,13 @@ namespace SixNet_GUI.Forms.Editors
 
         private void btSave_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            bool formValid = ltbBBSName.BasicValidation();
+            if (formValid) formValid = ltbBBSPort.NumericValidation();
+            if (formValid) formValid = ltbBBSUrl.BasicValidation();
+            if (formValid) formValid = ltbSysOpEmail.BasicValidation();
+            if (formValid) formValid = ltbSysOpHandle.BasicValidation();
+            if (formValid) formValid = ltbSysOpMenuPassword.BasicValidation();
+            if (formValid) this.DialogResult = DialogResult.OK;
         }
 
         public void SetValues(BBSConfig bbsConfig)
@@ -39,31 +45,14 @@ namespace SixNet_GUI.Forms.Editors
 
         public void ReturnValues(ref BBSConfig bbsConfig)
         {
-           bbsConfig.BBS_Name = ltbBBSName.EditText;
-           bbsConfig.BBS_Port  =     int.Parse(ltbBBSPort.EditText)           ;
-           bbsConfig.BBS_URL              =     ltbBBSUrl.EditText            ;
-           bbsConfig.SysOp_Email          =     ltbSysOpEmail.EditText        ;
-           bbsConfig.SysOp_Handle         =     ltbSysOpHandle.EditText       ;
-           bbsConfig.SysopMenuPass        =     ltbSysOpMenuPassword.EditText ;
+            bbsConfig.BBS_Name = ltbBBSName.EditText;
+            bbsConfig.BBS_Port = int.Parse(ltbBBSPort.EditText);
+            bbsConfig.BBS_URL = ltbBBSUrl.EditText;
+            bbsConfig.SysOp_Email = ltbSysOpEmail.EditText;
+            bbsConfig.SysOp_Handle = ltbSysOpHandle.EditText;
+            bbsConfig.SysopMenuPass = ltbSysOpMenuPassword.EditText;
 
         }
 
-        private void ltbBBSPort_Edit_Finished(object sender, EventArgs e)
-        {
-            //Validate port
-            int i = 0;
-            if (Int32.TryParse(ltbBBSPort.EditText,out i))
-            {
-                if (i <= 0 || i >= 65536)
-                {
-                    MessageBox.Show("BBS Port must be a number between 1 and 65535");
-                    ltbBBSPort.Focus();
-                }
-            } else {
-                MessageBox.Show("BBS Port must be a number.");
-                ltbBBSPort.Focus();
-
-            }
-        }
     }
 }

@@ -83,7 +83,6 @@ namespace SixNet_BBS
                 DND_Override = false;
                 MessageQueue = new List<string>();
                 State_Object.AddDisconnectHandler(Disconnect);
-                Connected = true;
                 State_Object.AddReceiver(Receive);
                 Currentchar = 0x00;
                 try

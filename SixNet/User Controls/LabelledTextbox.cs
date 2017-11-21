@@ -49,10 +49,23 @@ namespace SixNet_GUI.User_Controls
             set => textBox1.TabIndex = value;
         }
 
+        public bool NumbersOnly { get; set; }
+        //    get => NumbersOnly;
+        //    set {AllowEmpty = !value; NumbersOnly = value; }
+        //}
 
+        public int Min { get; set; }
+        public int Max { get; set; }
+        public bool AllowEmpty { get; set; }
+            
         public LabelledTextbox()
         {
             InitializeComponent();
+            NumbersOnly = false;
+            //Min = 0;
+            //Max = 65535;
+            AllowEmpty = true;
+
         }
 
         private void SetTextBoxWidth(int w)
@@ -78,7 +91,57 @@ namespace SixNet_GUI.User_Controls
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            if (this.Edit_Finished != null) this.Edit_Finished(this, e);
+            if (NumbersOnly)
+            {
+                NumericValidation();
+            }
+            else
+            {
+                    if (BasicValidation())
+                    if (this.Edit_Finished != null) this.Edit_Finished(this, e);
+            }
         }
+
+        public bool NumericValidation()
+        {
+            bool b = true;
+            int i = 0;
+            if (Int32.TryParse(textBox1.Text, out i))
+            {
+                if (i <= Min || i >= Max)
+                {
+                    MessageBox.Show(label1.Text + " must be a number between " + Min + " and " + Max);
+                    b = false;
+                    this.Focus();
+                }
+            }
+            else
+            {
+                MessageBox.Show(label1.Text + " must be a number.");
+                b = false;
+                this.Focus();
+            }
+            return b;
+        }
+
+        public bool BasicValidation()
+        {
+            bool b = true;
+            int i = 0;
+            if (!AllowEmpty)
+            {
+                if (textBox1.Text.Length == 0)
+                {
+                    if (i <= Min || i >= Max)
+                    {
+                        MessageBox.Show(label1.Text + " must have a value.");
+                        b = false;
+                        this.Focus();
+                    }
+                }
+            }
+            return b;
+        }
+
     }
 }
