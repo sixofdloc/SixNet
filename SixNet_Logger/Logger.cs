@@ -31,7 +31,7 @@ namespace SixNet_Logger
         {
             lock (loglock)
             {
-                TextWriter tw = new StreamWriter(_logPath + DateTime.Today.ToString("yyyy-MM-dd") + _prefix + ".log", true);
+                TextWriter tw = new StreamWriter(_logPath + DateTime.Today.ToString("yyyy-MM-dd") + _prefix + ".txt", true);
                 foreach (string s in logqueue)
                 {
                     tw.WriteLine(s);

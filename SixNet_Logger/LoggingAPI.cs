@@ -30,11 +30,13 @@ namespace SixNet_Logger
             _sysLog.FlushQueue();
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void LogEntry(string entryText)
         {
-            _debugLog.Entry(entryText);
+            _debugLog.Entry(GetSendingMethod() + ": "+entryText);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void LogEntry(string entryText, params Object[] attachments)
         {
             var attachText = "";
@@ -42,14 +44,16 @@ namespace SixNet_Logger
             {
                 attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
             }
-            _debugLog.Entry(entryText + ", " + attachText );
+            _debugLog.Entry(GetSendingMethod() + ": "+entryText + ", " + attachText );
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Error(string errorMessage)
         {
             _errorLog.Entry(GetSendingMethod()+": "+errorMessage);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Error(string errorMessage, params Object[] attachments)
         {
             var attachText = "";
@@ -60,9 +64,10 @@ namespace SixNet_Logger
             _errorLog.Entry(GetSendingMethod() + ": " + errorMessage + ", ATTACHMENTS: " + attachText);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Error(Exception exception)
         {
-            _errorLog.Entry(GetSendingMethod() + ": \r\n\r\n" + JsonConvert.SerializeObject(exception));
+            _errorLog.Entry(GetSendingMethod() + ": " + JsonConvert.SerializeObject(exception));
         }
 
         public static void SysLogEntry(string entryText)
@@ -87,7 +92,7 @@ namespace SixNet_Logger
             StackFrame stackFrame = stackTrace.GetFrame(2);
             //0 would be this, 1 would be the logging proc, 2 would be what called the logging proc.
 
-            return stackFrame.GetMethod().Name;
+            return stackFrame.GetMethod().ReflectedType.FullName +"."+ stackFrame.GetMethod().Name;
         }
     }
 }

@@ -13,6 +13,7 @@ namespace SixNet_GUI
         [STAThread]
         static void Main()
         {
+            LoggingAPI.Init("Logs\\");
             LoggingAPI.LogEntry("Software started.");
             try
             {
@@ -22,7 +23,7 @@ namespace SixNet_GUI
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception at Main: " + e.Message);
+                LoggingAPI.Error(e);
             }
             LoggingAPI.LogEntry("Software shutdown.");
             LoggingAPI.FlushQueue();
