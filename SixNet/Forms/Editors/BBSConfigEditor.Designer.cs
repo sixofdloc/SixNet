@@ -143,7 +143,6 @@
             this.ltbBBSPort.Padding = new System.Windows.Forms.Padding(3);
             this.ltbBBSPort.Size = new System.Drawing.Size(272, 46);
             this.ltbBBSPort.TabIndex = 3;
-            this.ltbBBSPort.Edit_Finished += new System.EventHandler(this.ltbBBSPort_Edit_Finished);
             // 
             // ltbBBSUrl
             // 
