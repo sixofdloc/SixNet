@@ -52,6 +52,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btStopServer = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.clmSocketNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.concolIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvConnections_Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clmStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clmConnected = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.spyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -136,12 +142,6 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.clmSocketNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.concolIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvConnections_Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmConnected = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -226,6 +226,52 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1137, 235);
             this.dataGridView1.TabIndex = 3;
+            // 
+            // clmSocketNum
+            // 
+            this.clmSocketNum.FillWeight = 10.25347F;
+            this.clmSocketNum.HeaderText = "#";
+            this.clmSocketNum.Name = "clmSocketNum";
+            this.clmSocketNum.ReadOnly = true;
+            // 
+            // Id
+            // 
+            this.Id.FillWeight = 1F;
+            this.Id.HeaderText = "Id";
+            this.Id.MinimumWidth = 60;
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            // 
+            // concolIP
+            // 
+            this.concolIP.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.concolIP.FillWeight = 20F;
+            this.concolIP.HeaderText = "IP";
+            this.concolIP.Name = "concolIP";
+            this.concolIP.ReadOnly = true;
+            // 
+            // dgvConnections_Username
+            // 
+            this.dgvConnections_Username.FillWeight = 4F;
+            this.dgvConnections_Username.HeaderText = "Username";
+            this.dgvConnections_Username.MinimumWidth = 200;
+            this.dgvConnections_Username.Name = "dgvConnections_Username";
+            this.dgvConnections_Username.ReadOnly = true;
+            // 
+            // clmStatus
+            // 
+            this.clmStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.clmStatus.HeaderText = "Status";
+            this.clmStatus.MinimumWidth = 200;
+            this.clmStatus.Name = "clmStatus";
+            this.clmStatus.ReadOnly = true;
+            // 
+            // clmConnected
+            // 
+            this.clmConnected.FillWeight = 10.25347F;
+            this.clmConnected.HeaderText = "Connected";
+            this.clmConnected.Name = "clmConnected";
+            this.clmConnected.ReadOnly = true;
             // 
             // contextMenuStrip1
             // 
@@ -393,7 +439,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(963, 241);
+            this.tabPage2.Size = new System.Drawing.Size(1230, 241);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Access Groups";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -444,7 +490,7 @@
             this.dg_AccessGroups.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dg_AccessGroups.RowHeadersVisible = false;
             this.dg_AccessGroups.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dg_AccessGroups.Size = new System.Drawing.Size(870, 235);
+            this.dg_AccessGroups.Size = new System.Drawing.Size(1137, 235);
             this.dg_AccessGroups.TabIndex = 6;
             // 
             // AccessGroupId
@@ -524,7 +570,7 @@
             this.panel2.Controls.Add(this.btAddAccessGroup);
             this.panel2.Controls.Add(this.bt_RefreshAccessGroups);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(873, 3);
+            this.panel2.Location = new System.Drawing.Point(1140, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(87, 235);
             this.panel2.TabIndex = 5;
@@ -537,6 +583,7 @@
             this.btEditAccessGroup.TabIndex = 4;
             this.btEditAccessGroup.Text = "Edit";
             this.btEditAccessGroup.UseVisualStyleBackColor = true;
+            this.btEditAccessGroup.Click += new System.EventHandler(this.btEditAccessGroup_Click);
             // 
             // btAddAccessGroup
             // 
@@ -564,7 +611,7 @@
             this.tabPage3.Controls.Add(this.panel3);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(963, 241);
+            this.tabPage3.Size = new System.Drawing.Size(1230, 241);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Message Areas";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -610,7 +657,7 @@
             this.dgMessageBaseAreas.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgMessageBaseAreas.RowHeadersVisible = false;
             this.dgMessageBaseAreas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgMessageBaseAreas.Size = new System.Drawing.Size(876, 241);
+            this.dgMessageBaseAreas.Size = new System.Drawing.Size(1143, 241);
             this.dgMessageBaseAreas.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn1
@@ -637,7 +684,7 @@
             this.panel3.Controls.Add(this.button5);
             this.panel3.Controls.Add(this.btRefreshMessageAreas);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(876, 0);
+            this.panel3.Location = new System.Drawing.Point(1143, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(87, 241);
             this.panel3.TabIndex = 7;
@@ -676,7 +723,7 @@
             this.tabPage4.Controls.Add(this.panel4);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(963, 241);
+            this.tabPage4.Size = new System.Drawing.Size(1230, 241);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Message Bases";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -722,7 +769,7 @@
             this.dgMessageBases.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgMessageBases.RowHeadersVisible = false;
             this.dgMessageBases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgMessageBases.Size = new System.Drawing.Size(876, 241);
+            this.dgMessageBases.Size = new System.Drawing.Size(1143, 241);
             this.dgMessageBases.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn3
@@ -749,7 +796,7 @@
             this.panel4.Controls.Add(this.button8);
             this.panel4.Controls.Add(this.btRefreshMessageBases);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(876, 0);
+            this.panel4.Location = new System.Drawing.Point(1143, 0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(87, 241);
             this.panel4.TabIndex = 7;
@@ -788,7 +835,7 @@
             this.tabPage5.Controls.Add(this.panel5);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(963, 241);
+            this.tabPage5.Size = new System.Drawing.Size(1230, 241);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Call Log";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -834,7 +881,7 @@
             this.dgCallLog.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.dgCallLog.RowHeadersVisible = false;
             this.dgCallLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgCallLog.Size = new System.Drawing.Size(876, 241);
+            this.dgCallLog.Size = new System.Drawing.Size(1143, 241);
             this.dgCallLog.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn4
@@ -863,7 +910,7 @@
             this.panel5.Controls.Add(this.button11);
             this.panel5.Controls.Add(this.button12);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel5.Location = new System.Drawing.Point(876, 0);
+            this.panel5.Location = new System.Drawing.Point(1143, 0);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(87, 241);
             this.panel5.TabIndex = 7;
@@ -893,7 +940,7 @@
             this.tabPage6.Controls.Add(this.panel6);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(963, 241);
+            this.tabPage6.Size = new System.Drawing.Size(1230, 241);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Feedback";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -937,7 +984,7 @@
             this.dataGridView6.RowHeadersDefaultCellStyle = dataGridViewCellStyle18;
             this.dataGridView6.RowHeadersVisible = false;
             this.dataGridView6.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView6.Size = new System.Drawing.Size(876, 241);
+            this.dataGridView6.Size = new System.Drawing.Size(1143, 241);
             this.dataGridView6.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn5
@@ -951,7 +998,7 @@
             this.panel6.Controls.Add(this.button10);
             this.panel6.Controls.Add(this.button14);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel6.Location = new System.Drawing.Point(876, 0);
+            this.panel6.Location = new System.Drawing.Point(1143, 0);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(87, 241);
             this.panel6.TabIndex = 7;
@@ -980,7 +1027,7 @@
             this.tabPage7.Controls.Add(this.panel7);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(963, 241);
+            this.tabPage7.Size = new System.Drawing.Size(1230, 241);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Users";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -1028,7 +1075,7 @@
             this.dg_Users.RowHeadersDefaultCellStyle = dataGridViewCellStyle21;
             this.dg_Users.RowHeadersVisible = false;
             this.dg_Users.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dg_Users.Size = new System.Drawing.Size(876, 241);
+            this.dg_Users.Size = new System.Drawing.Size(1143, 241);
             this.dg_Users.TabIndex = 8;
             this.dg_Users.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_Users_CellDoubleClick);
             // 
@@ -1068,7 +1115,7 @@
             this.panel7.Controls.Add(this.button15);
             this.panel7.Controls.Add(this.btRefreshUsers);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel7.Location = new System.Drawing.Point(876, 0);
+            this.panel7.Location = new System.Drawing.Point(1143, 0);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(87, 241);
             this.panel7.TabIndex = 7;
@@ -1106,7 +1153,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(963, 241);
+            this.tabPage8.Size = new System.Drawing.Size(1230, 241);
             this.tabPage8.TabIndex = 7;
             this.tabPage8.Text = "UD Areas";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -1116,7 +1163,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(963, 241);
+            this.tabPage9.Size = new System.Drawing.Size(1230, 241);
             this.tabPage9.TabIndex = 8;
             this.tabPage9.Text = "UD Bases";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -1125,7 +1172,7 @@
             // 
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(963, 241);
+            this.tabPage10.Size = new System.Drawing.Size(1230, 241);
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "PFile Areas";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1134,7 +1181,7 @@
             // 
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Size = new System.Drawing.Size(963, 241);
+            this.tabPage11.Size = new System.Drawing.Size(1230, 241);
             this.tabPage11.TabIndex = 10;
             this.tabPage11.Text = "PFiles";
             this.tabPage11.UseVisualStyleBackColor = true;
@@ -1143,7 +1190,7 @@
             // 
             this.tabPage12.Location = new System.Drawing.Point(4, 22);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(963, 241);
+            this.tabPage12.Size = new System.Drawing.Size(1230, 241);
             this.tabPage12.TabIndex = 11;
             this.tabPage12.Text = "GFile Areas";
             this.tabPage12.UseVisualStyleBackColor = true;
@@ -1152,7 +1199,7 @@
             // 
             this.tabPage13.Location = new System.Drawing.Point(4, 22);
             this.tabPage13.Name = "tabPage13";
-            this.tabPage13.Size = new System.Drawing.Size(963, 241);
+            this.tabPage13.Size = new System.Drawing.Size(1230, 241);
             this.tabPage13.TabIndex = 12;
             this.tabPage13.Text = "GFiles";
             this.tabPage13.UseVisualStyleBackColor = true;
@@ -1186,52 +1233,6 @@
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Sysop Available";
             this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // clmSocketNum
-            // 
-            this.clmSocketNum.FillWeight = 10.25347F;
-            this.clmSocketNum.HeaderText = "#";
-            this.clmSocketNum.Name = "clmSocketNum";
-            this.clmSocketNum.ReadOnly = true;
-            // 
-            // Id
-            // 
-            this.Id.FillWeight = 1F;
-            this.Id.HeaderText = "Id";
-            this.Id.MinimumWidth = 60;
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            // 
-            // concolIP
-            // 
-            this.concolIP.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.concolIP.FillWeight = 20F;
-            this.concolIP.HeaderText = "IP";
-            this.concolIP.Name = "concolIP";
-            this.concolIP.ReadOnly = true;
-            // 
-            // dgvConnections_Username
-            // 
-            this.dgvConnections_Username.FillWeight = 4F;
-            this.dgvConnections_Username.HeaderText = "Username";
-            this.dgvConnections_Username.MinimumWidth = 200;
-            this.dgvConnections_Username.Name = "dgvConnections_Username";
-            this.dgvConnections_Username.ReadOnly = true;
-            // 
-            // clmStatus
-            // 
-            this.clmStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.clmStatus.HeaderText = "Status";
-            this.clmStatus.MinimumWidth = 200;
-            this.clmStatus.Name = "clmStatus";
-            this.clmStatus.ReadOnly = true;
-            // 
-            // clmConnected
-            // 
-            this.clmConnected.FillWeight = 10.25347F;
-            this.clmConnected.HeaderText = "Connected";
-            this.clmConnected.Name = "clmConnected";
-            this.clmConnected.ReadOnly = true;
             // 
             // MainForm
             // 

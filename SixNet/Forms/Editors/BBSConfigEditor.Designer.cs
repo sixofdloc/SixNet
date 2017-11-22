@@ -70,7 +70,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 283);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(272, 30);
-            this.panel1.TabIndex = 2;
+            this.panel1.TabIndex = 0;
             // 
             // ltbSysOpMenuPassword
             // 

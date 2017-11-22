@@ -37,17 +37,17 @@ namespace SixNet_GUI.User_Controls
             set => SetTextBoxWidth(value);
         }
 
-        public new bool TabStop
-        {
-            get => textBox1.TabStop;
-            set => textBox1.TabStop = value;
-        }
+        //public new bool TabStop
+        //{
+        //    get => textBox1.TabStop;
+        //    set => textBox1.TabStop = value;
+        //}
 
-        public new int TabIndex
-        {
-            get => textBox1.TabIndex;
-            set => textBox1.TabIndex = value;
-        }
+        //public new int TabIndex
+        //{
+        //    get => textBox1.TabIndex;
+        //    set => textBox1.TabIndex = value;
+        //}
 
         public bool NumbersOnly { get; set; }
         //    get => NumbersOnly;

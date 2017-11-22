@@ -294,6 +294,27 @@ namespace SixNet
                 var accessGroup = new AccessGroup();
                 accessGroupEditor.ReturnValues(ref accessGroup);
                 _dataInterface.CreateAccessGroup(accessGroup);
+                _formUtils.RefreshAccessGroups(dg_AccessGroups);
+            }
+
+        }
+
+        private void btEditAccessGroup_Click(object sender, EventArgs e)
+        {
+            int AccessGroupId = (int)(dg_AccessGroups.SelectedRows[0].Cells[0].Value);
+            var accessGroup = _dataInterface.GetAccessGroupById(AccessGroupId);
+            if (accessGroup != null)
+            {
+                var accessGroupEditor = new AccessGroupEditor();
+                accessGroupEditor.SetCaption(1);
+                accessGroupEditor.SetValues(accessGroup);
+                if (accessGroupEditor.ShowDialog() == DialogResult.OK)
+                {
+                    accessGroupEditor.ReturnValues(ref accessGroup);
+                    _dataInterface.UpdateAccessGroup(accessGroup);
+                    _formUtils.RefreshAccessGroups(dg_AccessGroups);
+                }
+
             }
         }
     }

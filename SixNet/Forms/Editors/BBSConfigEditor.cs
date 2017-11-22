@@ -54,5 +54,9 @@ namespace SixNet_GUI.Forms.Editors
 
         }
 
+        private void ltbBBSPort_Edit_Finished(object sender, EventArgs e)
+        {
+
+        }
     }
 }

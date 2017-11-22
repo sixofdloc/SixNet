@@ -35,6 +35,11 @@ namespace SixNet_BBS_Data
             return GetDataContext().BBSConfigs.First(p => true);
         }
 
+        public void SaveChanges()
+        {
+            GetDataContext().SubmitChanges();
+        }
+
         #region GFiles
         public int GFile_ParentArea(int area)
         {
@@ -679,6 +684,33 @@ namespace SixNet_BBS_Data
             catch (Exception e)
             {
                 LoggingAPI.Error("Params, Exception: ",accessGroup,e);
+            }
+            return b;
+        }
+
+        public bool UpdateAccessGroup(AccessGroup accessGroup)
+        {
+            bool b = false;
+            try
+            {
+                var dataContext = GetDataContext();
+                var oldAccessGroup = dataContext.AccessGroups.FirstOrDefault(p => p.AccessGroupId == accessGroup.AccessGroupId);
+                if (oldAccessGroup != null)
+                {
+                    oldAccessGroup.AccessGroupNumber = accessGroup.AccessGroupNumber;
+                    oldAccessGroup.CallsPerDay = accessGroup.CallsPerDay;
+                    oldAccessGroup.Description = accessGroup.Description;
+                    oldAccessGroup.Flag_Remote_Maintenance = accessGroup.Flag_Remote_Maintenance;
+                    oldAccessGroup.Is_SysOp = accessGroup.Is_SysOp;
+                    oldAccessGroup.MinutesPerCall = accessGroup.MinutesPerCall;
+                    oldAccessGroup.Title = accessGroup.Title;
+                    dataContext.SubmitChanges();
+                    b = true;
+                }
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Params, Exception: ", accessGroup, e);
             }
             return b;
         }

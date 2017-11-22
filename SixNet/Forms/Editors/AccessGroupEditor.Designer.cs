@@ -32,12 +32,12 @@
             this.btSave = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ltbCallsPerDay = new SixNet_GUI.User_Controls.LabelledTextbox();
-            this.ltbMinutesPerCall = new SixNet_GUI.User_Controls.LabelledTextbox();
-            this.ltbAccessGroupNumber = new SixNet_GUI.User_Controls.LabelledTextbox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cbRemoteMaint = new System.Windows.Forms.CheckBox();
             this.cbSysOp = new System.Windows.Forms.CheckBox();
+            this.ltbCallsPerDay = new SixNet_GUI.User_Controls.LabelledTextbox();
+            this.ltbMinutesPerCall = new SixNet_GUI.User_Controls.LabelledTextbox();
+            this.ltbAccessGroupNumber = new SixNet_GUI.User_Controls.LabelledTextbox();
             this.ltbDescription = new SixNet_GUI.User_Controls.LabelledTextbox();
             this.ltbTitle = new SixNet_GUI.User_Controls.LabelledTextbox();
             this.panel1.SuspendLayout();
@@ -51,7 +51,8 @@
             this.btCancel.Location = new System.Drawing.Point(95, 0);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(132, 30);
-            this.btCancel.TabIndex = 7;
+            this.btCancel.TabIndex = 8;
+            this.btCancel.TabStop = false;
             this.btCancel.Text = "CANCEL";
             this.btCancel.UseVisualStyleBackColor = true;
             this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
@@ -62,7 +63,8 @@
             this.btSave.Location = new System.Drawing.Point(227, 0);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(132, 30);
-            this.btSave.TabIndex = 8;
+            this.btSave.TabIndex = 9;
+            this.btSave.TabStop = false;
             this.btSave.Text = "SAVE";
             this.btSave.UseVisualStyleBackColor = true;
             this.btSave.Click += new System.EventHandler(this.btSave_Click);
@@ -75,7 +77,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 199);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(359, 30);
-            this.panel1.TabIndex = 2;
+            this.panel1.TabIndex = 0;
             // 
             // panel2
             // 
@@ -86,7 +88,41 @@
             this.panel2.Location = new System.Drawing.Point(0, 92);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(359, 53);
-            this.panel2.TabIndex = 7;
+            this.panel2.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.cbRemoteMaint);
+            this.panel3.Controls.Add(this.cbSysOp);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 145);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(359, 36);
+            this.panel3.TabIndex = 0;
+            // 
+            // cbRemoteMaint
+            // 
+            this.cbRemoteMaint.Dock = System.Windows.Forms.DockStyle.Left;
+            this.cbRemoteMaint.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbRemoteMaint.Location = new System.Drawing.Point(178, 0);
+            this.cbRemoteMaint.Name = "cbRemoteMaint";
+            this.cbRemoteMaint.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.cbRemoteMaint.Size = new System.Drawing.Size(178, 36);
+            this.cbRemoteMaint.TabIndex = 7;
+            this.cbRemoteMaint.Text = "Remote Maintenance";
+            this.cbRemoteMaint.UseVisualStyleBackColor = true;
+            // 
+            // cbSysOp
+            // 
+            this.cbSysOp.Dock = System.Windows.Forms.DockStyle.Left;
+            this.cbSysOp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSysOp.Location = new System.Drawing.Point(0, 0);
+            this.cbSysOp.Name = "cbSysOp";
+            this.cbSysOp.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.cbSysOp.Size = new System.Drawing.Size(178, 36);
+            this.cbSysOp.TabIndex = 6;
+            this.cbSysOp.Text = "Is SysOp";
+            this.cbSysOp.UseVisualStyleBackColor = true;
             // 
             // ltbCallsPerDay
             // 
@@ -104,7 +140,7 @@
             this.ltbCallsPerDay.NumbersOnly = true;
             this.ltbCallsPerDay.Padding = new System.Windows.Forms.Padding(3);
             this.ltbCallsPerDay.Size = new System.Drawing.Size(119, 53);
-            this.ltbCallsPerDay.TabIndex = 4;
+            this.ltbCallsPerDay.TabIndex = 5;
             // 
             // ltbMinutesPerCall
             // 
@@ -140,41 +176,7 @@
             this.ltbAccessGroupNumber.NumbersOnly = false;
             this.ltbAccessGroupNumber.Padding = new System.Windows.Forms.Padding(3);
             this.ltbAccessGroupNumber.Size = new System.Drawing.Size(119, 53);
-            this.ltbAccessGroupNumber.TabIndex = 4;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.cbRemoteMaint);
-            this.panel3.Controls.Add(this.cbSysOp);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 145);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(359, 36);
-            this.panel3.TabIndex = 8;
-            // 
-            // cbRemoteMaint
-            // 
-            this.cbRemoteMaint.Dock = System.Windows.Forms.DockStyle.Left;
-            this.cbRemoteMaint.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbRemoteMaint.Location = new System.Drawing.Point(178, 0);
-            this.cbRemoteMaint.Name = "cbRemoteMaint";
-            this.cbRemoteMaint.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.cbRemoteMaint.Size = new System.Drawing.Size(178, 36);
-            this.cbRemoteMaint.TabIndex = 1;
-            this.cbRemoteMaint.Text = "Remote Maintenance";
-            this.cbRemoteMaint.UseVisualStyleBackColor = true;
-            // 
-            // cbSysOp
-            // 
-            this.cbSysOp.Dock = System.Windows.Forms.DockStyle.Left;
-            this.cbSysOp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbSysOp.Location = new System.Drawing.Point(0, 0);
-            this.cbSysOp.Name = "cbSysOp";
-            this.cbSysOp.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.cbSysOp.Size = new System.Drawing.Size(178, 36);
-            this.cbSysOp.TabIndex = 0;
-            this.cbSysOp.Text = "Is SysOp";
-            this.cbSysOp.UseVisualStyleBackColor = true;
+            this.ltbAccessGroupNumber.TabIndex = 3;
             // 
             // ltbDescription
             // 
@@ -192,7 +194,7 @@
             this.ltbDescription.NumbersOnly = false;
             this.ltbDescription.Padding = new System.Windows.Forms.Padding(3);
             this.ltbDescription.Size = new System.Drawing.Size(359, 46);
-            this.ltbDescription.TabIndex = 4;
+            this.ltbDescription.TabIndex = 2;
             // 
             // ltbTitle
             // 
@@ -210,7 +212,7 @@
             this.ltbTitle.NumbersOnly = false;
             this.ltbTitle.Padding = new System.Windows.Forms.Padding(3);
             this.ltbTitle.Size = new System.Drawing.Size(359, 46);
-            this.ltbTitle.TabIndex = 4;
+            this.ltbTitle.TabIndex = 1;
             // 
             // AccessGroupEditor
             // 
