@@ -96,8 +96,8 @@
             this.MessageBaseAreas_Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MessageBaseAreas_ParentArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btEditMessageArea = new System.Windows.Forms.Button();
+            this.btAddMessageArea = new System.Windows.Forms.Button();
             this.btRefreshMessageAreas = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.dgMessageBases = new System.Windows.Forms.DataGridView();
@@ -680,8 +680,8 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.button4);
-            this.panel3.Controls.Add(this.button5);
+            this.panel3.Controls.Add(this.btEditMessageArea);
+            this.panel3.Controls.Add(this.btAddMessageArea);
             this.panel3.Controls.Add(this.btRefreshMessageAreas);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(1143, 0);
@@ -689,23 +689,25 @@
             this.panel3.Size = new System.Drawing.Size(87, 241);
             this.panel3.TabIndex = 7;
             // 
-            // button4
+            // btEditMessageArea
             // 
-            this.button4.Location = new System.Drawing.Point(7, 61);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Edit";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btEditMessageArea.Location = new System.Drawing.Point(7, 61);
+            this.btEditMessageArea.Name = "btEditMessageArea";
+            this.btEditMessageArea.Size = new System.Drawing.Size(75, 23);
+            this.btEditMessageArea.TabIndex = 4;
+            this.btEditMessageArea.Text = "Edit";
+            this.btEditMessageArea.UseVisualStyleBackColor = true;
+            this.btEditMessageArea.Click += new System.EventHandler(this.btEditMessageArea_Click);
             // 
-            // button5
+            // btAddMessageArea
             // 
-            this.button5.Location = new System.Drawing.Point(7, 32);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Add";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btAddMessageArea.Location = new System.Drawing.Point(7, 32);
+            this.btAddMessageArea.Name = "btAddMessageArea";
+            this.btAddMessageArea.Size = new System.Drawing.Size(75, 23);
+            this.btAddMessageArea.TabIndex = 3;
+            this.btAddMessageArea.Text = "Add";
+            this.btAddMessageArea.UseVisualStyleBackColor = true;
+            this.btAddMessageArea.Click += new System.EventHandler(this.btAddMessageArea_Click);
             // 
             // btRefreshMessageAreas
             // 
@@ -1312,8 +1314,8 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.DataGridView dgMessageBaseAreas;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btEditMessageArea;
+        private System.Windows.Forms.Button btAddMessageArea;
         private System.Windows.Forms.Button btRefreshMessageAreas;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.DataGridView dgMessageBases;

@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 SixNet/BBSConfig.txt
-
+BBSConfig.*
 # User-specific files
 *.suo
 *.user

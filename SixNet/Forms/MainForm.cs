@@ -317,5 +317,21 @@ namespace SixNet
 
             }
         }
+
+
+        private void btEditMessageArea_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btAddMessageArea_Click(object sender, EventArgs e)
+        {
+            var messageAreaEditor = new MessageAreaEditor();
+            messageAreaEditor.Initialize(0, _dataInterface);
+            if (messageAreaEditor.ShowDialog()==DialogResult.OK)
+            {
+
+            }
+        }
     }
 }

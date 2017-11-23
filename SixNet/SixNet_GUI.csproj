@@ -60,6 +60,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -70,11 +71,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ComboBoxListItem.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\MessageAreaEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\MessageAreaEditor.Designer.cs">
+      <DependentUpon>MessageAreaEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\AccessGroupEditor.cs">
       <SubType>Form</SubType>
@@ -128,6 +136,15 @@
     <Compile Include="User Controls\LabelledTextbox.Designer.cs">
       <DependentUpon>LabelledTextbox.cs</DependentUpon>
     </Compile>
+    <Compile Include="User Controls\MessageAreaSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\MessageAreaSelector.Designer.cs">
+      <DependentUpon>MessageAreaSelector.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\Editors\MessageAreaEditor.resx">
+      <DependentUpon>MessageAreaEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\AccessGroupEditor.resx">
       <DependentUpon>AccessGroupEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +180,9 @@
     </Compile>
     <EmbeddedResource Include="User Controls\LabelledTextbox.resx">
       <DependentUpon>LabelledTextbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\MessageAreaSelector.resx">
+      <DependentUpon>MessageAreaSelector.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="BBSConfig.txt">

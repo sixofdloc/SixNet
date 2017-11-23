@@ -57,6 +57,7 @@ namespace SixNet_GUI.User_Controls
         public int Min { get; set; }
         public int Max { get; set; }
         public bool AllowEmpty { get; set; }
+        public bool AutoValidate { get; set; }
             
         public LabelledTextbox()
         {
@@ -91,14 +92,17 @@ namespace SixNet_GUI.User_Controls
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            if (NumbersOnly)
+            if (AutoValidate)
             {
-                NumericValidation();
-            }
-            else
-            {
+                if (NumbersOnly)
+                {
+                    NumericValidation();
+                }
+                else
+                {
                     if (BasicValidation())
-                    if (this.Edit_Finished != null) this.Edit_Finished(this, e);
+                        if (this.Edit_Finished != null) this.Edit_Finished(this, e);
+                }
             }
         }
 
