@@ -21,6 +21,9 @@ namespace SixNet
     public partial class MainForm : Form,IBBSHost
     {
 
+        public const int MODE_ADD = 0;
+        public const int MODE_EDIT = 1;
+
         private readonly FormUtils _formUtils;
         private readonly DataInterface _dataInterface;
         private readonly string _dbConfigStr;
@@ -288,7 +291,7 @@ namespace SixNet
         private void btAddAccessGroup_Click(object sender, EventArgs e)
         {
             var accessGroupEditor = new AccessGroupEditor();
-            accessGroupEditor.SetCaption(0);
+            accessGroupEditor.SetCaption(MODE_ADD);
             if (accessGroupEditor.ShowDialog() == DialogResult.OK)
             {
                 var accessGroup = new AccessGroup();
@@ -306,7 +309,7 @@ namespace SixNet
             if (accessGroup != null)
             {
                 var accessGroupEditor = new AccessGroupEditor();
-                accessGroupEditor.SetCaption(1);
+                accessGroupEditor.SetCaption(MODE_EDIT);
                 accessGroupEditor.SetValues(accessGroup);
                 if (accessGroupEditor.ShowDialog() == DialogResult.OK)
                 {
@@ -321,15 +324,64 @@ namespace SixNet
 
         private void btEditMessageArea_Click(object sender, EventArgs e)
         {
+            int messageBaseAreaId = (int)(dgMessageBaseAreas.SelectedRows[0].Cells[0].Value);
+            var messageBaseArea = _dataInterface.GetMessageBaseAreaById(messageBaseAreaId);
+            if (messageBaseArea != null)
+            {
+                var messageAreaEditor = new MessageAreaEditor();
+                messageAreaEditor.Initialize(MODE_EDIT, _dataInterface);
+                messageAreaEditor.SetValues(messageBaseArea);
+                if (messageAreaEditor.ShowDialog() == DialogResult.OK)
+                {
+                    messageAreaEditor.ReturnValues(ref messageBaseArea);
+                    _dataInterface.UpdateMessageBaseArea(messageBaseArea);
+                    _formUtils.RefreshMessageAreas(dgMessageBaseAreas);
+                }
 
+            }
         }
 
         private void btAddMessageArea_Click(object sender, EventArgs e)
         {
             var messageAreaEditor = new MessageAreaEditor();
-            messageAreaEditor.Initialize(0, _dataInterface);
+            messageAreaEditor.Initialize(MODE_ADD, _dataInterface);
             if (messageAreaEditor.ShowDialog()==DialogResult.OK)
             {
+                var messageBaseArea = new MessageBaseArea();
+                messageAreaEditor.ReturnValues(ref messageBaseArea);
+                _dataInterface.CreateMessageBaseArea(messageBaseArea);
+                _formUtils.RefreshMessageAreas(dgMessageBaseAreas);
+            }
+        }
+
+        private void btAddMessageBase_Click(object sender, EventArgs e)
+        {
+            var messageBaseEditor = new MessageBaseEditor();
+            messageBaseEditor.Initialize(MODE_ADD, _dataInterface);
+            if (messageBaseEditor.ShowDialog() == DialogResult.OK)
+            {
+                var messageBase = new MessageBase();
+                messageBaseEditor.ReturnValues(ref messageBase);
+                _dataInterface.CreateMessageBase(messageBase);
+                _formUtils.RefreshMessageAreas(dgMessageBases);
+            }
+        }
+
+        private void btEditMessageBase_Click(object sender, EventArgs e)
+        {
+            int messageBaseId = (int)(dgMessageBases.SelectedRows[0].Cells[0].Value);
+            var messageBase = _dataInterface.GetMessageBaseById(messageBaseId);
+            if (messageBase != null)
+            {
+                var messageBaseEditor = new MessageBaseEditor();
+                messageBaseEditor.Initialize(MODE_EDIT, _dataInterface);
+                messageBaseEditor.SetValues(messageBase);
+                if (messageBaseEditor.ShowDialog() == DialogResult.OK)
+                {
+                    messageBaseEditor.ReturnValues(ref messageBase);
+                    _dataInterface.UpdateMessageBase(messageBase);
+                    _formUtils.RefreshMessageBases(dgMessageBases);
+                }
 
             }
         }

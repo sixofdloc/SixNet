@@ -40,6 +40,20 @@ namespace SixNet_BBS_Data
             GetDataContext().SubmitChanges();
         }
 
+        public void SaveBBSConfig(BBSConfig bbsConfig)
+        {
+            var dataContext = GetDataContext();
+            var bc = dataContext.BBSConfigs.First(p => true);
+            bc.BBS_Name = bbsConfig.BBS_Name;
+            bc.BBS_Port = bbsConfig.BBS_Port;
+            bc.BBS_URL = bbsConfig.BBS_URL;
+            bc.SysopMenuPass = bbsConfig.SysopMenuPass;
+            bc.SysOp_Email = bbsConfig.SysOp_Email;
+            bc.SysOp_Handle = bbsConfig.SysOp_Handle;
+            dataContext.SubmitChanges();
+        }
+
+
         #region GFiles
         public int GFile_ParentArea(int area)
         {
@@ -258,31 +272,123 @@ namespace SixNet_BBS_Data
 
         #region MessageBase
 
-        public string MessageBaseAreaName(int areaid)
+        public bool CreateMessageBaseArea(MessageBaseArea messageBaseArea)
         {
+            bool b = false;
             try
             {
-                return GetDataContext().MessageBaseAreas.FirstOrDefault(p => p.MessageBaseAreaId.Equals(areaid)).Title;
+                var dataContext = GetDataContext();
+                dataContext.MessageBaseAreas.InsertOnSubmit(messageBaseArea);
+                dataContext.SubmitChanges();
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.MessageBaseAreaName: " + e.Message);
+                LoggingAPI.Error("Params, Exception: ", messageBaseArea, e);
+            }
+            return b;
+        }
+
+        public bool UpdateMessageBaseArea(MessageBaseArea messageBaseArea)
+        {
+            bool b = false;
+            try
+            {
+                var dataContext = GetDataContext();
+                var oldMessageBaseArea = GetMessageBaseAreaById(messageBaseArea.MessageBaseAreaId);
+                if (oldMessageBaseArea != null)
+                {
+                    oldMessageBaseArea.LongDescription = messageBaseArea.LongDescription;
+                    oldMessageBaseArea.Title = messageBaseArea.Title;
+                    oldMessageBaseArea.ParentAreaId = messageBaseArea.ParentAreaId;
+                    oldMessageBaseArea.AccessLevel = messageBaseArea.AccessLevel;
+                    dataContext.SubmitChanges();
+                    b = true;
+                }
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Params, Exception: ", messageBaseArea, e);
+            }
+            return b;
+        }
+        public MessageBaseArea GetMessageBaseAreaById(int id)
+        {
+            try
+            {
+                return GetDataContext().MessageBaseAreas.FirstOrDefault(p => p.MessageBaseAreaId.Equals(id));
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("(" + id + ")", e);
+                return null;
+            }
+        }
+        public MessageBase GetMessageBaseById(int id)
+        {
+            try
+            {
+                return GetDataContext().MessageBases.FirstOrDefault(p => p.MessageBaseId.Equals(id));
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("(" + id + ")", e);
+                return null;
+            }
+        }
+
+        public bool CreateMessageBase(MessageBase messageBase)
+        {
+            bool b = false;
+            try
+            {
+                var dataContext = GetDataContext();
+                dataContext.MessageBases.InsertOnSubmit(messageBase);
+                dataContext.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Params, Exception: ", messageBase, e);
+            }
+            return b;
+        }
+
+        public bool UpdateMessageBase(MessageBase messageBase)
+        {
+            bool b = false;
+            try
+            {
+                var dataContext = GetDataContext();
+                var oldMessageBase = GetMessageBaseAreaById(messageBase.MessageBaseId);
+                if (oldMessageBase != null)
+                {
+                    oldMessageBase.LongDescription = messageBase.LongDescription;
+                    oldMessageBase.Title = messageBase.Title;
+                    oldMessageBase.ParentAreaId = messageBase.ParentArea;
+                    oldMessageBase.AccessLevel = messageBase.AccessLevel;
+                    dataContext.SubmitChanges();
+                    b = true;
+                }
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Params, Exception: ", messageBase, e);
+            }
+            return b;
+        }
+
+        public string MessageBaseAreaName(int id)
+        {
+            try
+            {
+                return GetMessageBaseAreaById(id).Title;
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("(" + id + ")", e);
                 return "Invalid";
             }
         }
 
-        public void SaveBBSConfig(BBSConfig bbsConfig)
-        {
-            var dataContext = GetDataContext();
-            var bc = dataContext.BBSConfigs.First(p => true);
-            bc.BBS_Name = bbsConfig.BBS_Name;
-            bc.BBS_Port = bbsConfig.BBS_Port;
-            bc.BBS_URL = bbsConfig.BBS_URL;
-            bc.SysopMenuPass = bbsConfig.SysopMenuPass;
-            bc.SysOp_Email = bbsConfig.SysOp_Email;
-            bc.SysOp_Handle = bbsConfig.SysOp_Handle;
-            dataContext.SubmitChanges();
-        }
 
         public IdAndKeys MessageBase_ParentArea(int area)
         {

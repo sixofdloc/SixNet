@@ -78,6 +78,12 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\MessageBaseEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\MessageBaseEditor.Designer.cs">
+      <DependentUpon>MessageBaseEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\MessageAreaEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,12 +142,15 @@
     <Compile Include="User Controls\LabelledTextbox.Designer.cs">
       <DependentUpon>LabelledTextbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="User Controls\MessageAreaSelector.cs">
+    <Compile Include="User Controls\LabelledSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="User Controls\MessageAreaSelector.Designer.cs">
-      <DependentUpon>MessageAreaSelector.cs</DependentUpon>
+    <Compile Include="User Controls\LabelledSelector.Designer.cs">
+      <DependentUpon>LabelledSelector.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\Editors\MessageBaseEditor.resx">
+      <DependentUpon>MessageBaseEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\MessageAreaEditor.resx">
       <DependentUpon>MessageAreaEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -181,8 +190,8 @@
     <EmbeddedResource Include="User Controls\LabelledTextbox.resx">
       <DependentUpon>LabelledTextbox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="User Controls\MessageAreaSelector.resx">
-      <DependentUpon>MessageAreaSelector.cs</DependentUpon>
+    <EmbeddedResource Include="User Controls\LabelledSelector.resx">
+      <DependentUpon>LabelledSelector.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="BBSConfig.txt">
