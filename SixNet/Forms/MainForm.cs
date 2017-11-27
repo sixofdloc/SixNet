@@ -231,7 +231,7 @@ namespace SixNet
 
         private void dg_Users_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            _formUtils.EditUser(int.Parse(dg_Users.SelectedRows[0].Cells[0].Value.ToString()));
+           EditUser(int.Parse(dg_Users.SelectedRows[0].Cells[0].Value.ToString()));
         }
 
         public List<SixNet_BBS.BBS> GetAllNodes()
@@ -384,6 +384,42 @@ namespace SixNet
                 }
 
             }
+        }
+
+        private void btAddUser_Click(object sender, EventArgs e)
+        {
+            var userEditor = new UserEditor();
+            userEditor.Initialize(MODE_ADD, _dataInterface);
+            if (userEditor.ShowDialog() == DialogResult.OK)
+            {
+                var user = new User();
+                userEditor.ReturnValues(ref user);
+                _dataInterface.CreateUser(user);
+                _formUtils.RefreshUsers(dg_Users);
+            }
+        }
+
+        private void btEditUser_Click(object sender, EventArgs e)
+        {
+            var userId = (int)(dg_Users.SelectedRows[0].Cells[0].Value);
+            EditUser(userId);
+        }
+
+        private void EditUser(int userId)
+        {
+            var user = _dataInterface.GetUserById(userId);
+            if (user != null)
+            {
+                var userEditor = new UserEditor();
+                userEditor.Initialize(MODE_EDIT, _dataInterface);
+                if (userEditor.ShowDialog() == DialogResult.OK)
+                {
+                    userEditor.ReturnValues(ref user);
+                    _dataInterface.UpdateUser(user);
+                    _formUtils.RefreshUsers(dg_Users);
+                }
+            }
+
         }
     }
 }

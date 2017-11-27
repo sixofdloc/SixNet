@@ -45,6 +45,7 @@ namespace SixNet_GUI.Forms.Editors
             if (formValid) formValid = ltbDescription.BasicValidation();
             if (formValid) formValid = lsMinimumAccessLevel.BasicValidation();
             if (formValid) formValid = lsParentArea.BasicValidation();
+            if (formValid) this.DialogResult = DialogResult.OK;
         }
 
         public void SetValues(MessageBase messageBase)

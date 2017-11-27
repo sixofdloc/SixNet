@@ -78,6 +78,12 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\UserEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\UserEditor.Designer.cs">
+      <DependentUpon>UserEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\MessageBaseEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,12 +133,6 @@
     <Compile Include="Forms\SystemConfigForm.Designer.cs">
       <DependentUpon>SystemConfigForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\UserEdit.Designer.cs">
-      <DependentUpon>UserEdit.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -148,6 +148,9 @@
     <Compile Include="User Controls\LabelledSelector.Designer.cs">
       <DependentUpon>LabelledSelector.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\Editors\UserEditor.resx">
+      <DependentUpon>UserEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\MessageBaseEditor.resx">
       <DependentUpon>MessageBaseEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -173,9 +176,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SystemConfigForm.resx">
       <DependentUpon>SystemConfigForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UserEdit.resx">
-      <DependentUpon>UserEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -16,18 +16,7 @@ namespace SixNet_GUI
             _dataInterface = dataInterface;
         }
 
-        public void EditUser(int userid)
-        {
-            User u = _dataInterface.GetUser(userid);
-            if (u != null)
-            {
-                UserEdit ue = new UserEdit(_dataInterface)
-                {
-                    user = u
-                };
-            }
-        }
-
+          
         public void RefreshAccessGroups(DataGridView dg_AccessGroups)
         {
             List<AccessGroup> aglist = _dataInterface.AccessGroups();

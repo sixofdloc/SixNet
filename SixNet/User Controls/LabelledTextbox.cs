@@ -13,16 +13,18 @@ namespace SixNet_GUI.User_Controls
     {
         public event EventHandler Edit_Finished;
 
+        private bool _editable = true;
+
         public string LabelText
         {
             get => label1.Text;
-            set => label1.Text = value;
+            set => label1.Text = value; 
         }
 
         public string EditText
         {
             get => textBox1.Text;
-            set => textBox1.Text = value;
+            set => SetEditText(value);
         }
 
         public int MaxLength
@@ -37,23 +39,34 @@ namespace SixNet_GUI.User_Controls
             set => SetTextBoxWidth(value);
         }
 
-        //public new bool TabStop
-        //{
-        //    get => textBox1.TabStop;
-        //    set => textBox1.TabStop = value;
-        //}
+        public bool IsPassword
+        {
+            get => (textBox1.PasswordChar == '*');
+            set => textBox1.PasswordChar = value ? '*' : '\0';
+        }
 
-        //public new int TabIndex
-        //{
-        //    get => textBox1.TabIndex;
-        //    set => textBox1.TabIndex = value;
-        //}
+        public bool Editable
+        {
+            get => _editable;
+            set => SetEditable(value);
+        }
+
+        private void SetEditable(bool editable)
+        {
+            _editable = editable;
+            textBox1.Visible = editable;
+            label2.Visible = !editable;
+            textBox1.Dock = editable ? DockStyle.Bottom : DockStyle.None;
+            label2.Dock = editable ? DockStyle.None : DockStyle.Bottom;
+        }
+
+        private void SetEditText(string editText)
+        {
+            textBox1.Text = editText;
+            label2.Text = editText;
+        }
 
         public bool NumbersOnly { get; set; }
-        //    get => NumbersOnly;
-        //    set {AllowEmpty = !value; NumbersOnly = value; }
-        //}
-
         public int Min { get; set; }
         public int Max { get; set; }
         public bool AllowEmpty { get; set; }
@@ -63,10 +76,8 @@ namespace SixNet_GUI.User_Controls
         {
             InitializeComponent();
             NumbersOnly = false;
-            //Min = 0;
-            //Max = 65535;
             AllowEmpty = true;
-
+            SetEditable(true);
         }
 
         private void SetTextBoxWidth(int w)

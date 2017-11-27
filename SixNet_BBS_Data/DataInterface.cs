@@ -720,20 +720,60 @@ namespace SixNet_BBS_Data
             return b;
         }
 
-        public User GetUserById(int userid)
+        public bool CreateUser(User user)
         {
-            User u = null;
+            bool b = false;
             try
             {
-                BBSDataDataContext bbs = GetDataContext();
-                u = bbs.Users.FirstOrDefault(p => p.UserId.Equals(userid));
+                var dataContext = GetDataContext();
+                dataContext.Users.InsertOnSubmit(user);
+                dataContext.SubmitChanges();
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.GetUserById: " + e);
+                LoggingAPI.Error("Params, Exception: ", user, e);
             }
-            return u;
+            return b;
         }
+
+        public bool UpdateUser(User user)
+        {
+            bool b = false;
+            try
+            {
+                var dataContext = GetDataContext();
+                var oldUser = GetUserById(user.UserId);
+                if (oldUser != null)
+                {
+                    oldUser.AccessLevel = user.AccessLevel;
+                    oldUser.ComputerType = user.ComputerType;
+                    oldUser.Email = user.Email;
+                    oldUser.HashedPassword = user.HashedPassword;
+                    oldUser.RealName = user.RealName;
+                    oldUser.Username = user.Username;
+                    dataContext.SubmitChanges();
+                    b = true;
+                }
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("Params, Exception: ", user, e);
+            }
+            return b;
+        }
+        public User GetUserById(int id)
+        {
+            try
+            {
+                return GetDataContext().Users.FirstOrDefault(p => p.UserId.Equals(id));
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error("(" + id + ")", e);
+                return null;
+            }
+        }
+
         #endregion
 
         #region Access Groups
@@ -953,6 +993,8 @@ namespace SixNet_BBS_Data
             }
         }
 
+        #region User-Defined Fields
+
         public List<IdAndKeys> GetAllUserDefinedFieldsWithKey(string key)
         {
             BBSDataDataContext bbs = GetDataContext();
@@ -1020,13 +1062,7 @@ namespace SixNet_BBS_Data
             SaveUserDefinedField(userid, key, s);
         }
 
-
-        public User GetUser(int userid)
-        {
-            BBSDataDataContext bbs = GetDataContext();
-            User u = bbs.Users.FirstOrDefault(p => p.UserId.Equals(userid));
-            return u;
-        }
+        #endregion
 
 
 
