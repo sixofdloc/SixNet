@@ -39,6 +39,7 @@ namespace SixNet_Comm
         {
             if (workSocket != null)
             {
+                connected = false;
                 workSocket.Disconnect(false);
                 workSocket = null;
             }

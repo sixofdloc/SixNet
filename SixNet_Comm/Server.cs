@@ -130,11 +130,14 @@ namespace SixNet_Comm
             }
             ShuttingDown = true;
             // Create a connection to the port to unblock the listener thread
-            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, _portNumber);
-            sock.Connect(endPoint);
-            sock.Close();
-            sock = null;
+            //I think this can go now.
+
+//            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+//            IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, _portNumber);
+//            sock.Connect(endPoint);
+//            sock.Disconnect(false);
+//            sock.Close();
+//           sock = null;
 
             // Check thread end events and wait for up to 5 seconds.
             for (lcv = 0; lcv < numThreads; lcv++)
@@ -199,6 +202,7 @@ namespace SixNet_Comm
                 connectedSocks.Add(state);
                 Monitor.Exit(connectedSocks);
                 //Update parent form
+                state.connected = true;
                 OnConnect(state);
 
                 handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(this.ReadCallback), state);
