@@ -287,11 +287,17 @@ namespace SixNet_Comm
         /// <param name="data">The string containing the data to send.</param>
         public void Send(Socket sock, string data)
         {
-            // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            try
+            {
+                // Convert the string data to byte data using ASCII encoding.
+                byte[] byteData = Encoding.ASCII.GetBytes(data);
 
-            // Begin sending the data to the remote device.
-            if (byteData.Length > 0) sock.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(this.SendCallback), sock);
+                // Begin sending the data to the remote device.
+                if (byteData.Length > 0) sock.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(this.SendCallback), sock);
+            } catch (Exception e)
+            {
+                LoggingAPI.Error(e);
+            }
         }
 
         /// 

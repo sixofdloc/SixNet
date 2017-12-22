@@ -1,0 +1,7 @@
+SQL to enable and setup Slack Integration:
+
+INSERT INTO UserDefinedFields (UserId,[Key],FieldValue) VALUES
+(0,'SLACKTOKEN','[INSERT YOUR API TOKEN HERE]'),
+(0,'SLACKLOGCHANNEL','[INSERT YOUR CHANNEL NAME HERE (NO #)]'),
+(0,'SLACKURL','https://slack.com/api/chat.postMessage'),
+(0,'SLACKENABLED','1');

@@ -7,6 +7,7 @@ using SixNet_Comm;
 using SixNet_BBS.Interfaces;
 using SixNet_Logger;
 using SixNet_BBS_Data;
+using SixNet_BBS.Classes;
 
 namespace SixNet_BBS
 {
@@ -35,6 +36,10 @@ namespace SixNet_BBS
 
         public GraffitiWall Gw { get; set; }
 
+
+        private readonly bool _slackEnabled;
+        private readonly SlackIntegration _slackIntegration;
+
         public BBS(IBBSHost host_system, StateObject so, string ConnectionString)
         {
             ConnectionTimeStamp = DateTime.Now;
@@ -45,6 +50,9 @@ namespace SixNet_BBS
             MessageQueueTimer.Interval = 100;
             MessageQueueTimer.Elapsed += new System.Timers.ElapsedEventHandler(MessageQueueTimer_Elapsed);
             _remoteAddress = so.workSocket.RemoteEndPoint.ToString();
+            _slackEnabled = (_dataInterface.GetUserDefinedField(0, "SLACKENABLED") == "1");
+            if (_slackEnabled) _slackIntegration = new SlackIntegration(_dataInterface);
+
             LoggingAPI.SysLogEntry(_remoteAddress+": User Connected");
         }
 
@@ -111,6 +119,7 @@ namespace SixNet_BBS
                     CurrentUser = li.LogIn();
                     if (CurrentUser != null)
                     {
+                        if (_slackEnabled) _slackIntegration.LogMessage(CurrentUser.Username + " logged on.");
                         LoggingAPI.SysLogEntry(_remoteAddress + ": " + CurrentUser.Username + "("+CurrentUser.UserId.ToString()+")" + " logged in.");
                         int CallLogId = _dataInterface.RecordConnection(CurrentUser.UserId);
                         
@@ -149,8 +158,9 @@ namespace SixNet_BBS
                     //Send end screen
                     SendFileForTermType("Goodbye", true);
                     Sysop_Identified = false;
-                    Thread.Sleep(1000 * 3);
+                    //Thread.Sleep(1000 * 3);
                     CurrentArea = "Disconnected.";
+                    if (_slackEnabled) _slackIntegration.LogMessage(CurrentUser.Username + " logged off.");
                     HangUp();
                 }
                 catch (Exception e)
