@@ -119,7 +119,7 @@ namespace SixNet_BBS
                     CurrentUser = li.LogIn();
                     if (CurrentUser != null)
                     {
-                        if (_slackEnabled) _slackIntegration.LogMessage(CurrentUser.Username + " logged on.");
+                        SlackLogMessage(CurrentUser.Username + " logged on.");
                         LoggingAPI.SysLogEntry(_remoteAddress + ": " + CurrentUser.Username + "("+CurrentUser.UserId.ToString()+")" + " logged in.");
                         int CallLogId = _dataInterface.RecordConnection(CurrentUser.UserId);
                         
@@ -160,7 +160,7 @@ namespace SixNet_BBS
                     Sysop_Identified = false;
                     //Thread.Sleep(1000 * 3);
                     CurrentArea = "Disconnected.";
-                    if (_slackEnabled) _slackIntegration.LogMessage(CurrentUser.Username + " logged off.");
+                    SlackLogMessage(CurrentUser.Username + " logged off.");
                     HangUp();
                 }
                 catch (Exception e)
@@ -172,7 +172,12 @@ namespace SixNet_BBS
             else return false;
         }
 
+        public bool IsSlackEnabled() { return _slackEnabled; }
 
+        public void SlackLogMessage(string message)
+        {
+            if (_slackEnabled) _slackIntegration.LogMessage(message);
+        }
 
     }
 }

@@ -141,6 +141,10 @@ namespace SixNet_BBS.BBS_Classes
                             {
                                 CMD_OLM(command);
                             }
+                            else if (command.Length > 3 && command.Substring(0, 3).ToUpper() == "SLM")
+                            {
+                                CMD_SLM(command);
+                            }
                             else
                             {
 
@@ -241,6 +245,27 @@ namespace SixNet_BBS.BBS_Classes
             catch (Exception e)
             {
                 LoggingAPI.LogEntry("Exception in Main.CMD_OLM: " + e);
+            }
+        }
+
+        private void CMD_SLM(string command)
+        {
+            if (_bbs.IsSlackEnabled())
+            {
+                try
+                {
+                    //What userid and what message?
+                    int messagebegins = command.IndexOf(' ');
+                    string message = command.Substring(messagebegins, command.Length - messagebegins);
+                    _bbs.SlackLogMessage(message);
+                }
+                catch (Exception e)
+                {
+                    LoggingAPI.Error(e);
+                }
+            } else
+            {
+                _bbs.WriteLine("~l1~c2Slack integration not enabled~c1.");
             }
         }
 
