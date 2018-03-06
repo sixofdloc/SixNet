@@ -1,16 +1,13 @@
 # SixNet, a Windows-based telnet BBS with full ANSI and PETSCII support
-
-This is a WIP, there's still lots to do.  
 This system is based loosely on the old C64 and Amiga C-Net BBS software.
-I've included a script to create database connections.  
-You'll need to update the connectionstrings in the config files.  
+A database creation script is included.  
+For production use, you'll need to update the connectionstrings in the config files.  
 Passwords have been replaced with generic versions.
 
 ## What's new:
 * Basic Slack integration to report logins/logouts to channel
 
 ## What works:
-
 * PETSCII support - this is the most complete feature
 * ANSI support - much still to be done, but it works
 * Sysop chat
@@ -33,7 +30,7 @@ Passwords have been replaced with generic versions.
 * SysOp feedback feature
 * Logoff
 
-## What needs some work still:
+## What needs work:
 * ANSI/PETSCII visual message editor (WYSIWYG editor, not line-based)
 * Message editor menus and added features (list/re-edit/delete)
 * All menus and screens
