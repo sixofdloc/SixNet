@@ -1,1 +1,0 @@
-﻿ConnectionString|Data Source=[ServerName];Initial Catalog=SixNet_BBS;Persist Security Info=True;User ID=[Username];Password=[PASSWORD]

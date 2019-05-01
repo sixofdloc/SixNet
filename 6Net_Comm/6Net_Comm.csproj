@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8DB004D4-4638-46E6-BAEF-3390D573114E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Net_Comm</RootNamespace>
+    <AssemblyName>6Net_Comm</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\I_TerminalType.cs" />
+    <Compile Include="TermTypes\TermType_ANSI.cs" />
+    <Compile Include="Consts\ANSI.cs" />
+    <Compile Include="Classes\Communicator.cs" />
+    <Compile Include="Classes\Server.cs" />
+    <Compile Include="Classes\StateObject.cs" />
+    <Compile Include="Classes\SocketExtensions.cs" />
+    <Compile Include="TermTypes\TermType_Default.cs" />
+    <Compile Include="TermTypes\TermType_PETSCII40.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TermTypes\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Consts\" />
+    <Folder Include="Classes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\6Net_Logger\6Net_Logger.csproj">
+      <Project>{743281B3-D16C-4E88-9F08-9BD23D30825E}</Project>
+      <Name>6Net_Logger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

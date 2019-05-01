@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2F02F4B-B2A8-46B5-AAAC-14B42EF63145}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Net_Data</RootNamespace>
+    <AssemblyName>6Net_Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Security" />
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf">
+      <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.8.0.16\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.EntityFramework">
+      <HintPath>..\packages\MySql.Data.EntityFramework.8.0.16\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BBSDataContext.cs" />
+    <Compile Include="Models\BBSConfig.cs" />
+    <Compile Include="Models\AccessGroup.cs" />
+    <Compile Include="Models\CallLog.cs" />
+    <Compile Include="Models\GFileArea.cs" />
+    <Compile Include="Models\GFileAreaAccessGroup.cs" />
+    <Compile Include="BBSDataCore.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="BBSDataCore_Users.cs" />
+    <Compile Include="BBSDataCore_Calls.cs" />
+    <Compile Include="BBSDataCore_Graffiti.cs" />
+    <Compile Include="Models\Graffiti.cs" />
+    <Compile Include="BBSDataCore_Feedback.cs" />
+    <Compile Include="Models\Feedback.cs" />
+    <Compile Include="Models\NewsItem.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="BBSDataCore_News.cs" />
+    <Compile Include="BBSDataCore_Config.cs" />
+    <Compile Include="BBSDataCore_AccessGroups.cs" />
+    <Compile Include="Classes\IdAndKeys.cs" />
+    <Compile Include="Classes\ThreadListRow.cs" />
+    <Compile Include="BBSDataCore_MessageBases.cs" />
+    <Compile Include="Models\MessageBaseArea.cs" />
+    <Compile Include="Models\MessageBase.cs" />
+    <Compile Include="Models\TitledModel.cs" />
+    <Compile Include="Models\MessageHeader.cs" />
+    <Compile Include="Models\MessageThread.cs" />
+    <Compile Include="Models\MessageBody.cs" />
+    <Compile Include="Models\UserAccessGroup.cs" />
+    <Compile Include="Models\MessageBaseAccessGroup.cs" />
+    <Compile Include="BBSDataCore_GFiles.cs" />
+    <Compile Include="Models\GFileDetail.cs" />
+    <Compile Include="Models\UDFile.cs" />
+    <Compile Include="Models\UDBase.cs" />
+    <Compile Include="Models\UDBaseArea.cs" />
+    <Compile Include="Models\UDBaseAccessGroup.cs" />
+    <Compile Include="BBSDataCore_UDBases.cs" />
+    <Compile Include="BBSDataCore_PFiles.cs" />
+    <Compile Include="Models\PFileArea.cs" />
+    <Compile Include="Models\PFileAreaAccessGroup.cs" />
+    <Compile Include="Models\PFileDetail.cs" />
+    <Compile Include="BBSDatabaseConfiguration.cs" />
+    <Compile Include="Classes\AreaListRow.cs" />
+    <Compile Include="Enums\AreaListRowType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="App.config" />
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Classes\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\6Net_StringUtils\6Net_StringUtils.csproj">
+      <Project>{4D3D4EEA-A282-4410-BFAF-D03D093500CE}</Project>
+      <Name>6Net_StringUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\6Net_Logger\6Net_Logger.csproj">
+      <Project>{743281B3-D16C-4E88-9F08-9BD23D30825E}</Project>
+      <Name>6Net_Logger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
