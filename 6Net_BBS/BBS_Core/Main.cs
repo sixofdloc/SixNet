@@ -26,11 +26,11 @@ namespace Net_BBS.BBS_Core
             bool quitflag = false;
             while ((!quitflag) && _bbs.Connected)
             {
-                if (!_bbs.DND_Override) _bbs.DoNotDisturb = false;
+                if (!_bbs.overrideDoNotDisturb) _bbs.doNotDisturb = false;
                 //Show Main Prompt
-                if (!_bbs.ExpertMode)
+                if (!_bbs.expertMode)
                 {
-                    if (_bbs.TerminalType.Columns() == 40)
+                    if (_bbs.terminalType.Columns() == 40)
                     {
                         _bbs.WriteLine("~l2~c7? ~c1Menu~c2,~c7H~c1elp~c2,~c7B~c1ases~c2,~c7G~c1Files~c2,~c7P~c1Files~c2,~c7Q~c1uit");
                     }
@@ -95,7 +95,7 @@ namespace Net_BBS.BBS_Core
                             _bbs.Write("~l1~c1Leave one-liner?");
                             if (_bbs.YesNo(true, true))
                             {
-                                _bbs.Gw.AddLine(_bbs.CurrentUser.Id);
+                                _bbs.GraffitiWall.AddLine(_bbs.CurrentUser.Id);
                             }
                             quitflag = true;
                             break;
@@ -107,7 +107,7 @@ namespace Net_BBS.BBS_Core
                                 string sy = _bbs.Input(true, true, false);
                                 if (sy.ToUpper() == _bbsConfig.SysOpMenuPassword.ToUpper())
                                 {
-                                    _bbs.Sysop_Identified = true;
+                                    _bbs.SysopIdentified = true;
                                     SysOp sys = new SysOp(_bbs, _bbsDataCore);
                                     sys.Prompt();
                                 }
@@ -135,8 +135,8 @@ namespace Net_BBS.BBS_Core
                             CMD_Who();
                             break;
                         case "X":
-                            _bbs.ExpertMode = !_bbs.ExpertMode;
-                            _bbs.WriteLine("~l1~c1Expert mode is ~c7" + (_bbs.ExpertMode ? "ON" : "OFF") + "~c1.");
+                            _bbs.expertMode = !_bbs.expertMode;
+                            _bbs.WriteLine("~l1~c1Expert mode is ~c7" + (_bbs.expertMode ? "ON" : "OFF") + "~c1.");
                             break;
                         default:
                             //Test multi-part commands
@@ -151,7 +151,7 @@ namespace Net_BBS.BBS_Core
                             else
                             {
 
-                                if (_bbs.Sysop_Identified)
+                                if (_bbs.SysopIdentified)
                                 {
                                     CMD_SysOp(command);
                                 }
@@ -163,7 +163,7 @@ namespace Net_BBS.BBS_Core
                             break;
                     }
                 }
-                if ((!quitflag) && (!_bbs.DoNotDisturb))
+                if ((!quitflag) && (!_bbs.doNotDisturb))
                 {
                     //Show any received OLMs
                     _bbs.FlushOLMQueue();
@@ -208,11 +208,11 @@ namespace Net_BBS.BBS_Core
 
         private void CMD_Who()
         {
-            int columns = _bbs.TerminalType.Columns();
+            int columns = _bbs.terminalType.Columns();
             _bbs.Write("~l2~d9" + Utils.Center("USERS CURRENTLY ONLINE", columns));
             _bbs.Write(Utils.Clip("USERID HANDLE", columns, true) + "~d0");
 
-            foreach (BBS bbs2 in _bbs.Host_System.GetAllNodes())
+            foreach (BBS bbs2 in _bbs._bbsHost.GetAllNodes())
             {
                 _bbs.Write("~c1" + Utils.Clip(bbs2.CurrentUser.Id.ToString(), 7, true));
                 _bbs.Write("~c7" + Utils.Clip(bbs2.CurrentUser.Username, 33, true));
@@ -230,18 +230,18 @@ namespace Net_BBS.BBS_Core
                 string user = command.Substring(3, messagebegins - 3);
                 int userid = int.Parse(user);
                 string message = command.Substring(messagebegins, command.Length - messagebegins);
-                foreach (BBS bbs2 in _bbs.Host_System.GetAllNodes())
+                foreach (BBS bbs2 in _bbs._bbsHost.GetAllNodes())
                 {
 
                     if (bbs2.CurrentUser.Id.Equals(userid))
                     {
-                        if (bbs2.DoNotDisturb)
+                        if (bbs2.doNotDisturb)
                         {
                             _bbs.WriteLine("~l1~d2That user is currently in DND mode.~d0");
                         }
                         else
                         {
-                            bbs2.MessageQueue.Add("~l1~c4OLM>~c7" + _bbs.CurrentUser.Username + "~c2:~c1" + message);
+                            bbs2._messageQueue.Add("~l1~c4OLM>~c7" + _bbs.CurrentUser.Username + "~c2:~c1" + message);
                             _bbs.WriteLine("~l1~c9Your message was delivered.");
                         }
                     }
@@ -277,9 +277,9 @@ namespace Net_BBS.BBS_Core
 
         private void CMD_DND()
         {
-            _bbs.DoNotDisturb = !_bbs.DoNotDisturb;
-            _bbs.DND_Override = _bbs.DoNotDisturb; //lets the system know we set it, not auto
-            _bbs.WriteLine("~l1~c2DND is now ~c7" + (_bbs.DoNotDisturb ? "ON" : "OFF") + "~c1.");
+            _bbs.doNotDisturb = !_bbs.doNotDisturb;
+            _bbs.overrideDoNotDisturb = _bbs.doNotDisturb; //lets the system know we set it, not auto
+            _bbs.WriteLine("~l1~c2DND is now ~c7" + (_bbs.doNotDisturb ? "ON" : "OFF") + "~c1.");
 
         }
         private void CMD_Feedback()

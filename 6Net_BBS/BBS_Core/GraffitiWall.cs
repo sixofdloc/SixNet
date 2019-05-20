@@ -34,7 +34,7 @@ namespace Net_BBS.BBS_Core
             }
             else
             {
-                _bbs.Write("~l2~d6" + Utils.Center("GRAFFITI WALL", _bbs.TerminalType.Columns()) + "~d0");
+                _bbs.Write("~l2~d6" + Utils.Center("GRAFFITI WALL", _bbs.terminalType.Columns()) + "~d0");
             }
             if ((graffitiList != null) && (graffitiList.Count > 0))
             {
@@ -47,7 +47,7 @@ namespace Net_BBS.BBS_Core
             {
                 _bbs.WriteLine("~c1Nothing Found");
             }
-            _bbs.WriteLine("~d6" + Utils.SPC(_bbs.TerminalType.Columns()) + "~d0");
+            _bbs.WriteLine("~d6" + Utils.SPC(_bbs.terminalType.Columns()) + "~d0");
         }
 
     }

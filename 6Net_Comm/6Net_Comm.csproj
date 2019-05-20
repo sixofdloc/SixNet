@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\I_TerminalType.cs" />
+    <Compile Include="Interfaces\ITerminalType.cs" />
     <Compile Include="TermTypes\TermType_ANSI.cs" />
     <Compile Include="Consts\ANSI.cs" />
     <Compile Include="Classes\Communicator.cs" />

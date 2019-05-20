@@ -4,7 +4,7 @@ using Net_Logger;
 
 namespace Net_Comm.TermTypes
 {
-    public class TermType_PETSCII40 : I_TerminalType
+    public class TermType_PETSCII40 : ITerminalType
     {
 
         public string TerminalTypeName()

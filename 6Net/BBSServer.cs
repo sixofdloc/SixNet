@@ -14,12 +14,15 @@ namespace Net
         Server server;
         public List<BBS> bbs_instances;
         Thread bbsServerThread;
+        private readonly string _description;
+        private readonly string  _connectionString;
+        private readonly int _port;
 
-        private readonly string  _connectionString = "";
-
-        public BBSServer(string connectionString)
+        public BBSServer(string connectionString, int port, string description)
         {
             _connectionString = connectionString;
+            _description = description;
+            _port = port;
         }
 
         public void Start()
@@ -40,7 +43,7 @@ namespace Net
 
         public void MainThread()
         {
-            server = new Server(6969,"Client Session","",AddConnection, DropConnection);
+            server = new Server(_port,_description,"",this.AddConnection, this.DropConnection);
             server.Start();
         }
 
@@ -58,7 +61,7 @@ namespace Net
 
         public void DropConnection(StateObject so)
         {
-            BBS bbs = bbs_instances.FirstOrDefault(p => p.State_Object.Equals(so));
+            BBS bbs = bbs_instances.FirstOrDefault(p => p._stateObject.Equals(so));
             if (bbs != null)
             {
                 bbs_instances.Remove(bbs);

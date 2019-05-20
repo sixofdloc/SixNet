@@ -14,9 +14,9 @@ namespace Net_BBS.BBS_Core
             Host_System = bbs;
         }
 
-        public I_TerminalType Detect()
+        public ITerminalType Detect()
         {
-            I_TerminalType termtype = new TermType_Default();
+            ITerminalType termtype = new TermType_Default();
             try
             {
                 bool detected = false;

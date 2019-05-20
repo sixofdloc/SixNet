@@ -7,34 +7,44 @@ namespace Net
 {
     class MainClass
     {
+        private static BBSDataCore _core;
+        private static string _connectionString = "";
         private static bool quitFlag = false;
+        private static BBSDatabaseConfiguration _bbsDatabaseConfiguration;
+
         public static void Main(string[] args)
         {
 
             Console.Clear();
             Console.WriteLine("SixNet BBS, Starting up...");
-            var bbsDatabaseConfiguration = BBSDatabaseConfiguration.LoadConfig("./");
-            if (bbsDatabaseConfiguration == null)
+            _bbsDatabaseConfiguration = BBSDatabaseConfiguration.LoadConfig("./");
+            if (_bbsDatabaseConfiguration == null)
             {
                 Console.WriteLine("Run setup utility first.");
                 return;
             }
-            var connectionString = BBSDatabaseConfiguration.BuildConnectionString(bbsDatabaseConfiguration);
-            if (!BBSDatabaseConfiguration.IsDatabaseSetup(connectionString))
+            _connectionString = BBSDatabaseConfiguration.BuildConnectionString(_bbsDatabaseConfiguration);
+            LoggingAPI.Init("./Logs/");
+            if (BBSDatabaseConfiguration.IsDatabaseSetup(_connectionString))
             {
-                Console.WriteLine("Database not properly configured, run setup utility.");
+                Console.WriteLine("Database configured.");
+                _core = new BBSDataCore(_connectionString);
+            }
+            else
+            {
+                Console.WriteLine("Database not configured - run setup utility.");
                 return;
             }
-            LoggingAPI.Init("./Logs/");
+            var config = _core.GetBBSConfig();
             LoggingAPI.LogEntry("Software started.");
             try
             {
                 quitFlag = false;
-                BBSServer bbsServer = new BBSServer(connectionString);
+                BBSServer bbsServer = new BBSServer(_connectionString,config.BBSPort,"BBS Server");
                 bbsServer.Start();
                 while (!quitFlag)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
                     if (Console.KeyAvailable)
                     {
                         if (Console.ReadKey().Key == ConsoleKey.Q)

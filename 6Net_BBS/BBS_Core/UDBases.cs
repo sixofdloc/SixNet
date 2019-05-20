@@ -38,7 +38,7 @@ namespace Net_BBS.BBS_Core
             while ((!quitflag) && _bbs.Connected)
             {
                 //Show Main Prompt
-                if (!_bbs.ExpertMode)
+                if (!_bbs.expertMode)
                 {
                     _bbs.WriteLine("~l1~c7? ~c1Menu, ~c7H~c1elp~c2, ~c7L~c1ist~c2, ~c7Q~c1uit");
                 }
@@ -289,7 +289,7 @@ namespace Net_BBS.BBS_Core
             else
             {
                 //List fiiles
-                _bbs.Write("~s1~d2" + Utils.Center("FILES IN CURRENT BASE", _bbs.TerminalType.Columns()) + "~d0");
+                _bbs.Write("~s1~d2" + Utils.Center("FILES IN CURRENT BASE", _bbs.terminalType.Columns()) + "~d0");
                 //Pull a new list each time
                 Current_File_List = _bbsDataCore.ListFilesForUDBase(CurrentUDBase);
                 if (Current_File_List.Count > 0)
@@ -302,7 +302,7 @@ namespace Net_BBS.BBS_Core
                         }
                         else
                         {
-                            if (_bbs.TerminalType.Columns() == 40)
+                            if (_bbs.terminalType.Columns() == 40)
                             {
                                 //                      1111111111222222222233333333334444444444555555555566666666666777777777
                                 //Columns are 01234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -331,7 +331,7 @@ namespace Net_BBS.BBS_Core
                 {
                     _bbs.WriteLine("~c7Nothing Found...~c1");
                 }
-                _bbs.WriteLine("~d2" + Utils.SPC(_bbs.TerminalType.Columns()) + "~d0");
+                _bbs.WriteLine("~d2" + Utils.SPC(_bbs.terminalType.Columns()) + "~d0");
             }
         }
 

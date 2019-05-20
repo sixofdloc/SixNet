@@ -13,58 +13,55 @@ namespace Net_BBS.BBS_Core
 {
     public class BBS : Communicator
     {
-        public DateTime ConnectionTimeStamp;
+        public DateTime connectionTimestamp;
         //Exposed for server to display/act on
-        public User CurrentUser { get; set; }
-        public bool Sysop_Identified { get; set; }
-        public string CurrentArea { get; set; } //used for upper display
+        public User currentUser { get; set; }
+        public bool sysopIdentified { get; set; }
+        public string currentArea { get; set; } //used for upper display
 
-        public bool ExpertMode = false;
+        public bool expertMode = false;
 
-        public bool DoNotDisturb = false;
-        public bool DND_Override = false;
+        public bool doNotDisturb = false;
+        public bool overrideDoNotDisturb = false;
 
-        public List<string> MessageQueue = new List<string>();
-        public System.Timers.Timer MessageQueueTimer = new System.Timers.Timer(1000);
+        public List<string> messageQueue = new List<string>();
+        public System.Timers.Timer messageQueueTimer = new System.Timers.Timer(1000);
 
         //Nuts & Bolts
-        public IBBSHost Host_System;
-
+        public readonly IBBSHost _bbsHost;
         private readonly BBSDataCore _bbsDataCore;
-
-        public readonly string RemoteAddress = "0.0.0.0";
-
-        public GraffitiWall Gw { get; set; }
+        public readonly string _remoteAddress = "0.0.0.0";
+        public GraffitiWall graffitiWall { get; set; }
 
 
         //private readonly bool _slackEnabled;
         //private readonly SlackIntegration _slackIntegration;
 
-        public BBS(IBBSHost host_system, StateObject so, string ConnectionString)
+        public BBS(IBBSHost bbsHost, StateObject stateObject, string ConnectionString)
         {
-            ConnectionTimeStamp = DateTime.Now;
+            connectionTimestamp = DateTime.Now;
             _bbsDataCore = new BBSDataCore(ConnectionString);
-            Host_System = host_system;
-            State_Object = so;
-            MessageQueueTimer.Enabled = false;
-            MessageQueueTimer.Interval = 100;
-            MessageQueueTimer.Elapsed += new System.Timers.ElapsedEventHandler(MessageQueueTimer_Elapsed);
-            RemoteAddress = so.RemoteAddress;
+            _bbsHost = bbsHost;
+            base._stateObject = stateObject;
+            messageQueueTimer.Enabled = false;
+            messageQueueTimer.Interval = 100;
+            messageQueueTimer.Elapsed += new System.Timers.ElapsedEventHandler(MessageQueueTimer_Elapsed);
+            _remoteAddress = stateObject.RemoteAddress;
             //_slackEnabled = (_dataInterface.GetUserDefinedField(0, "SLACKENABLED") == "1");
             //if (_slackEnabled) _slackIntegration = new SlackIntegration(_dataInterface);
 
-            LoggingAPI.SysLogEntry(RemoteAddress + ": User Connected");
+            LoggingAPI.SysLogEntry(_remoteAddress + ": User Connected");
         }
 
         void MessageQueueTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!DoNotDisturb)
+            if (!doNotDisturb)
             {
-                if (!DND_Override)
+                if (!overrideDoNotDisturb)
                 {
-                    MessageQueueTimer.Enabled = false;
+                    messageQueueTimer.Enabled = false;
                     FlushOLMQueue();
-                    MessageQueueTimer.Enabled = true;
+                    messageQueueTimer.Enabled = true;
                 }
 
             }
@@ -72,39 +69,39 @@ namespace Net_BBS.BBS_Core
 
         public void FlushOLMQueue()
         {
-            bool b = MessageQueueTimer.Enabled;
-            if (b) MessageQueueTimer.Enabled = false;
-            List<string> all = MessageQueue.Where(p => true).ToList();
+            bool b = messageQueueTimer.Enabled;
+            if (b) messageQueueTimer.Enabled = false;
+            List<string> all = messageQueue.Where(p => true).ToList();
             foreach (string s in all)
             {
                 WriteLine(s);
-                MessageQueue.Remove(s);
+                messageQueue.Remove(s);
             }
-            MessageQueueTimer.Enabled = b;
+            messageQueueTimer.Enabled = b;
         }
 
         public bool Go()
         {
-            if (State_Object != null)
+            if (_stateObject != null)
             {
-                DoNotDisturb = true;
-                DND_Override = false;
-                MessageQueue = new List<string>();
-                State_Object.AddDisconnectHandler(Disconnect);
-                State_Object.AddReceiver(Receive);
-                Currentchar = 0x00;
+                doNotDisturb = true;
+                overrideDoNotDisturb = false;
+                messageQueue = new List<string>();
+                _stateObject.AddDisconnectHandler(Disconnect);
+                _stateObject.AddReceiver(Receive);
+                currentChar = 0x00;
                 try
                 {
-                    Sysop_Identified = false;
+                    sysopIdentified = false;
                     //Terminal Detection
-                    TerminalType = new TermType_Default();
+                    terminalType = new TermType_Default();
                     TermDetect td = new TermDetect(this);
-                    TerminalType = td.Detect();
-                    LoggingAPI.SysLogEntry(RemoteAddress + ": " + TerminalType.TerminalTypeName() + " terminal was detected");
+                    terminalType = td.Detect();
+                    LoggingAPI.SysLogEntry(_remoteAddress + ": " + terminalType.TerminalTypeName() + " terminal was detected");
                     Write("~s1");
                     //Welcome Screen
                     SendFileForTermType("Welcome", false);
-                    if (TerminalType.C64_Color())
+                    if (terminalType.C64_Color())
                     {
                         AnyKey(true, false);
                         Write("~s2");
@@ -116,19 +113,19 @@ namespace Net_BBS.BBS_Core
 
                     //Login
                     Login li = new Login(this, _bbsDataCore);
-                    CurrentUser = li.LogIn();
-                    if (CurrentUser != null)
+                    currentUser = li.LogIn();
+                    if (currentUser != null)
                     {
                         //SlackLogMessage(CurrentUser.Username + " logged on.");
-                        LoggingAPI.SysLogEntry(RemoteAddress + ": " + CurrentUser.Username + "(" + CurrentUser.Id.ToString() + ")" + " logged in.");
-                        int CallLogId = _bbsDataCore.RecordConnection(CurrentUser.Id);
+                        LoggingAPI.SysLogEntry(_remoteAddress + ": " + currentUser.Username + "(" + currentUser.Id.ToString() + ")" + " logged in.");
+                        int CallLogId = _bbsDataCore.RecordConnection(currentUser.Id);
 
                         var lastTen = new LastTen(this, _bbsDataCore);
                         lastTen.ShowLastTenCalls();
                         AnyKey(true, false);
 
-                        Gw = new GraffitiWall(this, _bbsDataCore);
-                        Gw.DisplayWall();
+                        graffitiWall = new GraffitiWall(this, _bbsDataCore);
+                        graffitiWall.DisplayWall();
                         AnyKey(true, false);
 
                         News ne = new News(this, _bbsDataCore);
@@ -138,10 +135,10 @@ namespace Net_BBS.BBS_Core
                         Main main = new Main(this, _bbsDataCore);
                         try
                         {
-                            MessageQueueTimer.Enabled = true;
+                            messageQueueTimer.Enabled = true;
                             Thread.Sleep(100);
                             main.MainPrompt();
-                            MessageQueueTimer.Enabled = false;
+                            messageQueueTimer.Enabled = false;
                             Thread.Sleep(100);
                         }
                         catch (Exception e)
@@ -153,13 +150,13 @@ namespace Net_BBS.BBS_Core
 
                         //Close Out
                         WriteLine("~l1~c1Logging out~c2...");
-                        LoggingAPI.SysLogEntry(RemoteAddress + ": " + CurrentUser.Username + "(" + CurrentUser.Id.ToString() + ")" + " logged out.");
-                        CurrentArea = "Logging out";
+                        LoggingAPI.SysLogEntry(_remoteAddress + ": " + currentUser.Username + "(" + currentUser.Id.ToString() + ")" + " logged out.");
+                        currentArea = "Logging out";
                         //Send end screen
                         SendFileForTermType("Goodbye", true);
-                        Sysop_Identified = false;
+                        sysopIdentified = false;
                         //Thread.Sleep(1000 * 3);
-                        CurrentArea = "Disconnected.";
+                        currentArea = "Disconnected.";
                         //SlackLogMessage(CurrentUser.Username + " logged off.");
                     }
                     HangUp();

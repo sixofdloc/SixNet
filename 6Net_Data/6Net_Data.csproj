@@ -111,6 +111,8 @@
     <Compile Include="BBSDatabaseConfiguration.cs" />
     <Compile Include="Classes\AreaListRow.cs" />
     <Compile Include="Enums\AreaListRowType.cs" />
+    <Compile Include="Models\Field.cs" />
+    <Compile Include="BBSDataCore_Field.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

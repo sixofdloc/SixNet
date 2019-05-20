@@ -45,7 +45,7 @@ namespace Net_BBS.BBS_Core
                 if (Email == null) return false;
                 ComputerType = GetField("Computer", "~l2~cbEnter your computer model.", 0);
                 if (ComputerType == null) return false;
-                var user = _bbsDataCore.SaveNewUser(Username, Password, RealName, Email, ComputerType, _bbs.RemoteAddress,"");
+                var user = _bbsDataCore.SaveNewUser(Username, Password, RealName, Email, ComputerType, _bbs._remoteAddress,"");
                 if (user != null)
                 {
                     _bbs.CurrentUser = user;

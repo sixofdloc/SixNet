@@ -28,14 +28,14 @@ namespace Net_BBS.BBS_Core
                 }
                 else
                 {
-                    _bbs.Write("~s1~d5" + Utils.Center("LAST 10 CALLERS", _bbs.TerminalType.Columns()) + "~d0");
+                    _bbs.Write("~s1~d5" + Utils.Center("LAST 10 CALLERS", _bbs.terminalType.Columns()) + "~d0");
                 }
                 foreach (var call in callList)
                 {
                     _bbs.WriteLine("~cd" + call.Item1 + "~c1:~c7" + call.Item2);
                 }
 
-                _bbs.WriteLine("~d5" + Utils.SPC(_bbs.TerminalType.Columns()) + "~d0");
+                _bbs.WriteLine("~d5" + Utils.SPC(_bbs.terminalType.Columns()) + "~d0");
             }
         }
 

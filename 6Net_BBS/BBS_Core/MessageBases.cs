@@ -73,7 +73,7 @@ namespace Net_BBS.BBS_Core
             {
                 //Show Main Prompt
                 _bbs.WriteLine("~l1" + Path);
-                if (!_bbs.ExpertMode)
+                if (!_bbs.expertMode)
                 {
                     _bbs.WriteLine("~c7? ~c1Menu, ~c7H~c1elp~c2, ~c7L~c1ist~c2, ~c7Q~c1uit");
                 }
@@ -300,7 +300,7 @@ namespace Net_BBS.BBS_Core
             else
             {
                 //List messages
-                _bbs.Write("~s1~d2" + Utils.Center("THREADS IN CURRENT BASE", _bbs.TerminalType.Columns()) + "~d0");
+                _bbs.Write("~s1~d2" + Utils.Center("THREADS IN CURRENT BASE", _bbs.terminalType.Columns()) + "~d0");
                 //Pull a new list each time
                 Current_Thread_List = _bbsDataCore.ListThreadsForBase(CurrentMessageBase);
                 if (Current_Thread_List.Count > 0)
@@ -313,7 +313,7 @@ namespace Net_BBS.BBS_Core
                         }
                         else
                         {
-                            if (_bbs.TerminalType.Columns() == 40)
+                            if (_bbs.terminalType.Columns() == 40)
                             {
                                 //                      1111111111222222222233333333334444444444555555555566666666666777777777
                                 //Columns are 01234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -342,7 +342,7 @@ namespace Net_BBS.BBS_Core
                 {
                     _bbs.WriteLine("~c7Nothing Found...~c1");
                 }
-                _bbs.WriteLine("~d2" + Utils.SPC(_bbs.TerminalType.Columns()) + "~d0");
+                _bbs.WriteLine("~d2" + Utils.SPC(_bbs.terminalType.Columns()) + "~d0");
             }
         }
 
@@ -528,7 +528,7 @@ namespace Net_BBS.BBS_Core
                 if (showsubject) _bbs.WriteLine("~c1Subject: ~c7" + bm.Subject);
                 _bbs.WriteLine("~c1Posted: ~c7" + bm.Posted.ToString("yyyy-MM-dd hh:mm:ss"));
 
-                _bbs.Write("~c2" + Utils.Repeat('\xc0', _bbs.TerminalType.Columns()));
+                _bbs.Write("~c2" + Utils.Repeat('\xc0', _bbs.terminalType.Columns()));
                 _bbs.Write("~c1");
                 string[] splitarray = { "~\xff~" };
                 string[] lines = bm.MessageBody.Body.TrimEnd("~\xff".ToCharArray()).Split(splitarray, StringSplitOptions.None);
@@ -537,7 +537,7 @@ namespace Net_BBS.BBS_Core
                     _bbs.WriteLine(s);
                 }
                 _bbs.Write("~c2");
-                _bbs.Write(Utils.Repeat('\xc0', _bbs.TerminalType.Columns()));
+                _bbs.Write(Utils.Repeat('\xc0', _bbs.terminalType.Columns()));
             }
         }
 

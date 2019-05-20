@@ -97,6 +97,9 @@ namespace Net_Setup
                     case "5":
                         SetupGFileAreas();
                         break;
+                    case "6":
+                        SetupPFileAreas();
+                        break;
                     case "S":
                         BBSDatabaseConfiguration.SaveConfig(_basePath, _bbsDatabaseConfiguration);
                         break;

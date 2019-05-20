@@ -21,7 +21,7 @@ namespace Net_BBS.BBS_Core
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
             Userid = _bbs.CurrentUser.Id;
-            Columns = _bbs.TerminalType.Columns();
+            Columns = _bbs.terminalType.Columns();
         }
 
         public void Prompt()

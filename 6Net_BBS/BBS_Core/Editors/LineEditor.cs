@@ -31,7 +31,7 @@ namespace Net_BBS.BBS_Core.Editors
 
         public bool Edit(List<String> message)
         {
-            _bbs.DoNotDisturb = true;
+            _bbs.doNotDisturb = true;
             bool result = false;
             try
             {
@@ -132,7 +132,7 @@ namespace Net_BBS.BBS_Core.Editors
                         //}
                         //else
                         //{
-                        if (ch == _bbs.TerminalType.BACKSPACE())
+                        if (ch == _bbs.terminalType.BACKSPACE())
                         {
                             Backspace();
                         }
@@ -158,13 +158,13 @@ namespace Net_BBS.BBS_Core.Editors
             {
                 LoggingAPI.LogEntry("Exception in Line_Editor.Edit: " + e.ToString());
             }
-            _bbs.DoNotDisturb = _bbs.DND_Override;
+            _bbs.doNotDisturb = _bbs.overrideDoNotDisturb;
             return result;
         }
 
         private void Header()
         {
-            if (_bbs.TerminalType.Columns() == 80)
+            if (_bbs.terminalType.Columns() == 80)
             {
                 _bbs.WriteLine("~s1 ~c1Line Editor ~c7|~c2.H ~c1on blank line for help~c7, ~c2.S ~c1to save~c7, ~c2.A ~c1to abort");
                 _bbs.Write("~c7          1111111111222222222233333333334444444444555555555566666666667777777777");
@@ -205,7 +205,7 @@ namespace Net_BBS.BBS_Core.Editors
 
             Message[CurrentLine] += ch;// Host_System.TerminalType.TranslateFromTerminal(ch);
             Column++;
-            if (Column == _bbs.TerminalType.Columns())
+            if (Column == _bbs.terminalType.Columns())
             {
                 CarriageReturn(false);
             }

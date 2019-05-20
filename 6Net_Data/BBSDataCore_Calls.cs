@@ -10,12 +10,20 @@ namespace Net_Data
     {
         public int RecordConnection(int userid)
         {
-            int i = -1;
-
-            CallLog cl = new CallLog() { Connected = DateTime.Now, Disconnected = DateTime.Now, UserId = userid };
-            _bbsDataContext.CallLogs.Add(cl);
-            _bbsDataContext.SaveChanges();
-            return i;
+            int callLogId = -1;
+            try
+            {
+                CallLog callLog = new CallLog() { Connected = DateTime.Now, Disconnected = DateTime.Now, UserId = userid };
+                _bbsDataContext.CallLogs.Add(callLog);
+                _bbsDataContext.SaveChanges();
+                callLogId = callLog.Id;
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.Error(e);
+                callLogId = -1;
+            }
+            return callLogId;
         }
 
         public void UpdateCallLog(int callLogId, int userid) //Used after new user reg
@@ -27,6 +35,7 @@ namespace Net_Data
                 _bbsDataContext.SaveChanges();
             }
         }
+
         public void RecordDisconnection(int callLogId)
         {
             CallLog cl = _bbsDataContext.CallLogs.FirstOrDefault(p => p.Id.Equals(callLogId));
@@ -42,7 +51,7 @@ namespace Net_Data
             var glist = new List<Tuple<string, string>>();
             try
             {
-                var callList = _bbsDataContext.CallLogs.OrderByDescending(p => p.Connected).Where(p=>p.UserId !=5).Take(10).ToList();
+                var callList = _bbsDataContext.CallLogs.OrderByDescending(p => p.Connected) .Take(10).ToList();
                 foreach (var call in callList)
                 {
                     var connected = call.Connected.ToString("yyyy-MM-dd hh:mm");

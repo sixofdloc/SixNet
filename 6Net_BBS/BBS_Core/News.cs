@@ -27,7 +27,7 @@ namespace Net_BBS.BBS_Core
             }
             else
             {
-                _bbs.Write("~l2~d4" + Utils.Center("NEWS", _bbs.TerminalType.Columns()) + "~d0");
+                _bbs.Write("~l2~d4" + Utils.Center("NEWS", _bbs.terminalType.Columns()) + "~d0");
             }
             if ((newsItems != null) && (newsItems.Count > 0))
             {
@@ -36,7 +36,7 @@ namespace Net_BBS.BBS_Core
                     _bbs.WriteLine("~l1");
                     _bbs.WriteLine("~c1Subject: ~c7" + newsItem.Subject);
                     _bbs.WriteLine("~c1Date: ~c7" + newsItem.Sent.ToString("yy-MM-dd HH:mm") + "~c2");
-                    _bbs.Write(Utils.Repeat('\xc0', _bbs.TerminalType.Columns()));
+                    _bbs.Write(Utils.Repeat('\xc0', _bbs.terminalType.Columns()));
                     _bbs.Write("~c1");
                     string[] splitarray = { "~\xff~" };
                     string[] lines = newsItem.Body.TrimEnd("~\xff".ToCharArray()).Split(splitarray, StringSplitOptions.None);
@@ -51,7 +51,7 @@ namespace Net_BBS.BBS_Core
             {
                 _bbs.WriteLine("~c1Nothing Found");
             }
-            _bbs.WriteLine("~d4" + Utils.Center("END OF NEWS", _bbs.TerminalType.Columns()) + "~d0");
+            _bbs.WriteLine("~d4" + Utils.Center("END OF NEWS", _bbs.terminalType.Columns()) + "~d0");
         }
 
 

@@ -15,6 +15,7 @@ namespace Net_Data
         public DbSet<BBSConfig> BBSConfigs { get; set; }
         public DbSet<CallLog> CallLogs { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Field> Fields { get; set; }
         public DbSet<GFileArea> GFileAreas { get; set; }
         public DbSet<GFileDetail> GFileDetails { get; set; }
         public DbSet<GFileAreaAccessGroup> GFileAreaAccessGroups { get; set; }

@@ -37,7 +37,7 @@ namespace Net_BBS.BBS_Core
             while ((!_quitFlag) && _bbs.Connected)
             {
                 //Show GFiles Prompt
-                if (!_bbs.ExpertMode)
+                if (!_bbs.expertMode)
                 {
                     _bbs.WriteLine("~l1~c7H~c1elp~c2, ~c7L~c1ist~c2, ~c7Q~c1uit");
                 }
@@ -95,7 +95,7 @@ namespace Net_BBS.BBS_Core
                     _quitFlag = true;
                     break;
                 default:
-                    if (_bbs.Sysop_Identified)
+                    if (_bbs.SysopIdentified)
                     {
                         HandleSysOpCommand(command);
                     }
@@ -157,7 +157,7 @@ namespace Net_BBS.BBS_Core
         public void CmdList()
         {
             _bbs.WriteLine();
-            _bbs.Write("~d7" + Utils.Center("GFILES IN THIS AREA", _bbs.TerminalType.Columns()) + "~d0");
+            _bbs.Write("~d7" + Utils.Center("GFILES IN THIS AREA", _bbs.terminalType.Columns()) + "~d0");
             _currentList = _bbsDataCore.GFileListArea(_currentGFileArea?.Id, _bbs.CurrentUser.Id);
             int row = 1;
             foreach (AreaListRow areaListRow in _currentList)
@@ -195,12 +195,12 @@ namespace Net_BBS.BBS_Core
             GFileDetail gfile = _bbsDataCore.GetGFileDetail(fileId);
             _bbs.WriteLine("~l2~c1Filename: ~c7" + gfile.Title);
             _bbs.WriteLine("~c1Description: ~c7" + gfile.Description);
-            _bbs.Write("~c7" + Utils.Repeat('\xc0', _bbs.TerminalType.Columns()) + "~c1");
+            _bbs.Write("~c7" + Utils.Repeat('\xc0', _bbs.terminalType.Columns()) + "~c1");
             outputrow = 0;
             string[] lines = File.ReadAllLines(gfile.FilePath + gfile.Filename);
             foreach (string s in lines)
             {
-                if (_bbs.TerminalType.Columns() == 40)
+                if (_bbs.terminalType.Columns() == 40)
                 {
                     if (s.Length > 40)
                     {

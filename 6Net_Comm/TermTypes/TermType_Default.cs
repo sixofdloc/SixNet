@@ -3,7 +3,7 @@ using Net_Comm.Interfaces;
 
 namespace Net_Comm.TermTypes
 {
-    public class TermType_Default : I_TerminalType
+    public class TermType_Default : ITerminalType
     {
         public string TerminalTypeName()
         {

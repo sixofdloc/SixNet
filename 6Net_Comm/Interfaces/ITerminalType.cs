@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Net_Comm.Interfaces
 {
-    public interface I_TerminalType
+    public interface ITerminalType
     {
         string CRLF();
         char BACKSPACE();

@@ -10,20 +10,20 @@ namespace Net_Comm.Classes
 {
     public class Communicator
     {
-        public StateObject State_Object { get; set; }
+        public StateObject _stateObject { get; set; }
+        public ITerminalType terminalType { get; set; }
+        public DateTime lastActivity { get; set; }
+        public byte currentChar { get; set; } //For prompts
 
-        public byte Currentchar { get; set; } //For prompts
         public bool Connected
         {
-            get => State_Object.connected;
+            get => _stateObject.connected;
         }  //Flag for loops 
-        public I_TerminalType TerminalType { get; set; }
-        public DateTime LastActivity { get; set; }
 
 
         public void HangUp()
         {
-            State_Object.workSocket.Disconnect(false);
+            _stateObject.workSocket.Disconnect(false);
         }
 
 
@@ -31,12 +31,12 @@ namespace Net_Comm.Classes
 
         public bool FileExistsForTermType(string filename)
         {
-            string fname = TerminalType.Filename_Prefix() + filename + TerminalType.Filename_Suffix();
+            string fname = terminalType.Filename_Prefix() + filename + terminalType.Filename_Suffix();
             return File.Exists(fname);
         }
         public void SendFileForTermType(string filename, bool raw)
         {
-            string fname = TerminalType.Filename_Prefix() + filename + TerminalType.Filename_Suffix();
+            string fname = terminalType.Filename_Prefix() + filename + terminalType.Filename_Suffix();
             SendFile(fname, raw);
         }
 
@@ -47,13 +47,13 @@ namespace Net_Comm.Classes
             {
                 if (raw)
                 {
-                    byte[] bytes = System.IO.File.ReadAllBytes(filename);
-                    State_Object.workSocket.Send(bytes);
+                    byte[] bytes = File.ReadAllBytes(filename);
+                    _stateObject.workSocket.Send(bytes);
                     // WriteRaw(text);
                 }
                 else
                 {
-                    string[] lines = System.IO.File.ReadAllText(filename).Split('\n');
+                    string[] lines = File.ReadAllText(filename).Split('\n');
                     foreach (string s in lines) WriteLine(s);
                 }
             }
@@ -68,24 +68,28 @@ namespace Net_Comm.Classes
             foreach (char c in s) ByteOut((byte)c);
         }
 
+        public void WriteByte(byte b)
+        {
+            _stateObject.workSocket.Send(new byte[] { b });
+        }
 
         public void WriteLine()
         {
-            Write(TerminalType.CRLF());
+            Write(terminalType.CRLF());
         }
 
         public void WriteLine(string s)
         {
             Write(s);
-            Write(TerminalType.CRLF());
+            Write(terminalType.CRLF());
         }
 
         public void WriteString(string s)
         {
             byte[] ca = s.Select(p => (byte)p).ToArray();
-            if (State_Object.connected)
+            if (_stateObject.connected)
             {
-                State_Object.workSocket.Send(ca);
+                _stateObject.workSocket.Send(ca);
             }
         }
 
@@ -93,8 +97,8 @@ namespace Net_Comm.Classes
         {
             try
             {
-                string t = TerminalType.TranlateToTerminal(s);
-                for (int i = 0; i < t.Length && State_Object.connected; i++)
+                string t = terminalType.TranlateToTerminal(s);
+                for (int i = 0; i < t.Length && _stateObject.connected; i++)
                 {
                     if (t.Substring(i, 1) != "~")
                     {
@@ -121,7 +125,7 @@ namespace Net_Comm.Classes
                                 Thread.Sleep(x);
                                 break;
                             default:
-                                WriteString(TerminalType.MCI(v + u));
+                                WriteString(terminalType.MCI(v + u));
                                 break;
                         }
                         i = i + 2;
@@ -139,20 +143,20 @@ namespace Net_Comm.Classes
 
         public void ByteOut(byte b)
         {
-            State_Object.workSocket.Send(new byte[] { b });
+            _stateObject.workSocket.Send(new byte[] { b });
         }
 
         public void BytesOut(byte[] b)
         {
-            State_Object.workSocket.Send(b);
+            _stateObject.workSocket.Send(b);
         }
 
         public void Chrout(char c)
         {
             if (c != '\x0')
             {
-                char d = TerminalType.TranslateToTerminal(c);
-                State_Object.workSocket.Send(new byte[] { (byte)d });
+                char d = terminalType.TranslateToTerminal(c);
+                _stateObject.workSocket.Send(new byte[] { (byte)d });
             }
         }
 
@@ -166,9 +170,9 @@ namespace Net_Comm.Classes
 
         public void Backspace()
         {
-            Chrout(TerminalType.BACKSPACE());
+            Chrout(terminalType.BACKSPACE());
             Chrout(' ');
-            Chrout(TerminalType.BACKSPACE());
+            Chrout(terminalType.BACKSPACE());
         }
 
         public void Chrsout(char c, int x, bool translate)
@@ -177,15 +181,15 @@ namespace Net_Comm.Classes
             {
                 for (int i = 0; i < x; i++)
                 {
-                    char d = translate ? TerminalType.TranslateToTerminal(c) : c;
-                    State_Object.workSocket.Send(new byte[] { (byte)d });
+                    char d = translate ? terminalType.TranslateToTerminal(c) : c;
+                    _stateObject.workSocket.Send(new byte[] { (byte)d });
                 }
             }
         }
 
         public void Divider()
         {
-            Chrsout('\xc0', TerminalType.Columns(), false);
+            Chrsout('\xc0', terminalType.Columns(), false);
         }
 
         public void Exclaim(string s)
@@ -195,19 +199,20 @@ namespace Net_Comm.Classes
 
         public char GetChar()
         {
-            Currentchar = 0x00;
-            while ((Currentchar == 0x00) && (Connected) && State_Object.connected)
+            currentChar = 0x00;
+            while ((currentChar == 0x00) && (Connected) && _stateObject.connected)
             {
                 Thread.Sleep(10);
             }
-            return TerminalType.TranslateFromTerminal((char)Currentchar); //Returns \x0 on disconnect
+            return terminalType.TranslateFromTerminal((char)currentChar); //Returns \x0 on disconnect
         }
 
         public void AnyKey(bool Prompt, bool newline)
         {
             if (newline) Write("~l1");
-            if (Prompt) Write("~d1Hit any key to continue~d0");
+            if (Prompt) Write("~d1hit any key to continue~d0");
             GetChar();
+            if (this.terminalType.C64_Color()) WriteByte(0x0e);
         }
 
         public bool MoreOrAbort()
@@ -305,7 +310,7 @@ namespace Net_Comm.Classes
             {
                 char c = GetChar();
                 if (allcaps) c = c.ToString().ToUpper()[0];
-                if (c == TerminalType.BACKSPACE())
+                if (c == terminalType.BACKSPACE())
                 {
                     if (s.Length == 0)
                     {
@@ -313,13 +318,13 @@ namespace Net_Comm.Classes
                     }
                     else
                     {
-                        Chrout(TerminalType.BACKSPACE());
+                        Chrout(terminalType.BACKSPACE());
                         s = s.Substring(0, s.Length - 1);
                     }
                 }
                 else
                 {
-                    if (c != TerminalType.Input_Terminator())
+                    if (c != terminalType.Input_Terminator())
                     {
                         if (s.Length < maxchars)
                         {
@@ -366,13 +371,13 @@ namespace Net_Comm.Classes
         #region Callbacks from StateObject/Socket
         public void Receive(byte key)
         {
-            Currentchar = key;
-            LastActivity = DateTime.Now;
+            currentChar = key;
+            lastActivity = DateTime.Now;
         }
 
         public void Disconnect()
         {
-            State_Object.Disconnect();
+            _stateObject.Disconnect();
         }
         #endregion
 
