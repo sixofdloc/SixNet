@@ -18,7 +18,7 @@ namespace Net_BBS.BBS_Core
 
         public void ShowLastTenCalls()
         {
-            _bbs.CurrentArea = "Viewing Last 10 Callers";
+            _bbs.currentArea = "Viewing Last 10 Callers";
             var callList = _bbsDataCore.GetLastTenCalls();
             if ((callList != null) && (callList.Count > 0))
             {

@@ -48,7 +48,7 @@ namespace Net_BBS.BBS_Core
                 var user = _bbsDataCore.SaveNewUser(Username, Password, RealName, Email, ComputerType, _bbs._remoteAddress,"");
                 if (user != null)
                 {
-                    _bbs.CurrentUser = user;
+                    _bbs.currentUser = user;
                 }
 
                 //New User feedback
@@ -58,7 +58,7 @@ namespace Net_BBS.BBS_Core
                      var lineEditor = new Line_Editor(_bbs);
                     if (lineEditor.Edit(null))
                     {
-                        _bbsDataCore.NewFeedback("New User Feedback", lineEditor.GetMessage(), _bbs.CurrentUser.Id);
+                        _bbsDataCore.NewFeedback("New User Feedback", lineEditor.GetMessage(), _bbs.currentUser.Id);
                     }
                 }
                 //And Done

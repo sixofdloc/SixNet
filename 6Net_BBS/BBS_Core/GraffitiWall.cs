@@ -13,12 +13,12 @@ namespace Net_BBS.BBS_Core
         {
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
-            _bbs.CurrentArea = "Graffiti Wall";
+            _bbs.currentArea = "Graffiti Wall";
         }
 
         public void AddLine(int userid)
         {
-            _bbs.CurrentArea = "Graffiti Wall, entering graffiti";
+            _bbs.currentArea = "Graffiti Wall, entering graffiti";
             _bbs.Write("~l1~c1~d0Enter your graffiti.  Please try to keep it to one line.  MCI is permitted.~l1~c7:~c1");
             String s = _bbs.Input(true, false, false);
             _bbsDataCore.AddGraffiti(s, userid);

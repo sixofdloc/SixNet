@@ -20,7 +20,7 @@ namespace Net_BBS.BBS_Core
 
         public void DisplayNews()
         {
-            List<NewsItem> newsItems = _bbsDataCore.GetNews(_bbs.CurrentUser.LastDisconnection);
+            List<NewsItem> newsItems = _bbsDataCore.GetNews(_bbs.currentUser.LastDisconnection);
             if (_bbs.FileExistsForTermType("news_top"))
             {
                 _bbs.SendFileForTermType("news_top", true);

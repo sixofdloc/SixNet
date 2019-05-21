@@ -25,7 +25,7 @@ namespace Net_BBS.BBS_Core
         {
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
-            _bbs.CurrentArea = "GFiles";
+            _bbs.currentArea = "GFiles";
             _currentGFileArea = null;
             _bbs.SendFileForTermType("gfile_entry_root", false);
             CmdList();

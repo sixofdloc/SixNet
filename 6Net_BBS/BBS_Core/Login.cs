@@ -18,7 +18,7 @@ namespace Net_BBS.BBS_Core
 
         public User LogIn()
         {
-            _bbs.CurrentArea = "Logging In";
+            _bbs.currentArea = "Logging In";
             User u = null;
             try
             {

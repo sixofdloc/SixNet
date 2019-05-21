@@ -43,7 +43,7 @@ namespace Net_BBS.BBS_Core
                 {
                     _bbs.WriteLine();
                 }
-                _bbs.CurrentArea = "Main Prompt";
+                _bbs.currentArea = "Main Prompt";
                 _bbs.Write("~c1Main~c2:~c7");
                 string command = _bbs.Input(true, false, false, true, 10);
                 if (command.Length > 0)
@@ -101,13 +101,13 @@ namespace Net_BBS.BBS_Core
                             break;
                         case "SY":
                             //If the current user has any groups that would allow sysop access
-                            if (_bbs.CurrentUser.UserAccessGroups.Any(p=>p.AccessGroup.AllowSysOp) )
+                            if (_bbs.currentUser.UserAccessGroups.Any(p=>p.AccessGroup.AllowSysOp) )
                             {
                                 _bbs.Write("~l1~c1Password:~c7");
                                 string sy = _bbs.Input(true, true, false);
                                 if (sy.ToUpper() == _bbsConfig.SysOpMenuPassword.ToUpper())
                                 {
-                                    _bbs.SysopIdentified = true;
+                                    _bbs.sysopIdentified = true;
                                     SysOp sys = new SysOp(_bbs, _bbsDataCore);
                                     sys.Prompt();
                                 }
