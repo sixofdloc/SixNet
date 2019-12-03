@@ -2,21 +2,29 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Net_Data;
 using Net_Data.Models;
 
-namespace Net_Setup
+namespace Net_Setup.Classes.Setup
 {
-    partial class MainClass
+    public class PFilesSetup
     {
-        static PFileArea currentPfileArea = null;
-        static List<PFileArea> pfileAreas = null;
+        private PFileArea currentPfileArea = null;
+        private List<PFileArea> pfileAreas = null;
 
-        private static void PFileHeader()
+        private readonly BBSDataCore _core;
+
+        public PFilesSetup(BBSDataCore core)
+        {
+            _core = core;
+        }
+
+        private void PFileHeader()
         {
             pfileAreas = _core.PFileAreas();
             Console.Clear();
             Console.WriteLine("Setup PFile Areas");
-            Divider();
+            Utils.Divider();
             if (currentPfileArea == null )//|| currentPfileArea.ParentAreaId == null)
             {
                 Console.WriteLine("Currently in area: ROOT");
@@ -48,7 +56,7 @@ namespace Net_Setup
                     }
                 }
             }
-            Divider();
+            Utils.Divider();
             Console.WriteLine("PFiles in this Area:");
             var pfileDetails = _core.PFileDetails(currentPfileArea?.Id);
             if (pfileDetails.Count == 0)
@@ -62,10 +70,10 @@ namespace Net_Setup
                     Console.WriteLine($"({pfile.Id}) {pfile.Title}");
                 }
             }
-            Divider();
+            Utils.Divider();
         }
 
-        private static void SetupPFileAreas()
+        public void SetupPFileAreas()
         {
             var quitFlag = false;
             while (!quitFlag)
@@ -102,7 +110,7 @@ namespace Net_Setup
                         break;
                     case "4":
                         int areaId = 0;
-                        if (int.TryParse(Input("Enter the Id of the area to navigate to: ", ""), out areaId))
+                        if (int.TryParse(Utils.Input("Enter the Id of the area to navigate to: ", ""), out areaId))
                         {
                             currentPfileArea = pfileAreas.FirstOrDefault(p => p.Id == areaId);
                         }
@@ -120,14 +128,14 @@ namespace Net_Setup
 
         }
 
-        private static void CreatePFileArea()
+        private void CreatePFileArea()
         {
             PFileHeader();
             Console.WriteLine("ADD NEW AREA");
-            var areaTitle = Input("Enter a name for this new area", "");
+            var areaTitle = Utils.Input("Enter a name for this new area", "");
             if (areaTitle != "")
             {
-                var areaDescription = Input("Enter a description for this new area", "");
+                var areaDescription = Utils.Input("Enter a description for this new area", "");
                 if (areaDescription != "")
                 {
                    var parentId = currentPfileArea?.Id;
@@ -135,20 +143,20 @@ namespace Net_Setup
                 }
             }
         }
-        private static void AddPFile()
+        private void AddPFile()
         {
             PFileHeader();
             Console.WriteLine("ADD PFILE");
-            var filePath = Input("Enter the file path where the dll is located", "");
+            var filePath = Utils.Input("Enter the file path where the dll is located", "");
             if (filePath != "")
             {
-                var dllFile = Input("Enter the name of the dll file", "");
+                var dllFile = Utils.Input("Enter the name of the dll file", "");
                 if (File.Exists(filePath + dllFile))
                 {
-                    var title = Input("Enter a short title for this pfile", "");
+                    var title = Utils.Input("Enter a short title for this pfile", "");
                     if (title != "")
                     {
-                        var description = Input("Enter a long description for this pfile", "");
+                        var description = Utils.Input("Enter a long description for this pfile", "");
                         if (description != "")
                         {
                             _core.AddPFileDetail(currentPfileArea.Id, filePath, dllFile, title, description);
@@ -158,11 +166,12 @@ namespace Net_Setup
                 else
                 {
                     Console.WriteLine("File not found.");
-                    EnterToContinue();
+                    Utils.EnterToContinue();
                 }
             }
         }
-        //private static void ImportPFiles()
+
+                //private static void ImportPFiles()
         //{
         //    PFileHeader();
         //    Console.WriteLine("IMPORT FILES");

@@ -95,7 +95,7 @@ namespace Net_BBS.BBS_Core
                     _quitFlag = true;
                     break;
                 default:
-                    if (_bbs.SysopIdentified)
+                    if (_bbs.sysopIdentified)
                     {
                         HandleSysOpCommand(command);
                     }
@@ -158,7 +158,7 @@ namespace Net_BBS.BBS_Core
         {
             _bbs.WriteLine();
             _bbs.Write("~d7" + Utils.Center("GFILES IN THIS AREA", _bbs.terminalType.Columns()) + "~d0");
-            _currentList = _bbsDataCore.GFileListArea(_currentGFileArea?.Id, _bbs.CurrentUser.Id);
+            _currentList = _bbsDataCore.GFileListArea(_currentGFileArea?.Id, _bbs.currentUser.Id);
             int row = 1;
             foreach (AreaListRow areaListRow in _currentList)
             {

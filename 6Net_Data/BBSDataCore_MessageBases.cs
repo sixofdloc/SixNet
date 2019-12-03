@@ -140,7 +140,7 @@ namespace Net_Data
                 if (gfa != null)
                 {
                     idak.Id = gfa.ParentAreaId;
-                    if (gfa.ParentAreaId == -1)
+                    if (gfa.ParentAreaId == null)
                     {
                         idak.Keys["title"] = "Main";
                     }

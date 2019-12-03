@@ -38,8 +38,13 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program_GFiles.cs" />
-    <Compile Include="Program_PFiles.cs" />
+    <Compile Include="Classes\Utils.cs" />
+    <Compile Include="Classes\Setup\MessageBaseSetup.cs" />
+    <Compile Include="Classes\Setup\GFilesSetup.cs" />
+    <Compile Include="Classes\Setup\PFilesSetup.cs" />
+    <Compile Include="Classes\Setup\MainMenu.cs" />
+    <Compile Include="Classes\Setup\BBSSetup.cs" />
+    <Compile Include="Classes\Setup\DatabaseSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\6Net_Data\6Net_Data.csproj">
@@ -53,6 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logs\" />
+    <Folder Include="Classes\" />
+    <Folder Include="Classes\Setup\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

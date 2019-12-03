@@ -242,7 +242,7 @@ namespace Net_BBS.BBS_Core
             {
                 _bbs.SendFileForTermType("messagebase_area_" + Current_Area.ToString(), true);
             }
-            Current_Area_List = _bbsDataCore.MessageBase_List_Area(areaId, _bbs.CurrentUser.Id);
+            Current_Area_List = _bbsDataCore.MessageBase_List_Area(areaId, _bbs.currentUser.Id);
             CurrentMessageBase = -1;
             RecalculatePath();
 
@@ -271,7 +271,7 @@ namespace Net_BBS.BBS_Core
                 if (le.Edit(null))
                 {
                     _bbs.Write("~s1~l1~c1Posting Message...");
-                    _bbsDataCore.PostMessage(CurrentMessageBase, subject, anon, _bbs.CurrentUser.Id, le.GetMessage());
+                    _bbsDataCore.PostMessage(CurrentMessageBase, subject, anon, _bbs.currentUser.Id, le.GetMessage());
                     _bbs.WriteLine("Done.");
                 }
             }
@@ -283,7 +283,7 @@ namespace Net_BBS.BBS_Core
             {
                 _bbs.WriteLine("");
                 _bbs.WriteLine("");
-                Current_Area_List = _bbsDataCore.MessageBase_List_Area(Current_Area, _bbs.CurrentUser.Id);
+                Current_Area_List = _bbsDataCore.MessageBase_List_Area(Current_Area, _bbs.currentUser.Id);
                 foreach (IdAndKeys idak in Current_Area_List)
                 {
                     if (idak.Keys["type"] == "area")
@@ -354,7 +354,7 @@ namespace Net_BBS.BBS_Core
             foreach (ThreadListRow tlr in Current_Thread_List)
             {
                 List<int> messages = _bbsDataCore.MessageIdsInThread(tlr.MessageThreadId);
-                i = _bbsDataCore.FirstUnread(_bbs.CurrentUser.Id, messages);
+                i = _bbsDataCore.FirstUnread(_bbs.currentUser.Id, messages);
                 if (i != -1)
                 {
                     break;
@@ -553,7 +553,7 @@ namespace Net_BBS.BBS_Core
                 if (le.Edit(null))
                 {
                     _bbs.Write("~s1~l1~c1Posting Message...");
-                    _bbsDataCore.PostReply(CurrentMessageBase, subject, anon, _bbs.CurrentUser.Id, le.GetMessage(), ThreadId);
+                    _bbsDataCore.PostReply(CurrentMessageBase, subject, anon, _bbs.currentUser.Id, le.GetMessage(), ThreadId);
                     _bbs.WriteLine("Done.");
                 }
             }

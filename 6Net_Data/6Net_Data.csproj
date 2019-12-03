@@ -113,6 +113,7 @@
     <Compile Include="Enums\AreaListRowType.cs" />
     <Compile Include="Models\Field.cs" />
     <Compile Include="BBSDataCore_Field.cs" />
+    <Compile Include="Models\MessageBaseAreaAccessGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

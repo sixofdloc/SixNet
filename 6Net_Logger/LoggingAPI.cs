@@ -67,7 +67,7 @@ namespace Net_Logger
             try
             {
                 _errorLog.Entry(GetSendingMethod() + ": " + JsonConvert.SerializeObject(exception));
-            } catch (Exception ex)
+            } catch (Exception )
             {
                 //Not much we can do about it.
             }

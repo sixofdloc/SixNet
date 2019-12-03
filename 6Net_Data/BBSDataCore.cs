@@ -40,6 +40,7 @@ namespace Net_Data
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     result = false;
                 }
             }

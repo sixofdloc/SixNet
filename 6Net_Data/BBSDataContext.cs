@@ -21,6 +21,7 @@ namespace Net_Data
         public DbSet<GFileAreaAccessGroup> GFileAreaAccessGroups { get; set; }
         public DbSet<Graffiti> Graffiti { get; set; }
         public DbSet<MessageBaseArea> MessageBaseAreas { get; set; }
+        public DbSet<MessageBaseAreaAccessGroup> MessageBaseAreaAccessGroups { get; set; }
         public DbSet<MessageBase> MessageBases { get; set; }
         public DbSet<MessageBaseAccessGroup> MessageBaseAccessGroups { get; set; }
         public DbSet<MessageThread> MessageThreads { get; set; }

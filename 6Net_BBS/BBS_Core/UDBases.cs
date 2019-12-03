@@ -180,7 +180,7 @@ namespace Net_BBS.BBS_Core
             {
                 _bbs.SendFileForTermType("udbase_area_" + Current_Area.ToString(), true);
             }
-            Current_Area_List = _bbsDataCore.UDBase_List_Area(areaId, _bbs.CurrentUser.Id);
+            Current_Area_List = _bbsDataCore.UDBase_List_Area(areaId, _bbs.currentUser.Id);
 
         }
 
@@ -272,7 +272,7 @@ namespace Net_BBS.BBS_Core
             {
                 _bbs.WriteLine("");
                 _bbs.WriteLine("");
-                Current_Area_List = _bbsDataCore.UDBase_List_Area(Current_Area, _bbs.CurrentUser.Id);
+                Current_Area_List = _bbsDataCore.UDBase_List_Area(Current_Area, _bbs.currentUser.Id);
                 foreach (IdAndKeys idak in Current_Area_List)
                 {
                     if (idak.Keys["type"] == "area")

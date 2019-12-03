@@ -20,7 +20,7 @@ namespace Net_BBS.BBS_Core
         {
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
-            Userid = _bbs.CurrentUser.Id;
+            Userid = _bbs.currentUser.Id;
             Columns = _bbs.terminalType.Columns();
         }
 

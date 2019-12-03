@@ -2,38 +2,47 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Net_Data;
 using Net_Data.Models;
+using Net_Setup.Classes;
 
-namespace Net_Setup
+namespace Net_Setup.Classes.Setup
 {
-    partial class MainClass
+    public class GFilesSetup
     {
-        static GFileArea currentArea = null;
-        static List<GFileArea> gfileAreas = null;
+        private readonly BBSDataCore _core;
+        private GFileArea currentGFileArea = null;
+        private List<GFileArea> gfileAreas = null;
 
-        private static void GFileHeader()
+
+        public GFilesSetup(BBSDataCore core)
+        {
+            _core = core;
+        }
+
+        private void GFileHeader()
         {
             gfileAreas = _core.GfileAreas();
             Console.Clear();
             Console.WriteLine("Setup GFile Areas");
-            Divider();
-            if (currentArea == null )//|| currentArea.ParentAreaId == null)
+            Utils.Divider();
+            if (currentGFileArea == null )//|| currentArea.ParentAreaId == null)
             {
                 Console.WriteLine("Currently in area: ROOT");
             }
             else
             {
-                Console.WriteLine($"Current Area: ({currentArea.Id}) { currentArea.Title}");
+                Console.WriteLine($"Current Area: ({currentGFileArea.Id}) { currentGFileArea.Title}");
             }
             Console.WriteLine("Child Areas: ");
 
-            if (!gfileAreas.Any(p=>p.ParentAreaId==currentArea?.Id))
+            if (!gfileAreas.Any(p=>p.ParentAreaId==currentGFileArea?.Id))
             {
                 Console.WriteLine("None");
             }
             else
             {
-                if (currentArea == null)
+                if (currentGFileArea == null)
                 {
                     foreach (var childArea in gfileAreas.Where(p=>p.ParentAreaId==null))
                     {
@@ -42,29 +51,29 @@ namespace Net_Setup
                 }
                 else
                 {
-                    foreach (var childArea in currentArea.ChildAreas)
+                    foreach (var childArea in currentGFileArea.ChildAreas)
                     {
                         Console.WriteLine($"({childArea.Id}) { childArea.Title}");
                     }
                 }
             }
-            Divider();
+            Utils.Divider();
         }
 
-        private static void SetupGFileAreas()
+        public void SetupGFileAreas()
         {
             var quitFlag = false;
             while (!quitFlag)
             {
                 GFileHeader();
-                if (currentArea != null) Console.WriteLine("0. Navigate To Parent Area");
+                if (currentGFileArea != null) Console.WriteLine("0. Navigate To Parent Area");
                 Console.WriteLine("1. Add Child Area");
-                if (currentArea != null)
+                if (currentGFileArea != null)
                 {
                     Console.WriteLine("2. Edit This Area");
                     Console.WriteLine("3. Delete This Area");
                 }
-                if (gfileAreas.Any(p => p.ParentAreaId == currentArea?.Id) || (currentArea == null && gfileAreas.Any()))
+                if (gfileAreas.Any(p => p.ParentAreaId == currentGFileArea?.Id) || (currentGFileArea == null && gfileAreas.Any()))
                 {
                     Console.WriteLine("4. Navigate To Child Area");
                 }
@@ -75,7 +84,7 @@ namespace Net_Setup
                 {
                     case "0":
                         //Change to parent area
-                        currentArea = gfileAreas.FirstOrDefault(p => p.Id == currentArea.ParentAreaId);
+                        currentGFileArea = gfileAreas.FirstOrDefault(p => p.Id == currentGFileArea.ParentAreaId);
                         break;
                     case "1":
                         CreateGFileArea();
@@ -88,9 +97,9 @@ namespace Net_Setup
                         break;
                     case "4":
                         int areaId = 0;
-                        if (int.TryParse(Input("Enter the Id of the area to navigate to: ", ""), out areaId))
+                        if (int.TryParse(Utils.Input("Enter the Id of the area to navigate to: ", ""), out areaId))
                         {
-                            currentArea = gfileAreas.FirstOrDefault(p => p.Id == areaId);
+                            currentGFileArea = gfileAreas.FirstOrDefault(p => p.Id == areaId);
                         }
                         break;
                     case "I":
@@ -106,27 +115,27 @@ namespace Net_Setup
 
         }
 
-        private static void CreateGFileArea()
+        private  void CreateGFileArea()
         {
             GFileHeader();
             Console.WriteLine("ADD NEW AREA");
-            var areaTitle = Input("Enter a name for this new area", "");
+            var areaTitle = Utils.Input("Enter a name for this new area", "");
             if (areaTitle != "")
             {
-                var areaDescription = Input("Enter a description for this new area", "");
+                var areaDescription = Utils.Input("Enter a description for this new area", "");
                 if (areaDescription != "")
                 {
-                   var parentId = currentArea?.Id;
+                   var parentId = currentGFileArea?.Id;
                     _core.CreateGFileArea(areaTitle, areaDescription, parentId);
                 }
             }
         }
 
-        private static void ImportGFiles()
+        private  void ImportGFiles()
         {
             GFileHeader();
             Console.WriteLine("IMPORT FILES");
-            var filepath = Input("Enter the file path where the files and import.txt are", "");
+            var filepath = Utils.Input("Enter the file path where the files and import.txt are", "");
             if (filepath != "")
             {
                 var importFile = filepath + "import.txt";
@@ -136,14 +145,14 @@ namespace Net_Setup
                     var lines = File.ReadAllLines(importFile);
                     foreach (var line in lines){
                         var fields = line.Split('|');
-                        _core.AddGFileDetail(currentArea.Id, filepath, fields[0], fields[0], fields[2],"", false);
+                        _core.AddGFileDetail(currentGFileArea.Id, filepath, fields[0], fields[0], fields[2],"", false);
                         Console.WriteLine($"Imported {fields[0]}");
                     }
                 }
                 else
                 {
                     Console.WriteLine("Import file not found at " + filepath);
-                    EnterToContinue();
+                    Utils.EnterToContinue();
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Net_Logger;
 using Newtonsoft.Json;
 
 namespace Net_Data
@@ -25,6 +26,7 @@ namespace Net_Data
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 result = null;
             }
             return result;
@@ -41,14 +43,25 @@ namespace Net_Data
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 result = false;
             }
             return result;
         }
 
+        public string ConnectionString()
+        {
+            return BuildConnectionString(this);
+        }
+
         public  static string BuildConnectionString(BBSDatabaseConfiguration _bbsConfig)
         {
             return $"server={_bbsConfig.DatabaseServer};port=3306;database={_bbsConfig.DatabaseName};uid={_bbsConfig.DatabaseUsername};password={_bbsConfig.DatabasePassword}";
+        }
+
+        public bool IsDatabaseSetup()
+        {
+            return IsDatabaseSetup(BuildConnectionString(this));
         }
 
         public static bool IsDatabaseSetup(string connectionString)
@@ -61,6 +74,7 @@ namespace Net_Data
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 result = false;
             }
             return result;

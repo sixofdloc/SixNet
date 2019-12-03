@@ -25,7 +25,7 @@ namespace Net_BBS.BBS_Core
         {
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
-            _bbs.CurrentArea = "PFiles";
+            _bbs.currentArea = "PFiles";
             _currentPFileArea = null;
             _bbs.SendFileForTermType("pfile_entry_root", false);
             CmdList();
@@ -98,7 +98,7 @@ namespace Net_BBS.BBS_Core
                     CmdRun("PFiles/Empire.dll");
                     break;
                 default:
-                    if (_bbs.SysopIdentified)
+                    if (_bbs.sysopIdentified)
                     {
                         HandleSysOpCommand(command);
                     }
@@ -157,7 +157,7 @@ namespace Net_BBS.BBS_Core
         {
             _bbs.WriteLine();
             _bbs.Write("~d7" + Utils.Center("PFILES IN THIS AREA", _bbs.terminalType.Columns()) + "~d0");
-            _currentList = _bbsDataCore.PFileListArea(_currentPFileArea?.Id, _bbs.CurrentUser.Id);
+            _currentList = _bbsDataCore.PFileListArea(_currentPFileArea?.Id, _bbs.currentUser.Id);
             int row = 1;
             foreach (AreaListRow areaListRow in _currentList)
             {

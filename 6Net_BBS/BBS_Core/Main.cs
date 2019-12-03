@@ -95,7 +95,8 @@ namespace Net_BBS.BBS_Core
                             _bbs.Write("~l1~c1Leave one-liner?");
                             if (_bbs.YesNo(true, true))
                             {
-                                _bbs.GraffitiWall.AddLine(_bbs.CurrentUser.Id);
+                                var graffitiWall = new GraffitiWall(_bbs, _bbsDataCore);
+                                graffitiWall.AddLine(_bbs.currentUser.Id);
                             }
                             quitflag = true;
                             break;
@@ -151,7 +152,7 @@ namespace Net_BBS.BBS_Core
                             else
                             {
 
-                                if (_bbs.SysopIdentified)
+                                if (_bbs.sysopIdentified)
                                 {
                                     CMD_SysOp(command);
                                 }
@@ -214,8 +215,8 @@ namespace Net_BBS.BBS_Core
 
             foreach (BBS bbs2 in _bbs._bbsHost.GetAllNodes())
             {
-                _bbs.Write("~c1" + Utils.Clip(bbs2.CurrentUser.Id.ToString(), 7, true));
-                _bbs.Write("~c7" + Utils.Clip(bbs2.CurrentUser.Username, 33, true));
+                _bbs.Write("~c1" + Utils.Clip(bbs2.currentUser.Id.ToString(), 7, true));
+                _bbs.Write("~c7" + Utils.Clip(bbs2.currentUser.Username, 33, true));
             }
             _bbs.WriteLine("~d9" + Utils.SPC(columns) + "~d0~c1");
 
@@ -233,7 +234,7 @@ namespace Net_BBS.BBS_Core
                 foreach (BBS bbs2 in _bbs._bbsHost.GetAllNodes())
                 {
 
-                    if (bbs2.CurrentUser.Id.Equals(userid))
+                    if (bbs2.currentUser.Id.Equals(userid))
                     {
                         if (bbs2.doNotDisturb)
                         {
@@ -241,7 +242,7 @@ namespace Net_BBS.BBS_Core
                         }
                         else
                         {
-                            bbs2._messageQueue.Add("~l1~c4OLM>~c7" + _bbs.CurrentUser.Username + "~c2:~c1" + message);
+                            bbs2.messageQueue.Add("~l1~c4OLM>~c7" + _bbs.currentUser.Username + "~c2:~c1" + message);
                             _bbs.WriteLine("~l1~c9Your message was delivered.");
                         }
                     }
@@ -290,7 +291,7 @@ namespace Net_BBS.BBS_Core
                 Line_Editor av = new Line_Editor(_bbs);
                 if (av.Edit(null))
                 {
-                    _bbsDataCore.NewFeedback("Feedback", av.GetMessage(), _bbs.CurrentUser.Id);
+                    _bbsDataCore.NewFeedback("Feedback", av.GetMessage(), _bbs.currentUser.Id);
                 }
             }
         }

@@ -581,7 +581,7 @@ namespace PFile_Empire
                 }
                 SaveUser();
 
-                AddNews(_bbs.CurrentUser.Username + " was too STINGY!");
+                AddNews(_bbs.currentUser.Username + " was too STINGY!");
                 _bbs.AnyKey(true, true);
 
                 //  //Do Results of Soldier Feeding
@@ -1606,14 +1606,14 @@ namespace PFile_Empire
         private void LoadUser()
         {
             //Load User Record if there is one.
-            string dustr = _bbsDataCore.GetFieldValue(_bbs.CurrentUser.Id, "EMPIRE");
+            string dustr = _bbsDataCore.GetFieldValue(_bbs.currentUser.Id, "EMPIRE");
             if (dustr == "")
             {
                 _bbs.Write("~c1~l1It looks like this is your first time.~l1~c1Setting up your account.~p1.~p1.");
                 CurrentUser = new EmpireUser()
                 {
-                    UserId = _bbs.CurrentUser.Id,
-                    Username = _bbs.CurrentUser.Username,
+                    UserId = _bbs.currentUser.Id,
+                    Username = _bbs.currentUser.Username,
                     ArmyMobile = true,
                     Land = 100,
                     Grain = 10000,
