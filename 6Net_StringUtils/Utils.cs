@@ -31,15 +31,15 @@ namespace Net_StringUtils
 
         public static string SPC(int spaces)
         {
-            string s = "";
-            for (int i = 0; i < spaces; i++)
-            {
-                s = s + " ";
-            }
-            return s;
+            return Repeat(' ', spaces);
         }
 
         public static string Repeat(char ch, int spaces)
+        {
+            return Repeat(ch.ToString(), spaces);
+        }
+
+        public static string Repeat(string ch, int spaces)
         {
             string s = "";
             for (int i = 0; i < spaces; i++)
@@ -58,6 +58,7 @@ namespace Net_StringUtils
             if (s.Length > columns) s = s.Substring(0, columns);
             return s;
         }
+
         public static string Clip(string stringtoclip, int maxlen, bool padend)
         {
             if (stringtoclip == null) stringtoclip = "";
@@ -121,45 +122,6 @@ namespace Net_StringUtils
             }
             return result;
         }
-
-        //TODO: Remove any references to XML
-
-                //public static String UTF8ByteArrayToString(Byte[] ArrBytes)
-        //{ return new UTF8Encoding().GetString(ArrBytes); }
-
-        //public static Byte[] StringToUTF8ByteArray(String XmlString)
-        //{ return new UTF8Encoding().GetBytes(XmlString); }
-
-        //public static string SerializeToXmlString<T>(T ToSerialize)
-        //{
-        //    string xmlstream = String.Empty;
-
-        //    using (MemoryStream memstream = new MemoryStream())
-        //    {
-        //        XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-        //        XmlTextWriter xmlWriter = new XmlTextWriter(memstream, Encoding.UTF8);
-
-        //        xmlSerializer.Serialize(xmlWriter, ToSerialize);
-        //        xmlstream = UTF8ByteArrayToString(((MemoryStream)xmlWriter.BaseStream).ToArray());
-        //    }
-
-        //    return xmlstream;
-        //}
-
-        //public static T DeserializeXmlString<T>(string XmlString)
-        //{
-        //    T tempObject = default(T);
-
-        //    using (MemoryStream memoryStream = new MemoryStream(StringToUTF8ByteArray(XmlString)))
-        //    {
-        //        XmlSerializer xs = new XmlSerializer(typeof(T));
-        //        XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-
-        //        tempObject = (T)xs.Deserialize(memoryStream);
-        //    }
-
-        //    return tempObject;
-        //}
 
     }
 }

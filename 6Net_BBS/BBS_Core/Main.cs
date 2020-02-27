@@ -48,7 +48,7 @@ namespace Net_BBS.BBS_Core
                 string command = _bbs.Input(true, false, false, true, 10);
                 if (command.Length > 0)
                 {
-                    switch (command.ToString().ToUpper())
+                    switch (command.ToUpper())
                     {
                         case "?":
                             _bbs.SendFileForTermType("MainMenu", true);
@@ -170,6 +170,7 @@ namespace Net_BBS.BBS_Core
                     _bbs.FlushOLMQueue();
                 }
             }
+            _bbs.Disconnect();
 
         }
 

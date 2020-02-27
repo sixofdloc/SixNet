@@ -15,9 +15,8 @@ namespace Net_BBS.BBS_Core
         private readonly BBS _bbs;
         private readonly BBSDataCore _bbsDataCore;
 
-        private int Current_Area = -1;
-        //private int Current_Parent_Area = -1;
-        private int CurrentUDBase = -1;
+        private int? Current_Area = null;
+        private int? CurrentUDBase = null;
 
         private List<IdAndKeys> Current_Area_List = null;
         private List<UDFile> Current_File_List = null;
@@ -26,8 +25,7 @@ namespace Net_BBS.BBS_Core
         {
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
-            Current_Area = -1;
-            //Current_Parent_Area = -1;
+            Current_Area = null;
             _bbs.SendFileForTermType("udbase_entry_root", true);
             CMD_List();
         }
@@ -46,15 +44,9 @@ namespace Net_BBS.BBS_Core
                 {
                     _bbs.WriteLine();
                 }
-                if (CurrentUDBase > -1)
-                {
-                    _bbs.Write("~c1UDBases~c2:~c7");
-                }
-                else
-                {
-                    _bbs.Write("~c1UDBases~c2:~c7");
-                }
-                string command = _bbs.Input(true, false, false);
+                _bbs.Write("~c1UDBases~c2:~c7");
+
+                                string command = _bbs.Input(true, false, false);
                 if (command.Length > 0)
                 {
                     if ("0123456789".Contains(command.Substring(0, 1)))
@@ -68,12 +60,12 @@ namespace Net_BBS.BBS_Core
                                 if (selectedItem.Keys["type"] == "area")
                                 {
                                     _bbs.WriteLine("~l1~c7Changing to Area: " + selectedItem.Keys["title"] + "~p1");
-                                    ChangeToArea(selectedItem.Id);
+                                    ChangeToArea(selectedItem?.Id);
                                 }
                                 else
                                 {
                                     _bbs.WriteLine("~l1~c7Changing to UDBase: " + selectedItem.Keys["title"] + "~p1");
-                                    ChangeToUDBase(selectedItem.Id);
+                                    ChangeToUDBase((int)selectedItem.Id);
                                 }
                             }
                         }
@@ -119,10 +111,10 @@ namespace Net_BBS.BBS_Core
                                 }
                                 else
                                 {
-                                    if (Current_Area > -1)
+                                    if (Current_Area!=null)
                                     {
                                         CurrentUDBase = -1;
-                                        IdAndKeys mba = _bbsDataCore.UDBase_ParentArea(Current_Area);
+                                        IdAndKeys mba = _bbsDataCore.UDBase_ParentArea((int)Current_Area);
                                         _bbs.WriteLine("~l1~c7Changing to Area: " + mba.Keys["title"] + "~p1");
                                         ChangeToArea(mba.Id);
                                     }
@@ -168,11 +160,11 @@ namespace Net_BBS.BBS_Core
         }
 
 
-        public void ChangeToArea(int areaId)
+        public void ChangeToArea(int? areaId)
         {
             //Select Area
             Current_Area = areaId;
-            if (areaId < 0)
+            if (areaId ==null)
             {
                 _bbs.SendFileForTermType("udbase_entry_root", true);
             }
@@ -291,45 +283,52 @@ namespace Net_BBS.BBS_Core
                 //List fiiles
                 _bbs.Write("~s1~d2" + Utils.Center("FILES IN CURRENT BASE", _bbs.terminalType.Columns()) + "~d0");
                 //Pull a new list each time
-                Current_File_List = _bbsDataCore.ListFilesForUDBase(CurrentUDBase);
-                if (Current_File_List.Count > 0)
+                if (CurrentUDBase != null)
                 {
-                    foreach (UDFile tlr in Current_File_List)
+                    Current_File_List = _bbsDataCore.ListFilesForUDBase((int)CurrentUDBase);
+                    if (Current_File_List.Count > 0)
                     {
-                        if (tlr.Uploader==null)
+                        foreach (UDFile tlr in Current_File_List)
                         {
-                            //skip this row
-                        }
-                        else
-                        {
-                            if (_bbs.terminalType.Columns() == 40)
+                            if (tlr.Uploader == null)
                             {
-                                //                      1111111111222222222233333333334444444444555555555566666666666777777777
-                                //Columns are 01234567890123456789012345678901234567890123456789012345678901234567890123456789
-                                //             ID- SUBJECT---------------------------
-                                //                 POSTED-----  POSTER--------------- 
-                                _bbs.Write("~c7" + Utils.Clip(Current_File_List.IndexOf(tlr).ToString(), 4, true) + "~c1");
-                                _bbs.WriteLine(" " + Utils.Clip(tlr.Filename, 32, true));
-
-                                _bbs.Write(Utils.Clip("~c1Uploaded:~c3" + tlr.Uploaded.ToString("yy-MM-dd hh:mm"), 30, true));
-                                _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Uploader.Username, 10, true));
-
+                                //skip this row
                             }
                             else
                             {
-                                //             ID- SUBJECT-------------------------------------- POSTED----- POSTER---------      
-                                _bbs.Write("~c7" + Utils.Clip(Current_File_List.IndexOf(tlr).ToString(), 4, true) + "~c1");
-                                _bbs.Write(" " + Utils.Clip(tlr.Filename, 40, true));
-                                _bbs.Write("~c3 " + Utils.Clip(tlr.Uploaded.ToString("yy-MM-dd hh:mm"), 14, true));
-                                _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Uploader.Username, 21, true));
+                                if (_bbs.terminalType.Columns() == 40)
+                                {
+                                    //                      1111111111222222222233333333334444444444555555555566666666666777777777
+                                    //Columns are 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+                                    //             ID- SUBJECT---------------------------
+                                    //                 POSTED-----  POSTER--------------- 
+                                    _bbs.Write("~c7" + Utils.Clip(Current_File_List.IndexOf(tlr).ToString(), 4, true) + "~c1");
+                                    _bbs.WriteLine(" " + Utils.Clip(tlr.Filename, 32, true));
+
+                                    _bbs.Write(Utils.Clip("~c1Uploaded:~c3" + tlr.Uploaded.ToString("yy-MM-dd hh:mm"), 30, true));
+                                    _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Uploader.Username, 10, true));
+
+                                }
+                                else
+                                {
+                                    //             ID- SUBJECT-------------------------------------- POSTED----- POSTER---------      
+                                    _bbs.Write("~c7" + Utils.Clip(Current_File_List.IndexOf(tlr).ToString(), 4, true) + "~c1");
+                                    _bbs.Write(" " + Utils.Clip(tlr.Filename, 40, true));
+                                    _bbs.Write("~c3 " + Utils.Clip(tlr.Uploaded.ToString("yy-MM-dd hh:mm"), 14, true));
+                                    _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Uploader.Username, 21, true));
+                                }
                             }
                         }
                     }
-                }
 
+                    else
+                    {
+                        _bbs.WriteLine("~c7Nothing Found...~c1");
+                    }
+                }
                 else
                 {
-                    _bbs.WriteLine("~c7Nothing Found...~c1");
+                    _bbs.WriteLine("~c2Select a UD Base first...~c1");
                 }
                 _bbs.WriteLine("~d2" + Utils.SPC(_bbs.terminalType.Columns()) + "~d0");
             }

@@ -16,10 +16,10 @@ namespace Net_BBS.BBS_Core
         private readonly BBS _bbs;
         private readonly BBSDataCore _bbsDataCore;
 
-        private GFileArea _currentGFileArea = null;
-        private List<AreaListRow> _currentList = null;
+        private GFileArea _currentGFileArea ;
+        private List<AreaListRow> _currentList;
 
-        private bool _quitFlag = false;
+        private bool _quitFlag;
 
         public GFiles(BBS bbs, BBSDataCore bbsDataCore)
         {

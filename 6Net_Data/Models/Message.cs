@@ -7,11 +7,11 @@ namespace Net_Data.Models
     {
         public string Subject { get; set; }
         public string Body { get; set; }
-        public DateTime Sent { get; set; }
+        public DateTime Posted { get; set; }
 
-        [ForeignKey("User")]
         public int UserId { get; set; }
 
+        [ForeignKey("UserId")]
         public User User { get; set; }
 
     }

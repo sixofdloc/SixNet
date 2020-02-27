@@ -16,10 +16,10 @@ namespace Net_BBS.BBS_Core
         private readonly BBS _bbs;
         private readonly BBSDataCore _bbsDataCore;
 
-        private PFileArea _currentPFileArea = null;
-        private List<AreaListRow> _currentList = null;
+        private PFileArea _currentPFileArea ;
+        private List<AreaListRow> _currentList ;
 
-        private bool _quitFlag = false;
+        private bool _quitFlag;
 
         public PFiles(BBS bbs, BBSDataCore bbsDataCore)
         {

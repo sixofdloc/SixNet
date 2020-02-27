@@ -10,7 +10,7 @@ namespace Net_Data
         {
             try
             {
-                Feedback f = new Feedback() { Subject = subject, Body = body, UserId = fromUser, Sent = DateTime.Now, Read = false };
+                Feedback f = new Feedback() { Subject = subject, Body = body, UserId = fromUser, Posted = DateTime.Now, Read = false };
                 _bbsDataContext.Feedbacks.Add(f);
                 _bbsDataContext.SaveChanges();
             }

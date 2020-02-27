@@ -20,6 +20,11 @@ namespace Net_Comm.TermTypes
             return '\b';
         }
 
+        public string Horizontal_Bar()
+        {
+            return "\xc4";
+        }
+
         public char Input_Terminator()
         {
             return '\n';

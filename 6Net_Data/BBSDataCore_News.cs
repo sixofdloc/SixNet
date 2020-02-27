@@ -13,7 +13,7 @@ namespace Net_Data
             var newsItems = new List<NewsItem>();
             try
             {
-                newsItems = _bbsDataContext.NewsItems.Where(p => p.Sent > fromdate).OrderBy(p => p.Sent).ToList();
+                newsItems = _bbsDataContext.NewsItems.Where(p => p.Posted > fromdate).OrderBy(p => p.Posted).ToList();
             } catch (Exception ex)
             {
                 LoggingAPI.LogEntry("Exception in DataInterface.GetNews: " + ex.ToString());

@@ -25,8 +25,7 @@ namespace Net_Data
         public DbSet<MessageBase> MessageBases { get; set; }
         public DbSet<MessageBaseAccessGroup> MessageBaseAccessGroups { get; set; }
         public DbSet<MessageThread> MessageThreads { get; set; }
-        public DbSet<MessageHeader> MessageHeaders { get; set; }
-        public DbSet<MessageBody> MessageBodies { get; set; }
+        public DbSet<MessageBaseMessage> MessageBaseMessages { get; set; }
         public DbSet<NewsItem> NewsItems { get; set; }
         public DbSet<PFileArea> PFileAreas { get; set; }
         public DbSet<PFileDetail> PFileDetails { get; set; }
@@ -36,8 +35,15 @@ namespace Net_Data
         public DbSet<UDFile> UDFiles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserAccessGroup> UserAccessGroups { get; set; }
+        public DbSet<UserHasReadMessage> UserHasReadMessages { get; set; }
 
-
+        public T Create<T>(T obj) where T : class
+        {
+            //this.Database.Log = s => Console.WriteLine(s);
+            this.Set<T>().Add(obj);
+            SaveChanges();
+            return obj;
+        }
 
         public BBSDataContext() : base()
         {
@@ -51,6 +57,8 @@ namespace Net_Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+
         }
     }
 }

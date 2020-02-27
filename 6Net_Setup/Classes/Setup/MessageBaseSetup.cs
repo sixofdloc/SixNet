@@ -11,7 +11,9 @@ namespace Net_Setup
     public class MessageBaseSetup
     {
         private MessageBaseArea currentMessageBaseArea = null;
+//        private MessageBase currentMessageBase = null;
         private List<MessageBaseArea> messageBaseAreas = null;
+        private List<MessageBase> messageBases = null;
 
         private readonly BBSDataCore _core;
 
@@ -24,38 +26,36 @@ namespace Net_Setup
         private void MessageBaseHeader()
         {
             messageBaseAreas = _core.MessageBaseAreas();
+            messageBases = _core.MessageBases();
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Setup Message Bases");
             Utils.Divider();
-            if (currentMessageBaseArea == null )//|| currentArea.ParentAreaId == null)
-            {
-                Console.WriteLine("Currently in area: ROOT");
-            }
-            else
-            {
-                Console.WriteLine($"Current Area: ({currentMessageBaseArea.Id}) { currentMessageBaseArea.Title}");
-            }
+            Console.WriteLine((currentMessageBaseArea == null )?  "Currently in area: ROOT" : $"Current Area: ({currentMessageBaseArea?.Id}) {currentMessageBaseArea?.Title}");
             Console.WriteLine("Child Areas: ");
 
-            if (!messageBaseAreas.Any(p=>p.ParentAreaId== currentMessageBaseArea?.Id))
+            if (!messageBaseAreas.Any(p => p.ParentAreaId == currentMessageBaseArea?.Id))
             {
                 Console.WriteLine("None");
             }
             else
             {
-                if (currentMessageBaseArea == null)
+                foreach (var childArea in messageBaseAreas.Where(p => p.ParentAreaId == currentMessageBaseArea?.Id))
                 {
-                    foreach (var childArea in messageBaseAreas.Where(p=>p.ParentAreaId==null))
-                    {
-                        Console.WriteLine($"({childArea.Id}) { childArea.Title}");
-                    }
+                    Console.WriteLine($"({childArea.Id}) { childArea.Title}");
                 }
-                else
+            }
+            Console.WriteLine("Message Bases in this area: ");
+
+            if (!messageBases.Any(p => p.MessageBaseAreaId == currentMessageBaseArea?.Id))
+            {
+                Console.WriteLine("None");
+            }
+            else
+            {
+                foreach (var messageBase in messageBases.Where(p => p.MessageBaseAreaId == currentMessageBaseArea?.Id))
                 {
-                    foreach (var childArea in currentMessageBaseArea.ChildAreas)
-                    {
-                        Console.WriteLine($"({childArea.Id}) { childArea.Title}");
-                    }
+                    Console.WriteLine($"({messageBase.Id}) { messageBase.Title}");
                 }
             }
             Utils.Divider();
@@ -74,11 +74,15 @@ namespace Net_Setup
                     Console.WriteLine("2. Edit This Area");
                     Console.WriteLine("3. Delete This Area");
                 }
-                if (messageBaseAreas.Any(p => p.ParentAreaId == currentMessageBaseArea?.Id) || (currentMessageBaseArea == null && messageBaseAreas.Any()))
+                if (messageBaseAreas.Any(p => p.ParentAreaId == currentMessageBaseArea?.Id))
                 {
                     Console.WriteLine("4. Navigate To Child Area");
                 }
                 Console.WriteLine("5. Add Message Base Here");
+                if (messageBases.Any(p => p.MessageBaseAreaId == currentMessageBaseArea?.Id) )
+                {
+                    Console.WriteLine("6. Edit Message Base");
+                }
                 //Console.WriteLine("I. Import Here.");
                 Console.WriteLine("Q. Quit To Main Menu");
                 var choice = Console.ReadLine();
@@ -105,7 +109,8 @@ namespace Net_Setup
                         }
                         break;
                     case "5":
-                        break;
+                        CreateMessageBase();
+                         break;
                     case "I":
                         //ImportGFiles();
                         break;
@@ -145,7 +150,7 @@ namespace Net_Setup
                 var baseDescription = Utils.Input("Enter a description for this new base", "");
                 if (baseDescription != "")
                 {
-                    _core.CreateMessageBase(new MessageBase() { Title = baseName, Description = baseDescription, MessageBaseAreaId = currentMessageBaseArea.Id });
+                    _core.CreateMessageBase(new MessageBase() { Title = baseName, Description = baseDescription, MessageBaseAreaId = currentMessageBaseArea?.Id });
                 }
             }
         }

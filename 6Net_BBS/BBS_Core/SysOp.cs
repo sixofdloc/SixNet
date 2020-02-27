@@ -96,7 +96,7 @@ namespace Net_BBS.BBS_Core
             foreach (AccessGroup ag in aglist)
             {
                 _bbs.WriteLine(
-                    "~c1" + Utils.Clip(ag.Title.ToString(), 5, true)
+                    "~c1" + Utils.Clip(ag.Title, 5, true)
                    + " ~c7" + Utils.Clip(ag.CallsPerDay.ToString(), 3, true)
                    + " ~c8" + Utils.Clip(ag.MinutesPerCall.ToString(), 3, true)
                    + " ~c7" + (ag.AllowRemoteMaintenance ? "1 " : "0 ")

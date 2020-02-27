@@ -12,6 +12,7 @@ namespace Net_Comm.Interfaces
         bool Linefeeds();
         bool ANSI_Color();
         bool C64_Color();
+        string Horizontal_Bar();
 
         string TerminalTypeName();
 

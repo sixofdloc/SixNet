@@ -435,10 +435,7 @@ namespace PFile_Empire
                 else
                 {
                     _bbs.WriteLine("~l1~c1Keep current tax rate of ~c2" + CurrentUser.Tax.ToString() + "~c1%?");
-                    if (_bbs.YesNo(true, true))
-                    {
-                        promptx = true;
-                    }
+                    promptx = _bbs.YesNo(true, true);
                 }
             }
         }

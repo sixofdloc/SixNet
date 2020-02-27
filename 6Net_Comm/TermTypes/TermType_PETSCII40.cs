@@ -45,6 +45,11 @@ namespace Net_Comm.TermTypes
             return (char)0x0d;
         }
 
+        public string Horizontal_Bar()
+        {
+            return "\xc0";
+        }
+
 
         public string Filename_Prefix()
         {

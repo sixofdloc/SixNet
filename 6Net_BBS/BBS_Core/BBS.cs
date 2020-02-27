@@ -19,10 +19,10 @@ namespace Net_BBS.BBS_Core
         public bool sysopIdentified { get; set; }
         public string currentArea { get; set; } //used for upper display
 
-        public bool expertMode = false;
+        public bool expertMode;
 
-        public bool doNotDisturb = false;
-        public bool overrideDoNotDisturb = false;
+        public bool doNotDisturb;
+        public bool overrideDoNotDisturb;
 
         public List<string> messageQueue = new List<string>();
         public System.Timers.Timer messageQueueTimer = new System.Timers.Timer(1000);
@@ -42,10 +42,10 @@ namespace Net_BBS.BBS_Core
             connectionTimestamp = DateTime.Now;
             _bbsDataCore = new BBSDataCore(ConnectionString);
             _bbsHost = bbsHost;
-            base._stateObject = stateObject;
+            _stateObject = stateObject;
             messageQueueTimer.Enabled = false;
             messageQueueTimer.Interval = 100;
-            messageQueueTimer.Elapsed += new System.Timers.ElapsedEventHandler(MessageQueueTimer_Elapsed);
+            messageQueueTimer.Elapsed += MessageQueueTimer_Elapsed;
             _remoteAddress = stateObject.RemoteAddress;
             //_slackEnabled = (_dataInterface.GetUserDefinedField(0, "SLACKENABLED") == "1");
             //if (_slackEnabled) _slackIntegration = new SlackIntegration(_dataInterface);
@@ -167,7 +167,7 @@ namespace Net_BBS.BBS_Core
                 }
                 return true;
             }
-            else return false;
+            return false;
         }
 
         //public bool IsSlackEnabled() { return _slackEnabled; }

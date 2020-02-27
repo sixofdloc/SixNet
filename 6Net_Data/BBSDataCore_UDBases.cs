@@ -70,7 +70,7 @@ namespace Net_Data
             return idak;
         }
 
-        public List<IdAndKeys> UDBase_List_Area(int area, int userid)
+        public List<IdAndKeys> UDBase_List_Area(int? area, int userid)
         {
             List<IdAndKeys> response = new List<IdAndKeys>();
             try

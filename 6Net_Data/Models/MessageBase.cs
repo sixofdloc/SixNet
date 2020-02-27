@@ -7,9 +7,9 @@ namespace Net_Data.Models
     public class MessageBase : TitledModel
     {
         [ForeignKey("MessageBaseArea")]
-        public int MessageBaseAreaId {get; set;}
+        public int? MessageBaseAreaId {get; set;}
 
-        public ICollection<MessageHeader> MessageHeaders { get; set; }
+        public ICollection<MessageBaseMessage> MessageBaseMessages { get; set; }
 
         public MessageBaseArea MessageBaseArea { get; set; }
 

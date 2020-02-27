@@ -14,38 +14,44 @@ namespace Net_BBS.BBS_Core
         private readonly BBS _bbs;
         private readonly BBSDataCore _bbsDataCore;
 
-        private int Current_Area = -1;
-        //private int Current_Parent_Area = -1;
-        private int CurrentMessageBase = -1;
+        private int? currentArea;
+        private int? currentMessageBase;
 
-        private List<IdAndKeys> Current_Area_List = null;
-        private List<ThreadListRow> Current_Thread_List = null;
+        private List<IdAndKeys> currentAreaList;
+        private List<ThreadListRow> currentThreadList;
 
-        private string Path;
+        private string currentAreaAndBasePath;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Net_BBS.BBS_Core.MessageBases"/> class.
+        /// </summary>
+        /// <param name="bbs">Bbs.</param>
+        /// <param name="bbsDataCore">Bbs data core.</param>
         public MessageBases(BBS bbs, BBSDataCore bbsDataCore)
         {
             _bbs = bbs;
             _bbsDataCore = bbsDataCore;
-            Current_Area = -1;
-            //Current_Parent_Area = -1;
+            currentArea = null;
             _bbs.SendFileForTermType("messagebase_entry_root", true);
             CMD_List();
             RecalculatePath();
         }
 
+        /// <summary>
+        /// Recalculates the path.
+        /// </summary>
         private void RecalculatePath()
         {
-            string s = "";
-            Path = "~c6/Main/";
-            if (Current_Area > -1)
+            var s = "";
+            currentAreaAndBasePath = "~cd/Main/";
+            if (currentArea != null)
             {
-                bool done = false;
-                int tmparea = Current_Area;
+                var done = false;
+                var tmparea = currentArea;
                 while (!done)
                 {
-                    IdAndKeys parentarea = _bbsDataCore.MessageBase_ParentArea(tmparea);
-                    if (parentarea.Id > -1)
+                    var parentarea = _bbsDataCore.MessageBase_ParentArea((int)tmparea);
+                    if (parentarea.Id != null)
                     {
                         s = parentarea.Keys["title"] + "/" + s;
                     }
@@ -54,69 +60,32 @@ namespace Net_BBS.BBS_Core
                         done = true;
                     }
                 }
-                s = s + _bbsDataCore.MessageBaseAreas().First(p => p.ParentAreaId.Equals(Current_Area)).Title + "/";
+                s = s + _bbsDataCore.MessageBaseAreas().First(p => p.ParentAreaId.Equals(currentArea)).Title + "/";
             }
-            else
-            {
-                // s = "Main";
-            }
-            Path = Path + s;
-            if (CurrentMessageBase > -1) Path = Path + Current_Area_List.FirstOrDefault(p => p.Id.Equals(CurrentMessageBase)).Keys["title"] + ":";
-            Path = Path + "~c1";
+            currentAreaAndBasePath = currentAreaAndBasePath + s;
+            if (currentMessageBase != null) currentAreaAndBasePath = currentAreaAndBasePath + currentAreaList.FirstOrDefault(p => p.Id.Equals(currentMessageBase)).Keys["title"] + ":";
+            currentAreaAndBasePath = currentAreaAndBasePath + "~c1";
 
         }
 
+        /// <summary>
+        /// Main loop for message base system
+        /// </summary>
         public void Prompt()
         {
-            bool quitflag = false;
+            var quitflag = false;
             while ((!quitflag) && _bbs.Connected)
             {
                 //Show Main Prompt
-                _bbs.WriteLine("~l1" + Path);
-                if (!_bbs.expertMode)
-                {
-                    _bbs.WriteLine("~c7? ~c1Menu, ~c7H~c1elp~c2, ~c7L~c1ist~c2, ~c7Q~c1uit");
-                }
-                else
-                {
-                    _bbs.WriteLine();
-                }
-                if (CurrentMessageBase > -1)
-                {
-                    _bbs.Write("~c1Bases~c2:~c7");
-                }
-                else
-                {
-                    _bbs.Write("~c1Bases~c2:~c7");
-                }
-                string command = _bbs.Input(true, false, false);
+                _bbs.WriteLine("~l2" + currentAreaAndBasePath);
+                _bbs.WriteLine(_bbs.expertMode ? "" : "~c7? ~c1Menu, ~c7H~c1elp~c2, ~c7L~c1ist~c2, ~c7Q~c1uit");
+                _bbs.Write("~c1Bases~c2:~c7");
+                var command = _bbs.Input(true, false, false);
                 if (command.Length > 0)
                 {
                     if ("0123456789".Contains(command.Substring(0, 1)))
                     {
-                        if (CurrentMessageBase == -1)
-                        {
-                            //Select item.
-                            IdAndKeys selectedItem = Current_Area_List.FirstOrDefault(p => p.Keys["listid"].Equals(command));
-                            if (selectedItem != null)
-                            {
-                                if (selectedItem.Keys["type"] == "area")
-                                {
-                                    _bbs.WriteLine("~l1~c7Changing to Area: " + selectedItem.Keys["title"] + "~p1");
-                                    ChangeToArea(selectedItem.Id);
-                                }
-                                else
-                                {
-                                    _bbs.WriteLine("~l1~c7Changing to Message Base: " + selectedItem.Keys["title"] + "~p1");
-                                    ChangeToMessageBase(selectedItem.Id);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //We're in a messagebase \
-                            CMD_ReadThreadByListId(int.Parse(command));
-                        }
+                        CMD_Num(command);
                     }
                     else
                     {
@@ -124,104 +93,25 @@ namespace Net_BBS.BBS_Core
                         switch (command.ToUpper()[0])
                         {
                             case 'H':
-                                if (CurrentMessageBase == -1)
-                                {
-                                    _bbs.SendFileForTermType("messagearea_help", true);
-                                }
-                                else
-                                {
-                                    _bbs.SendFileForTermType("messagebase_help", true);
-                                }
+                                _bbs.SendFileForTermType((currentMessageBase==null)?"messagearea_help" : "messagebase_help", true);
                                 break;
                             case '?':
-                                if (CurrentMessageBase == -1)
-                                {
-                                    _bbs.SendFileForTermType("messagearea_menu", true);
-                                }
-                                else
-                                {
-                                    _bbs.SendFileForTermType("messagebase_menu", true);
-                                }
+                                _bbs.SendFileForTermType((currentMessageBase == null) ? "messagearea_menu" : "messagebase_menu", true);
                                 break;
                             case 'L':
                                 CMD_List();
                                 break;
                             case '/':
-                                if (CurrentMessageBase > -1)
-                                {
-                                    CurrentMessageBase = -1;
-                                    RecalculatePath();
-                                    CMD_List();
-                                }
-                                else
-                                {
-                                    if (Current_Area > -1)
-                                    {
-                                        CurrentMessageBase = -1;
-                                        IdAndKeys mba = _bbsDataCore.MessageBase_ParentArea(Current_Area);
-                                        _bbs.WriteLine("~l1~c7Changing to Area: " + mba.Keys["title"] + "~p1");
-                                        ChangeToArea(mba.Id);
-                                    }
-                                    else
-                                    {
-                                        _bbs.WriteLine("~l1~d2Already at top level.~d0");
-                                    }
-                                }
+                                CMD_FolderUp();
                                 break;
                             case 'P':
-                                if (CurrentMessageBase == -1)
-                                {
-                                    _bbs.WriteLine("~l1~d1Select a message base.~d0");
-                                }
-                                else
-                                {
-                                    CMD_Post();
-                                }
+                                CMD_Post();
                                 break;
                             case 'Q':
                                 quitflag = true;
                                 break;
                             case 'R':
-                                // "Unread" means the message id does not appear in the 
-                                // R = Read next unread message
-                                // RA = Read all messages in all threads
-                                // RA# = Read all messages in specified thread
-                                // R# = Read unread messages in specified thread
-                                // R#,# = Read specified message in specified thread
-                                // RN = Read unread messages in all threads with unread messages
-                                if (CurrentMessageBase == -1)
-                                {
-                                    _bbs.WriteLine("~l1~d1Select a message base.~d0");
-                                }
-                                else
-                                {
-                                    if (command.Length > 1)
-                                    {
-                                        if (command.ToUpper()[1] == 'A')
-                                        {
-                                            //RA, RA#
-                                        }
-                                        else
-                                        {
-                                            if (command.ToUpper()[1] == 'N')
-                                            {
-                                                //RN,RN#
-                                            }
-                                            else
-                                            {
-                                                if ("1234567890".Contains(command.ToUpper()[1]))
-                                                {
-                                                    //R#
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        CMD_ReadNextUnread();
-                                    }
-                                }
+                                CMD_Read(command);
                                 break;
                         }
                     }
@@ -229,21 +119,121 @@ namespace Net_BBS.BBS_Core
             }
         }
 
-
-        public void ChangeToArea(int areaId)
+        /// <summary>
+        /// Read a message, top level command handler.  
+        /// Decides which sub-command to use here.
+        /// </summary>
+        /// <param name="command">Full text of the command entered by the user</param>
+        public void CMD_Read(string command)
         {
-            //Select Area
-            Current_Area = areaId;
-            if (areaId < 0)
+            // "Unread" means the message id does not appear in an entry in UserHasReadMessages for this userId 
+            // R = Read next unread message
+            // RA or R A or R All = Read all messages in all threads
+            // RA# = Read all messages in specified thread
+            // R# = Read unread messages in specified thread
+            // R#,# = Read specified message in specified thread
+            // RN = Read unread messages in all threads with unread messages
+            if (currentMessageBase == null)
             {
-                _bbs.SendFileForTermType("messagebase_entry_root", true);
+                _bbs.WriteLine("~l1~d1Select a message base.~d0");
             }
             else
             {
-                _bbs.SendFileForTermType("messagebase_area_" + Current_Area.ToString(), true);
+                if (command.Length > 1)
+                {
+                    if (command.ToUpper()[1] == 'A')
+                    {
+                        //RA, RA#
+
+                    }
+                    else
+                    {
+                        if (command.ToUpper()[1] == 'N')
+                        {
+                            //RN,RN#
+                            //CMD_ReadNewMessages();
+                            CMD_ReadNextUnread();
+                        }
+                        else
+                        {
+                            if ("1234567890".Contains(command.ToUpper()[1]))
+                            {
+                                //R#
+
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    CMD_ReadNextUnread();
+                }
             }
-            Current_Area_List = _bbsDataCore.MessageBase_List_Area(areaId, _bbs.currentUser.Id);
-            CurrentMessageBase = -1;
+
+        }
+
+        public void CMD_Num(string command)
+        {
+            if (currentMessageBase == null) //We're not in a message base
+            {
+                //Select area or message base to change to
+                var selectedItem = currentAreaList.FirstOrDefault(p => p.Keys["listid"].Equals(command));
+                if (selectedItem != null)
+                {
+                    if (selectedItem.Keys["type"] == "area")
+                    {
+                        _bbs.WriteLine("~l1~c7Changing to Area: " + selectedItem.Keys["title"]);
+                        ChangeToArea(selectedItem?.Id);
+                    }
+                    else
+                    {
+                        _bbs.WriteLine("~l1~c7Changing to Message Base: " + selectedItem.Keys["title"]);
+                        ChangeToMessageBase((int)selectedItem.Id);
+                    }
+                }
+                else
+                {
+                    _bbs.WriteLine("~l1~d1No such message area or base  was found.~d0");
+                }
+            }
+            else
+            {
+                //We're in a messagebase \
+                CMD_ReadThreadByListId(int.Parse(command));
+            }
+        }
+
+        public void CMD_FolderUp()
+        {
+            if (currentMessageBase != null)
+            {
+                currentMessageBase = null;
+                RecalculatePath();
+                CMD_List();
+            }
+            else
+            {
+                if (currentArea != null)
+                {
+                    currentMessageBase = null;
+                    var mba = _bbsDataCore.MessageBase_ParentArea((int)currentArea);
+                    _bbs.WriteLine("~l1~c7Changing to Area: " + mba.Keys["title"] + "~p1");
+                    ChangeToArea(mba?.Id);
+                }
+                else
+                {
+                    _bbs.WriteLine("~l1~d2Already at top level.~d0");
+                }
+            }
+        }
+
+        public void ChangeToArea(int? areaId)
+        {
+            //Select Area, null is the root area
+            currentArea = areaId;
+            _bbs.SendFileForTermType((areaId==null)?"messagebase_entry_root" : "messagebase_area_" + currentArea?.ToString(), true);
+            currentAreaList = _bbsDataCore.MessageBase_List_Area(areaId, _bbs.currentUser.Id);
+            currentMessageBase = null;
             RecalculatePath();
 
         }
@@ -251,40 +241,53 @@ namespace Net_BBS.BBS_Core
         public void ChangeToMessageBase(int baseid)
         {
             //Select Area
-            CurrentMessageBase = baseid;
-            _bbs.SendFileForTermType("messagebase_entry_" + Current_Area.ToString(), true);
+            currentMessageBase = baseid;
+            _bbs.SendFileForTermType("messagebase_entry_" + currentArea.ToString(), true);
             //Show stats about this base
-            Current_Thread_List = _bbsDataCore.ListThreadsForBase(baseid);
+            currentThreadList = _bbsDataCore.ListThreadsForBase(baseid);
             RecalculatePath();
 
         }
 
         public void CMD_Post()
         {
-            _bbs.Write("~l1~c1Post Message~l1Anonymous?");
-            bool anon = _bbs.YesNo(true, true);
-            _bbs.Write("~c1~l1Subject ~c7:~c1");
-            string subject = _bbs.Input(true, false, false);
-            if (subject != "")
+            if (currentMessageBase == null)
             {
-                Line_Editor le = new Line_Editor(_bbs);
-                if (le.Edit(null))
+                _bbs.WriteLine("~l1~d1Select a message base.~d0");
+            }
+            else
+            {
+
+                _bbs.Write("~l1~c1Post Message~l1Anonymous?");
+                var anon = _bbs.YesNo(true, true);
+                _bbs.Write("~c1~l1Subject ~c7:~c1");
+                var subject = _bbs.Input(true, false, false);
+                if (subject != "")
                 {
-                    _bbs.Write("~s1~l1~c1Posting Message...");
-                    _bbsDataCore.PostMessage(CurrentMessageBase, subject, anon, _bbs.currentUser.Id, le.GetMessage());
-                    _bbs.WriteLine("Done.");
+                    Line_Editor le = new Line_Editor(_bbs);
+                    if (le.Edit(null))
+                    {
+                        _bbs.Write("~s1~l1~c1Posting Message...");
+                        _bbsDataCore.PostMessageAsNewThread((int)currentMessageBase, subject, anon, _bbs.currentUser.Id, le.GetMessage());
+                        _bbs.WriteLine("Done.");
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// List all messages in the currently selected message base OR
+        /// List all message bases in the currently selected message base area
+        /// </summary>
         public void CMD_List()
         {
-            if (CurrentMessageBase == -1)
+            if (currentMessageBase == null)
             {
+                //List bases/areas in current area
                 _bbs.WriteLine("");
                 _bbs.WriteLine("");
-                Current_Area_List = _bbsDataCore.MessageBase_List_Area(Current_Area, _bbs.currentUser.Id);
-                foreach (IdAndKeys idak in Current_Area_List)
+                currentAreaList = _bbsDataCore.MessageBase_List_Area(currentArea, _bbs.currentUser.Id);
+                foreach (IdAndKeys idak in currentAreaList)
                 {
                     if (idak.Keys["type"] == "area")
                     {
@@ -302,38 +305,31 @@ namespace Net_BBS.BBS_Core
                 //List messages
                 _bbs.Write("~s1~d2" + Utils.Center("THREADS IN CURRENT BASE", _bbs.terminalType.Columns()) + "~d0");
                 //Pull a new list each time
-                Current_Thread_List = _bbsDataCore.ListThreadsForBase(CurrentMessageBase);
-                if (Current_Thread_List.Count > 0)
+                currentThreadList = _bbsDataCore.ListThreadsForBase((int)currentMessageBase);
+                if (currentThreadList.Count > 0)
                 {
-                    foreach (ThreadListRow tlr in Current_Thread_List)
+                    foreach (ThreadListRow tlr in currentThreadList)
                     {
-                        if (tlr.PosterId == -1)
+                        if (_bbs.terminalType.Columns() == 40)
                         {
-                            //skip this row
+                            //                      1111111111222222222233333333334444444444555555555566666666666777777777
+                            //Columns are 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+                            //             ID- SUBJECT---------------------------
+                            //                 POSTED-----  POSTER--------------- 
+                            _bbs.Write("~c7" + Utils.Clip(currentThreadList.IndexOf(tlr).ToString(), 4, true) + "~c1");
+                            _bbs.WriteLine(" " + Utils.Clip(tlr.Subject, 32, true));
+
+                            _bbs.Write(Utils.Clip("~c1Last Post:~c3" + tlr.LastActivity.ToString("yy-MM-dd hh:mm"), 30, true));
+                            _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Poster, 10, true));
+
                         }
                         else
                         {
-                            if (_bbs.terminalType.Columns() == 40)
-                            {
-                                //                      1111111111222222222233333333334444444444555555555566666666666777777777
-                                //Columns are 01234567890123456789012345678901234567890123456789012345678901234567890123456789
-                                //             ID- SUBJECT---------------------------
-                                //                 POSTED-----  POSTER--------------- 
-                                _bbs.Write("~c7" + Utils.Clip(Current_Thread_List.IndexOf(tlr).ToString(), 4, true) + "~c1");
-                                _bbs.WriteLine(" " + Utils.Clip(tlr.Subject, 32, true));
-
-                                _bbs.Write(Utils.Clip("~c1Last Post:~c3" + tlr.LastActivity.ToString("yy-MM-dd hh:mm"), 30, true));
-                                _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Poster, 10, true));
-
-                            }
-                            else
-                            {
-                                //             ID- SUBJECT-------------------------------------- POSTED----- POSTER---------      
-                                _bbs.Write("~c7" + Utils.Clip(Current_Thread_List.IndexOf(tlr).ToString(), 4, true) + "~c1");
-                                _bbs.Write(" " + Utils.Clip(tlr.Subject, 40, true));
-                                _bbs.Write("~c3 " + Utils.Clip(tlr.LastActivity.ToString("yy-MM-dd hh:mm"), 14, true));
-                                _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Poster, 21, true));
-                            }
+                            //             ID- SUBJECT-------------------------------------- POSTED----- POSTER---------      
+                            _bbs.Write("~c7" + Utils.Clip(currentThreadList.IndexOf(tlr).ToString(), 4, true) + "~c1");
+                            _bbs.Write(" " + Utils.Clip(tlr.Subject, 40, true));
+                            _bbs.Write("~c3 " + Utils.Clip(tlr.LastActivity.ToString("yy-MM-dd hh:mm"), 14, true));
+                            _bbs.WriteLine("~c4 " + Utils.Clip(tlr.Poster, 21, true));
                         }
                     }
                 }
@@ -346,37 +342,40 @@ namespace Net_BBS.BBS_Core
             }
         }
 
+
         public void CMD_ReadNextUnread()
         {
             //Read Next unread message
             //Search through each thread until an unread message is found.
-            int i = -1;
-            foreach (ThreadListRow tlr in Current_Thread_List)
+            int? i = null;
+            foreach (var tlr in currentThreadList)
             {
-                List<int> messages = _bbsDataCore.MessageIdsInThread(tlr.MessageThreadId);
-                i = _bbsDataCore.FirstUnread(_bbs.currentUser.Id, messages);
-                if (i != -1)
+                var messages = _bbsDataCore.MessageIdsInThread(tlr.MessageThreadId);
+                if (messages != null)
                 {
-                    break;
+                    i = _bbsDataCore.FirstUnread(_bbs.currentUser.Id, messages);
+                    if (i != null)
+                    {
+                        break;
+                    }
                 }
-
             }
-            if (i != -1) CMD_ReadMessage(i, true);
+            if (i != null) CMD_ReadMessage((int)i, true);
 
         }
 
         public void CMD_ReadThreadByListId(int listid)
         {
-            if ((listid > Current_Thread_List.Count - 1) || (listid < 0))
+            if ((listid > currentThreadList.Count - 1) || (listid < 0))
             {
                 _bbs.WriteLine("~l2~d2NO SUCH THREAD.~g1~d0");
             }
             else
             {
-                ThreadListRow selectedThread = Current_Thread_List[listid];
+                ThreadListRow selectedThread = currentThreadList[listid];
                 if (selectedThread != null)
                 {
-                    CMD_ReadThread(selectedThread.MessageThreadId, -1);
+                    CMD_ReadThread(selectedThread.MessageThreadId, null);
                 }
             }
         }
@@ -443,10 +442,10 @@ namespace Net_BBS.BBS_Core
         }
 
         //Read entire thread, or thread from message id, regardless of new
-        public void CMD_ReadThread(int ThreadId, int StartWithMessageId)
+        public void CMD_ReadThread(int ThreadId, int? StartWithMessageId)
         {
             List<int> messagesinthread = _bbsDataCore.MessageIdsInThread(ThreadId);
-            if (StartWithMessageId == -1)
+            if (StartWithMessageId == null)
             {
                 int start = 0;
                 for (int x = start; x < messagesinthread.Count; x++)
@@ -484,9 +483,9 @@ namespace Net_BBS.BBS_Core
             else
             {
                 //start with specific message id
-                if (messagesinthread.Contains(StartWithMessageId))
+                if (messagesinthread.Contains((int)StartWithMessageId))
                 {
-                    int start = messagesinthread.IndexOf(StartWithMessageId);
+                    int start = messagesinthread.IndexOf((int)StartWithMessageId);
                     for (int x = start; x < messagesinthread.Count; x++)
                     {
                         CMD_ReadMessage(messagesinthread[x], (x == start));
@@ -514,31 +513,33 @@ namespace Net_BBS.BBS_Core
             }
         }
 
-        public void CMD_ReadMessage(int MessageId, bool showsubject)
+        public void CMD_ReadMessage(int messageId, bool showSubject)
         {
-            MessageHeader bm = _bbsDataCore.GetMessage(MessageId);
-            if (bm == null)
+            MessageBaseMessage messageBaseMessage = _bbsDataCore.GetMessage(messageId);
+            if (messageBaseMessage == null)
             {
                 _bbs.WriteLine("~l1~d2NO SUCH MESSAGE.~d0");
             }
             else
             {
                 _bbs.WriteLine("~l1");
-                _bbs.WriteLine("~c1Poster: ~c7" + bm.User.Username);
-                if (showsubject) _bbs.WriteLine("~c1Subject: ~c7" + bm.Subject);
-                _bbs.WriteLine("~c1Posted: ~c7" + bm.Posted.ToString("yyyy-MM-dd hh:mm:ss"));
+                _bbs.WriteLine("~c1Poster: ~c7" + (messageBaseMessage.Anonymous ? "Anonymous" : messageBaseMessage.User.Username));
+                if (showSubject) _bbs.WriteLine("~c1Subject: ~c7" + messageBaseMessage.Subject);
+                _bbs.WriteLine("~c1Posted: ~c7" + messageBaseMessage.Posted.ToString("yyyy-MM-dd hh:mm:ss"));
 
-                _bbs.Write("~c2" + Utils.Repeat('\xc0', _bbs.terminalType.Columns()));
+                _bbs.Write("~c2" + Utils.Repeat(_bbs.terminalType.Horizontal_Bar(), _bbs.terminalType.Columns()));
                 _bbs.Write("~c1");
                 string[] splitarray = { "~\xff~" };
-                string[] lines = bm.MessageBody.Body.TrimEnd("~\xff".ToCharArray()).Split(splitarray, StringSplitOptions.None);
+                string[] lines = messageBaseMessage.Body.TrimEnd("~\xff".ToCharArray()).Split(splitarray, StringSplitOptions.None);
                 foreach (string s in lines)
                 {
                     _bbs.WriteLine(s);
                 }
-                _bbs.Write("~c2");
-                _bbs.Write(Utils.Repeat('\xc0', _bbs.terminalType.Columns()));
+
+                _bbs.Write("~c2" + Utils.Repeat(_bbs.terminalType.Horizontal_Bar(), _bbs.terminalType.Columns()));
+                _bbsDataCore.MarkRead(_bbs.currentUser.Id, messageId);
             }
+
         }
 
         public void CMD_Reply(int ThreadId)
@@ -546,14 +547,14 @@ namespace Net_BBS.BBS_Core
             _bbs.Write("~l1~c1Reply To Message~l1Anonymous?");
             bool anon = _bbs.YesNo(true, true);
 
-            string subject = "RE:" + Current_Thread_List.First(p => p.MessageThreadId.Equals(ThreadId)).Subject;
+            string subject = "RE:" + currentThreadList.First(p => p.MessageThreadId.Equals(ThreadId)).Subject;
             if (subject != "")
             {
                 Line_Editor le = new Line_Editor(_bbs);
                 if (le.Edit(null))
                 {
                     _bbs.Write("~s1~l1~c1Posting Message...");
-                    _bbsDataCore.PostReply(CurrentMessageBase, subject, anon, _bbs.currentUser.Id, le.GetMessage(), ThreadId);
+                    _bbsDataCore.PostReply((int)currentMessageBase, subject, anon, _bbs.currentUser.Id, le.GetMessage(), ThreadId);
                     _bbs.WriteLine("Done.");
                 }
             }

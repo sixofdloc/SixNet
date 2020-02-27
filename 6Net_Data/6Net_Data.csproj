@@ -92,9 +92,8 @@
     <Compile Include="Models\MessageBaseArea.cs" />
     <Compile Include="Models\MessageBase.cs" />
     <Compile Include="Models\TitledModel.cs" />
-    <Compile Include="Models\MessageHeader.cs" />
+    <Compile Include="Models\MessageBaseMessage.cs" />
     <Compile Include="Models\MessageThread.cs" />
-    <Compile Include="Models\MessageBody.cs" />
     <Compile Include="Models\UserAccessGroup.cs" />
     <Compile Include="Models\MessageBaseAccessGroup.cs" />
     <Compile Include="BBSDataCore_GFiles.cs" />
@@ -114,6 +113,7 @@
     <Compile Include="Models\Field.cs" />
     <Compile Include="BBSDataCore_Field.cs" />
     <Compile Include="Models\MessageBaseAreaAccessGroup.cs" />
+    <Compile Include="Models\UserHasReadMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -9,9 +9,9 @@ namespace Net_BBS.BBS_Core.Editors
         private readonly BBS _bbs;
 
         public List<String> Message { get; set; }
-        private int CurrentLine = 0;
-        private int Column = 0;
-        private bool ExitFlag = false;
+        private int CurrentLine ;
+        private int Column ;
+        private bool ExitFlag ;
 
         public string GetMessage()
         {
@@ -156,7 +156,7 @@ namespace Net_BBS.BBS_Core.Editors
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in Line_Editor.Edit: " + e.ToString());
+                LoggingAPI.LogEntry("Exception in Line_Editor.Edit: " + e);
             }
             _bbs.doNotDisturb = _bbs.overrideDoNotDisturb;
             return result;

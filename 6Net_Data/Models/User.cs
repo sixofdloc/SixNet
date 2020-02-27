@@ -18,14 +18,16 @@ namespace Net_Data.Models
         public string Email { get; set; }
         public string WebPage { get; set; }
 
-        public ICollection<UserAccessGroup> UserAccessGroups { get; set; }
+        public virtual ICollection<UserAccessGroup> UserAccessGroups { get; set; }
 
-        public ICollection<CallLog> CallLogs { get; set; }
+        public virtual ICollection<CallLog> CallLogs { get; set; }
 
-        public ICollection<MessageHeader> MessageHeaders { get; set; }
+        public virtual ICollection<MessageBaseMessage> MessageBaseMessages { get; set; }
 
-        public ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
 
-        public ICollection<NewsItem> NewsItems { get; set; }
+        public virtual ICollection<NewsItem> NewsItems { get; set; }
+
+        public virtual ICollection<UserHasReadMessage> UserHasReadMessages { get; set; }
     }
 }

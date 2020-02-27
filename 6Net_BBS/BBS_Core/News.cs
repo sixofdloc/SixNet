@@ -35,7 +35,7 @@ namespace Net_BBS.BBS_Core
                 {
                     _bbs.WriteLine("~l1");
                     _bbs.WriteLine("~c1Subject: ~c7" + newsItem.Subject);
-                    _bbs.WriteLine("~c1Date: ~c7" + newsItem.Sent.ToString("yy-MM-dd HH:mm") + "~c2");
+                    _bbs.WriteLine("~c1Date: ~c7" + newsItem.Posted.ToString("yy-MM-dd HH:mm") + "~c2");
                     _bbs.Write(Utils.Repeat('\xc0', _bbs.terminalType.Columns()));
                     _bbs.Write("~c1");
                     string[] splitarray = { "~\xff~" };

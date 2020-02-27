@@ -18,8 +18,8 @@ namespace Net_BBS.BBS_Core
         public string ComputerType { get; set; }
 
 
-        private int tries = 0;
-        private bool validinput = false;
+        private int tries ;
+        private bool validinput;
 
 
 
@@ -67,7 +67,7 @@ namespace Net_BBS.BBS_Core
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in NewUser.Application: " + e.ToString());
+                LoggingAPI.LogEntry("Exception in NewUser.Application: " + e);
             }
             return result;
 

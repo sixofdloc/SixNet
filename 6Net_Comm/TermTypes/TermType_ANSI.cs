@@ -11,6 +11,11 @@ namespace Net_Comm.TermTypes
             return "ANSI";
         }
 
+        public string Horizontal_Bar()
+        {
+            return "\xc4";
+        }
+
         public string CRLF()
         {
             return "\r\n";

@@ -36,8 +36,6 @@ namespace Net_BBS.BBS_Core
                         {
                             break;
                         }
-                        else
-                        {
                             _bbs.Write("~l1~c1Password~c2: ~c7");
                             pass = _bbs.Input(true, true, false, false, 30);
                             if ((uname == "") || (pass == ""))
@@ -45,7 +43,6 @@ namespace Net_BBS.BBS_Core
                                 tries++;
                             }
                             else break;
-                        }
                     }
                     if (tries < 3)
                     {
@@ -56,17 +53,13 @@ namespace Net_BBS.BBS_Core
                                 u = _bbsDataCore.Login(nu.Username, nu.Password);
                             break;
                         }
-                        else
-                        {
-                            //Username and pass have been filled in
-                            u = _bbsDataCore.Login(uname, pass);
-                            if (u != null) break;
-                        }
-
+                        //Username and pass have been filled in
+                        u = _bbsDataCore.Login(uname, pass);
+                        if (u != null) break;
                     }
                     else
                     {
-                        u = null; 
+                        u = null;
                         break;
                     }
                     if (u == null) bigtries++;

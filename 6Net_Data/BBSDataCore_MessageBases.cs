@@ -158,47 +158,48 @@ namespace Net_Data
         }
 
 
-        public List<IdAndKeys> MessageBase_List_Area(int area, int userid)
+        public List<IdAndKeys> MessageBase_List_Area(int? area, int userid)
         {
             List<IdAndKeys> response = new List<IdAndKeys>();
-            //try
-            //{
-            //    User u = _bbsDataContext.Users.FirstOrDefault(p => p.Id.Equals(userid));
-            //    AccessGroup ag = _bbsDataContext.AccessGroups.FirstOrDefault(p => p.AccessGroupNumber.Equals(u.AccessLevel));
-            //    List<MessageBaseArea> arealist = _bbsDataContext.MessageBaseAreas.Where(p => p.ParentAreaId.Equals(area) && p.AccessLevel <= ag.AccessGroupNumber).ToList();
-            //    List<MessageBase> baselist = _bbsDataContext.MessageBases.Where(p => p.ParentAreaId.Equals(area) && p.AccessLevel <= ag.AccessGroupNumber).ToList();
-            //    int listId = 1;
-            //    foreach (MessageBaseArea gfa in arealist)
-            //    {
-            //        IdAndKeys idak = new IdAndKeys()
-            //        {
-            //            Id = gfa.Id
-            //        };
-            //        idak.Keys.Add("title", gfa.Title);
-            //        idak.Keys.Add("type", "area");
-            //        idak.Keys.Add("desc", gfa.Description);
-            //        idak.Keys.Add("listid", listId.ToString());
-            //        listId++;
-            //        response.Add(idak);
-            //    }
-            //    foreach (MessageBase gfd in baselist)
-            //    {
-            //        IdAndKeys idak = new IdAndKeys()
-            //        {
-            //            Id = gfd.Id
-            //        };
-            //        idak.Keys.Add("type", "file");
-            //        idak.Keys.Add("title", gfd.Title);
-            //        idak.Keys.Add("desc", gfd.Description);
-            //        idak.Keys.Add("listid", listId.ToString());
-            //        listId++;
-            //        response.Add(idak);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    LoggingAPI.LogEntry("Exception in DataInterface.MessageBase_List_Area(" + area.ToString() + ") : " + e.Message);
-            //}
+            try
+            {
+                User u = _bbsDataContext.Users.FirstOrDefault(p => p.Id.Equals(userid));
+                //TODO: Fix access groups
+                //AccessGroup ag = _bbsDataContext.AccessGroups.FirstOrDefault(p => p.AccessGroupNumber.Equals(u.AccessLevel));
+                List<MessageBaseArea> arealist = _bbsDataContext.MessageBaseAreas.Where(p => p.ParentAreaId.Equals(area)).ToList();
+                List<MessageBase> baselist = _bbsDataContext.MessageBases.Where(p => p.MessageBaseAreaId.Equals(area)).ToList();
+                int listId = 1;
+                foreach (MessageBaseArea gfa in arealist)
+                {
+                    IdAndKeys idak = new IdAndKeys()
+                    {
+                        Id = gfa.Id
+                    };
+                    idak.Keys.Add("title", gfa.Title);
+                    idak.Keys.Add("type", "area");
+                    idak.Keys.Add("desc", gfa.Description);
+                    idak.Keys.Add("listid", listId.ToString());
+                    listId++;
+                    response.Add(idak);
+                }
+                foreach (MessageBase gfd in baselist)
+                {
+                    IdAndKeys idak = new IdAndKeys()
+                    {
+                        Id = gfd.Id
+                    };
+                    idak.Keys.Add("type", "file");
+                    idak.Keys.Add("title", gfd.Title);
+                    idak.Keys.Add("desc", gfd.Description);
+                    idak.Keys.Add("listid", listId.ToString());
+                    listId++;
+                    response.Add(idak);
+                }
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.LogEntry("Exception in DataInterface.MessageBase_List_Area(" + area.ToString() + ") : " + e.Message);
+            }
             return response;
         }
 
@@ -207,41 +208,49 @@ namespace Net_Data
             try
             {
 
-                MessageHeader header = new MessageHeader() { MessageBaseId = messagebase, Anonymous = anon, Posted = DateTime.Now, Subject = subject, UserId = userid, MessageThreadId = threadid };
-                _bbsDataContext.MessageHeaders.Add(header);
-                _bbsDataContext.SaveChanges();
-
-                MessageBody body = new MessageBody() { Body = message, MessageHeaderId = header.Id };
-                _bbsDataContext.MessageBodies.Add(body);
-
-                _bbsDataContext.SaveChanges();
+                MessageBaseMessage reply = new MessageBaseMessage() { MessageBaseId = messagebase, Anonymous = anon, Posted = DateTime.Now, Subject = subject, UserId = userid, MessageThreadId = threadid, Body = message };
+                _bbsDataContext.Create(reply);
             }
             catch (Exception e)
             {
                 LoggingAPI.LogEntry("Exception in DataInterface.PostMessage: " + e.ToString());
             }
         }
+
+        //Initialize and return a MessageThread
+        public MessageThread InitMessageThread(int messageBaseId)
+        {
+            var messageThread = new MessageThread()
+            {
+                MessageBaseId = messageBaseId
+            };
+            return _bbsDataContext.Create(messageThread);
+        }
+
+        //Initialize and return a MessageHeader
+        public MessageBaseMessage InitMessageBaseMessage(MessageThread messageThread, string subject, bool anonymous, int postingUserId, string messageBody)
+        {
+            var messageHeader = new MessageBaseMessage()
+            {
+                MessageBaseId = messageThread.MessageBaseId,
+                MessageThreadId = messageThread.Id,
+                Subject = subject,
+                Anonymous = anonymous,
+                UserId = postingUserId,
+                Posted = DateTime.Now, 
+                Body = messageBody
+            };
+            return _bbsDataContext.Create(messageHeader);
+        }
+
+
         //Start new thread
-        public void PostMessage(int messagebase, string subject, bool anon, int userid, string message)
+        public void PostMessageAsNewThread(int messageBaseId, string subject, bool anonymous, int postingUserId, string messageBody)
         {
             try
             {
-
-                //MessageThread thread = new MessageThread() { MessageBaseId = messagebase, MessageHeaderId = -1 };
-                //_bbsDataContext.MessageThreads.Add(thread);
-                //_bbsDataContext.SaveChanges();
-
-                //MessageHeader header = new MessageHeader() { MessageBaseId = messagebase, Anonymous = anon, Posted = DateTime.Now, Subject = subject, UserId = userid, MessageThreadId = thread.MessageThreadId };
-                //_bbsDataContext.MessageHeaders.Add(header);
-                //_bbsDataContext.SaveChanges();
-
-                //thread.MessageHeaderId = header.Id;
-                //_bbsDataContext.SaveChanges();
-
-                //MessageBody body = new MessageBody() { Body = message, MessageHeaderId = header.Id };
-                //_bbsDataContext.MessageBodies.Add(body);
-
-                //_bbsDataContext.SaveChanges();
+                var messageThread = InitMessageThread(messageBaseId);
+                InitMessageBaseMessage(messageThread, subject, anonymous, postingUserId,messageBody);//Persists all changes
             }
             catch (Exception e)
             {
@@ -249,136 +258,102 @@ namespace Net_Data
             }
         }
 
-        public List<ThreadListRow> ListThreadsForBase(int messagebase)
+        public List<ThreadListRow> ListThreadsForBase(int messageBase)
         {
-            List<ThreadListRow> threads = new List<ThreadListRow>();
+            var result = new List<ThreadListRow>();
             try
             {
-                string query = "SELECT MT.MessageThreadId AS MessageThreadId, "
-                               + " IM.Subject AS Subject, "
-                               + " CASE WHEN LM.Posted IS NULL THEN"
-                               + "  CASE WHEN IM.Posted IS NULL THEN"
-                               + "      '1970-01-01 00:00:00' "
-                               + "  ELSE IM.Posted END "
-                               + " ELSE LM.Posted END AS LastActivity, "
-                               + " U.Username AS Poster, "
-                               + " CASE WHEN U.UserId IS NULL THEN -1 ELSE U.UserId END As PosterId,  "
-                               + " COUNT(RC.MessageHeaderId) AS Replies FROM MessageThreads "
-                               + " MT LEFT JOIN MessageHeaders IM ON (MT.InitialMessageHeaderId = IM.MessageHeaderId) "
-                               + " LEFT JOIN MessageHeaders LM ON (MT.MessageThreadId = LM.MessageThreadId) "
-                               + " LEFT JOIN MessageHeaders RC ON (MT.MessageThreadId = RC.MessageThreadId AND MT.InitialMessageHeaderId != RC.MessageThreadId) "
-                               + " LEFT OUTER JOIN MessageHeaders LD ON (LD.MessageThreadId = MT.MessageThreadId AND (LM.Posted < LD.Posted OR LM.Posted = LD.Posted AND LM.MessageHeaderId < LD.MessageHeaderId)) "
-                               + " LEFT JOIN Users U ON (LM.UserId = U.UserId) "
-                               + " WHERE LD.MessageHeaderId IS NULL AND MT.MessageBaseId = " + messagebase.ToString()
-                               + " GROUP BY MT.MessageThreadId,IM.Subject,IM.Posted,LM.Posted,U.Username, U.Userid"
-                   ;
-
-               //TODO: Rewrite this to use the ORM.  Fuck SQL in classes
-                //threads = <ThreadListRow>(query).ToList<ThreadListRow>();
-                //int i = 1;
-                //foreach (ThreadListRow threadinfo in threads)
-                //{
-                //    IdAndKeys idak = new IdAndKeys();
-                //    idak.Id = threadinfo.MessageThreadId;
-                //    idak.Keys.Add("subject", threadinfo.Subject);
-                //    idak.Keys.Add("activity", threadinfo.LastActivity.ToString("yy-MM-dd hh:mm"));
-                //    idak.Keys.Add("poster", threadinfo.Poster);
-                //    idak.Keys.Add("posterid", threadinfo.PosterId.ToString());
-                //    idak.Keys.Add("listid", i.ToString());
-                //    i++;
-                //    result.Add(idak);
-                //}
+                var threads = _bbsDataContext.MessageThreads.Where(p => p.MessageBaseId == messageBase).OrderBy(p => p.Id).ToList();
+                threads.ForEach(thread => {
+                    var firstMessage = thread.MessageBaseMessages.OrderBy(p => p.Posted).First();
+                    var lastMessage = thread.MessageBaseMessages.OrderBy(p => p.Posted).Last();
+                    result.Add(
+                        new ThreadListRow()
+                        {
+                            Subject = firstMessage.Subject,
+                            LastActivity = lastMessage.Posted,
+                            MessageThreadId = thread.Id,
+                            Poster = lastMessage.User.Username,
+                            PosterId = (int)lastMessage.UserId
+                        }
+                        );
+                });
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.ListThreadsForBase(" + messagebase.ToString() + "): " + e.ToString());
+                LoggingAPI.LogEntry("Exception in DataInterface.ListThreadsForBase(" + messageBase.ToString() + "): " + e.ToString());
             }
-            return threads;
+            return result;
         }
 
 
-        public void MarkRead(int userid, int messageid)
+        public void MarkRead(int userId, int messageBaseMessageId)
         {
             try
             {
-                //if (!HasRead(userid, messageid))
-                //{
-                //    BBSDataDataContext bbs = GetDataContext();
-                //    UserRead ur = new UserRead() { UserId = userid, MessageHeaderId = messageid };
-                //    bbs.UserReads.InsertOnSubmit(ur);
-                //    bbs.SubmitChanges();
-                //}
+                var readRecord = new UserHasReadMessage()
+                {
+                    MessageBaseMessageId = messageBaseMessageId,
+                    UserId = userId
+                };
+                _bbsDataContext.Create(readRecord);
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.MarkRead(" + userid.ToString() + "," + messageid.ToString() + "):" + e.ToString());
+                LoggingAPI.LogEntry("Exception in DataInterface.MarkRead(" + userId.ToString() + "," + messageBaseMessageId.ToString() + "):" + e.ToString());
             }
         }
 
         public bool HasRead(int userid, int messageid)
         {
-            bool b = false;
-            //try
-            //{
-            //    BBSDataDataContext bbs = GetDataContext();
-            //    b = bbs.UserReads.Where(p => p.UserId.Equals(userid)).Select(r => r.MessageHeaderId).Contains(messageid);
-            //}
-            //catch (Exception e)
-            //{
-            //    LoggingAPI.LogEntry("Exception in DataInterface.HasRead(" + userid.ToString() + "," + messageid.ToString() + "):" + e.ToString());
-            //}
-            return b;
+            return _bbsDataContext.UserHasReadMessages.Any(p => p.UserId == userid && p.MessageBaseMessageId == messageid);
         }
 
-        public int FirstUnread(int userid, List<int> messageids)
+        public int? FirstUnread(int userId, List<int> messageIds)
         {
-            int i = -1;
-            //if (messageids != null)
-            //{
-            //    if (messageids.Count > 0)
-            //    {
-            //        try
-            //        {
-            //            BBSDataDataContext bbs = GetDataContext();
-            //            i = messageids.FirstOrDefault(q => !(
-            //                bbs.UserReads.Where(p => p.UserId.Equals(userid)).Select(r => r.MessageHeaderId).Contains(q))
-            //                );
-            //            //   if (i == null) i = -1;
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            LoggingAPI.LogEntry("Exception in DataInterface.FirstUnread(" + userid.ToString() + ",LIST):" + e.ToString());
-            //        }
-            //    }
-            //}
-            return i;
+            int? result = null;
+            var unreadMessages = messageIds;
+            if (messageIds != null)
+            {
+                var messagesUserHasReadFromMessageIds = 
+                    _bbsDataContext.UserHasReadMessages.Where(p => p.UserId == userId && messageIds.Contains(p.MessageBaseMessageId)).Select(q=>q.MessageBaseMessageId).ToList();
+                if (messagesUserHasReadFromMessageIds.Any())
+                {
+                    messageIds.RemoveAll(p => messagesUserHasReadFromMessageIds.Contains(p));
+                }
+                    result = unreadMessages.FirstOrDefault();
+
+            }
+            return result;
         }
 
-        public List<int> MessageIdsInThread(int threadid)
+        public List<int> MessageIdsInThread(int threadId)
         {
-            List<int> result = new List<int>();
+            List<int> result = null;
             try
             {
-                String Query = "SELECT MessageHeaderId FROM MessageHeaders WHERE MessageThreadId = " + threadid.ToString() + "ORDER BY Posted ";
-
-            //    result = bbs.ExecuteQuery<int>(Query).ToList<int>();
+                result = _bbsDataContext.MessageBaseMessages.Where(p => p.MessageThreadId == threadId).Select(p => p.Id).ToList();
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.MessageIdsInThread(" + threadid.ToString() + "):" + e.ToString());
+                LoggingAPI.LogEntry("Exception in DataInterface.MessageIdsInThread(" + threadId.ToString() + "):" + e.ToString());
             }
             return result;
 
         }
 
-        //This is unneeded, you just use the headerid and the rest is lazy loaded
-        public MessageHeader GetMessage(int MessageId)
+        public MessageBaseMessage GetMessage(int messageBaseMessageId)
         {
-            return _bbsDataContext.MessageHeaders.FirstOrDefault(p => p.Id == MessageId);
-        //    BBS_Message bm = new BBS_Message();
-        //    bm.Header = bbs.MessageHeaders.FirstOrDefault(p => p.MessageHeaderId.Equals(MessageId));
-        //    bm.Body = bbs.MessageBodies.FirstOrDefault(p => p.MessageHeaderId.Equals(MessageId));
-        //    return bm;
+            MessageBaseMessage result = null;
+            try
+            {
+                result = _bbsDataContext.MessageBaseMessages.FirstOrDefault(p => p.Id == messageBaseMessageId);
+            }
+            catch (Exception e)
+            {
+                LoggingAPI.LogEntry("Exception in DataInterface.GetMessage(" + messageBaseMessageId.ToString() + "):" + e.ToString());
+            }
+            return result;
         }
     }
 }
