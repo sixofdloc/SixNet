@@ -73,9 +73,9 @@ namespace Net_BBS.BBS_Core
                     BuggerOff();
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in Login.LogIn: " + e.Message);
+                LoggingAPI.Exception(exception, new { }); 
             }
             return u;
         }

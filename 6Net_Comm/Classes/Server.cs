@@ -36,7 +36,7 @@ namespace Net_Comm.Classes
 
             public Server(int port, string title, string attr, Action<StateObject> onconnect, Action<StateObject> ondisconnect)
             {
-                Console.WriteLine("Server initialized on port: " + port.ToString());
+                LoggingAPI.Information("Server initialized on port: {port}",port);
                 _portNumber = port;
                 this.title = title;
                 this.maxSockets = 10000;
@@ -56,7 +56,7 @@ namespace Net_Comm.Classes
                 for (int lcv = 0; lcv < numThreads; lcv++)
                     threadEnd[lcv] = new AutoResetEvent(false);
 
-                Console.WriteLine("Server started");
+                LoggingAPI.Information("Server started");
 
                 ThreadStart threadStart1 = new ThreadStart(StartListening);
                 serverThread[0] = new Thread(threadStart1)
@@ -122,7 +122,7 @@ namespace Net_Comm.Classes
                 int lcv;
                 lostTimer.Dispose();
                 lostTimer = null;
-                Console.WriteLine("Server stopped");
+                LoggingAPI.Information("Server stopped");
 
                 for (lcv = 0; lcv < numThreads; lcv++)
                 {
@@ -170,9 +170,9 @@ namespace Net_Comm.Classes
                         allDone.WaitOne();
                     }
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception,new { });
                     threadEnd[0].Set();
                 }
             }
@@ -180,14 +180,14 @@ namespace Net_Comm.Classes
             /// 
             /// Decription: Call back method to accept new connections.
             /// 
-            /// <param name="ar">Status of an asynchronous operation.</param>
-            private void AcceptCallback(IAsyncResult ar)
+            /// <param name="asyncResult">Status of an asynchronous operation.</param>
+            private void AcceptCallback(IAsyncResult asyncResult)
             {
                 // Signal the main thread to continue.
                 allDone.Set();
                 // Get the socket that handles the client request.
-                Socket listener = (Socket)ar.AsyncState;
-                Socket handler = listener.EndAccept(ar);
+                Socket listener = (Socket)asyncResult.AsyncState;
+                Socket handler = listener.EndAccept(asyncResult);
 
                 // Create the state object.
                 StateObject state = new StateObject()
@@ -216,15 +216,15 @@ namespace Net_Comm.Classes
                         state = null;
                     }
                 }
-                catch (SocketException es)
+                catch (SocketException socketException)
                 {
                     RemoveSocket(state);
-                    LoggingAPI.Error(es);
+                    LoggingAPI.Exception(socketException,new { asyncResult, state });
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
                     RemoveSocket(state);
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception, new { asyncResult, state });
                 }
             }
 
@@ -232,18 +232,18 @@ namespace Net_Comm.Classes
             /// 
             /// Decription: Call back method to handle incoming data.
             /// 
-            /// <param name="ar">Status of an asynchronous operation.</param>
-            protected void ReadCallback(IAsyncResult ar)
+            /// <param name="asyncResult">Status of an asynchronous operation.</param>
+            protected void ReadCallback(IAsyncResult asyncResult)
             {
                 //String content = String.Empty;
                 // Retrieve the state object and the handler socket
                 // from the async state object.
-                StateObject state = (StateObject)ar.AsyncState;
+                StateObject state = (StateObject)asyncResult.AsyncState;
                 Socket handler = state.workSocket;
             try
             {
                 // Read data from the client socket.
-                int bytesRead = handler.EndReceive(ar);
+                int bytesRead = handler.EndReceive(asyncResult);
 
                 if (bytesRead > 0)
                 {
@@ -261,29 +261,29 @@ namespace Net_Comm.Classes
                     RemoveSocket(state);
                 }
             }
-            catch (System.Net.Sockets.SocketException es)
+            catch (System.Net.Sockets.SocketException socketException)
             {
                 RemoveSocket(state);
                 OnDisconnect(state);
-                if (es.ErrorCode == 10057 || es.NativeErrorCode == 10054)
+                if (socketException.ErrorCode == 10057 || socketException.NativeErrorCode == 10054)
                 {
-                    LoggingAPI.SysLogEntry(state.RemoteAddress +": Socket Disconnected");
+                    LoggingAPI.Information(state.RemoteAddress +": Socket Disconnected");
                 }
                 else
                 {
-                    if (es.ErrorCode != 64)
+                    if (socketException.ErrorCode != 64)
                     {
-                        LoggingAPI.Error(es);
+                        LoggingAPI.Exception(socketException,new { asyncResult });
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
                 RemoveSocket(state);
                 OnDisconnect(state);
-                if (e.GetType() != typeof(System.ObjectDisposedException))
+                if (exception.GetType() != typeof(System.ObjectDisposedException))
                 {
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception, new { asyncResult });
                 }
             }
             }
@@ -291,9 +291,9 @@ namespace Net_Comm.Classes
             /// 
             /// Decription: Send the given data string to the given socket.
             /// 
-            /// <param name="sock">Socket to send data to.</param>
+            /// <param name="socket">Socket to send data to.</param>
             /// <param name="data">The string containing the data to send.</param>
-            public void Send(Socket sock, string data)
+            public void Send(Socket socket, string data)
             {
                 try
                 {
@@ -301,44 +301,44 @@ namespace Net_Comm.Classes
                     byte[] byteData = Encoding.ASCII.GetBytes(data);
 
                     // Begin sending the data to the remote device.
-                    if (byteData.Length > 0) sock.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(this.SendCallback), sock);
+                    if (byteData.Length > 0) socket.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(this.SendCallback), socket);
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception,new { socket, data });
                 }
             }
 
             /// 
             /// Decription: Call back method to handle outgoing data.
             /// 
-            /// <param name="ar">Status of an asynchronous operation.</param>
-            protected void SendCallback(IAsyncResult ar)
+            /// <param name="asyncResult">Status of an asynchronous operation.</param>
+            protected void SendCallback(IAsyncResult asyncResult)
             {
                 // Retrieve the socket from the async state object.
-                Socket handler = (Socket)ar.AsyncState;
+                Socket handler = (Socket)asyncResult.AsyncState;
                 try
                 {
                     // Complete sending the data to the remote device.
-                    int bytesSent = handler.EndSend(ar);
+                    int bytesSent = handler.EndSend(asyncResult);
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception,new { asyncResult });
                 }
             }
 
-            public void Disconnect(StateObject so)
+            public void Disconnect(StateObject stateObject)
             {
                 try
                 {
-                    so.Disconnect();
-                    so.workSocket = null;
-                    OnDisconnect(so);
+                    stateObject.Disconnect();
+                    stateObject.workSocket = null;
+                    OnDisconnect(stateObject);
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception,new { stateObject });
                 }
             }
 

@@ -69,9 +69,9 @@ namespace Net_BBS.BBS_Core
                                 GFiles gf = new GFiles(_bbs, _bbsDataCore);
                                 gf.Prompt();
                             }
-                            catch (Exception e)
+                            catch (Exception exception)
                             {
-                                LoggingAPI.LogEntry("Exception in Main.MainPrompt: " + e);
+                                LoggingAPI.Exception(exception, new { });
                                 //Log this?
                             }
                             break;
@@ -81,9 +81,9 @@ namespace Net_BBS.BBS_Core
                                 PFiles pf = new PFiles(_bbs, _bbsDataCore);
                                 pf.Prompt();
                             }
-                            catch (Exception e)
+                            catch (Exception exception)
                             {
-                                LoggingAPI.LogEntry("Exception in Main.MainPrompt: " + e);
+                                LoggingAPI.Exception(exception, new { });
                                 //Log this?
                             }
                             break;
@@ -251,7 +251,7 @@ namespace Net_BBS.BBS_Core
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in Main.CMD_OLM: " + e);
+                LoggingAPI.Exception(e, new { }); 
             }
         }
 

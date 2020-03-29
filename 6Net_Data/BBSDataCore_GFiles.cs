@@ -13,85 +13,85 @@ namespace Net_Data
     {
         public List<GFileArea> GfileAreas() => _bbsDataContext.GFileAreas.ToList();
 
-        public GFileArea GetGFileArea(int id)
+        public GFileArea GetGFileArea(int gfileAreaId)
         {
-            GFileArea result = null;
+            GFileArea gfileArea = null;
             try
             {
-                result = _bbsDataContext.GFileAreas.FirstOrDefault(p => p.Id == id);
+                gfileArea = _bbsDataContext.GFileAreas.FirstOrDefault(p => p.Id == gfileAreaId);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
-                result = null;
+                LoggingAPI.Exception(exception, new { gfileAreaId, gfileArea }); 
+                gfileArea = null;
             }
-            return result;
+            return gfileArea;
         }
 
-        public int GFile_ParentArea(int area)
+        public int GFile_ParentArea(int gfileAreaId)
         {
             int i = -1;
             try
             {
-                GFileArea gfa = _bbsDataContext.GFileAreas.FirstOrDefault(p => p.Id.Equals(area));
-                if (gfa != null)
+                GFileArea gfileArea = _bbsDataContext.GFileAreas.FirstOrDefault(p => p.Id.Equals(gfileAreaId));
+                if (gfileArea != null)
                 {
-                    i = gfa.ParentAreaId==null?-1:(int)gfa.ParentAreaId;
+                    i = gfileArea.ParentAreaId==null?-1:(int)gfileArea.ParentAreaId;
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.GFile_ParentArea: " + e.Message);
+                LoggingAPI.Exception(exception, new { gfileAreaId }); 
             }
             return i;
         }
 
-        public List<AreaListRow> GFileListArea(int? area, int userid)
+        public List<AreaListRow> GFileListArea(int? gfileAreaId, int userId)
         {
             //List all files and areas in the current area
-            var response = new List<AreaListRow>();
+            var listForThisArea = new List<AreaListRow>();
             try
             {
 
                 //User u = GetUserById(userid);
                 //User must have at least one access group that matches the gfile area
-                List<GFileArea> gfileAreas = _bbsDataContext.GFileAreas.Where(p => p.ParentAreaId==area ).ToList();
-                List<GFileDetail> gfileDetails = _bbsDataContext.GFileDetails.Where(p => p.GFileAreaId==area).ToList();
+                List<GFileArea> gfileAreas = _bbsDataContext.GFileAreas.Where(p => p.ParentAreaId==gfileAreaId ).ToList();
+                List<GFileDetail> gfileDetails = _bbsDataContext.GFileDetails.Where(p => p.GFileAreaId==gfileAreaId).ToList();
                 int listId = 1;
                 foreach (GFileArea gfileArea in gfileAreas)
                 {
                     listId++;
-                    response.Add(new AreaListRow(gfileArea,listId,AreaListRowType.Area));
+                    listForThisArea.Add(new AreaListRow(gfileArea,listId,AreaListRowType.Area));
                 }
                 foreach (GFileDetail gfileDetail in gfileDetails)
                 {
 
                     listId++;
-                    response.Add(new AreaListRow(gfileDetail,listId,AreaListRowType.Entry));
+                    listForThisArea.Add(new AreaListRow(gfileDetail,listId,AreaListRowType.Entry));
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.GFile_List_Area(" + area.ToString() + ") : " + e.Message);
+                LoggingAPI.Exception(exception, new { gfileAreaId, userId, listForThisArea });
             }
-            return response;
+            return listForThisArea;
         }
 
-        public bool AddGFileDetail(int areaId, string filePath, string fileName,string title, string description, string notes, bool PETSCII)
+        public bool AddGFileDetail(int gfileAreaId, string filePath, string fileName,string title, string description, string notes, bool PETSCII)
         {
             //filename must include relative path from bbs
             //determines file size on its own
             //Will not allow re-add of the same filename to the same area
-            bool b = false;
+            bool gfileDetailAdded = false;
             try
             {
-                if (!GFileExistsInArea(areaId, fileName))
+                if (!GFileExistsInArea(gfileAreaId, fileName))
                 {
                     if (File.Exists(filePath+fileName))
                     {
-                        GFileDetail gfd = new GFileDetail()
+                        GFileDetail gfileDetail = new GFileDetail()
                         {
-                            GFileAreaId = areaId,
+                            GFileAreaId = gfileAreaId,
                             Filename = fileName,
                             FilePath = filePath,
                             Added = DateTime.Now,
@@ -101,18 +101,18 @@ namespace Net_Data
                             PETSCII = PETSCII,
                             FileSizeInBytes = (int)(new FileInfo(filePath+fileName).Length)
                         };
-                        _bbsDataContext.GFileDetails.Add(gfd);
+                        _bbsDataContext.GFileDetails.Add(gfileDetail);
                         _bbsDataContext.SaveChanges();
-                        b = true;
+                        gfileDetailAdded = true;
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                b = false;
-                LoggingAPI.LogEntry("Exception in DataInterface.AddGFile: " + e);
+                gfileDetailAdded = false;
+                LoggingAPI.Exception(exception, new { gfileAreaId,filePath,fileName,title,description,notes,PETSCII }); 
             }
-            return b;
+            return gfileDetailAdded;
         }
         public bool GFileExistsInArea(int areaid, string filename)
         {

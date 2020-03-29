@@ -154,9 +154,9 @@ namespace Net_BBS.BBS_Core.Editors
 
                 } //While Exitflag
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in Line_Editor.Edit: " + e);
+                LoggingAPI.Exception(exception, new { message });
             }
             _bbs.doNotDisturb = _bbs.overrideDoNotDisturb;
             return result;

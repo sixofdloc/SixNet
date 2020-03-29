@@ -31,7 +31,7 @@ namespace Net_Setup
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LoggingAPI.Exception(ex, new { args});
             }
         }
     }

@@ -16,27 +16,27 @@ namespace Net
         {
 
             Console.Clear();
-            Console.WriteLine("SixNet BBS, Starting up...");
+            LoggingAPI.Information("SixNet BBS, Starting up...");
             _bbsDatabaseConfiguration = BBSDatabaseConfiguration.LoadConfig("./");
             if (_bbsDatabaseConfiguration == null)
             {
-                Console.WriteLine("Run setup utility first.");
+                LoggingAPI.Fatal("Run setup utility first.");
                 return;
             }
             _connectionString = BBSDatabaseConfiguration.BuildConnectionString(_bbsDatabaseConfiguration);
             LoggingAPI.Init("./Logs/");
             if (BBSDatabaseConfiguration.IsDatabaseSetup(_connectionString))
             {
-                Console.WriteLine("Database configured.");
+                LoggingAPI.Information("Database configured.");
                 _core = new BBSDataCore(_connectionString);
             }
             else
             {
-                Console.WriteLine("Database not configured - run setup utility.");
+                LoggingAPI.Fatal("Database not configured - run setup utility.");
                 return;
             }
             var config = _core.GetBBSConfig();
-            LoggingAPI.LogEntry("Software started.");
+            LoggingAPI.Information("Software started.");
             try
             {
                 quitFlag = false;
@@ -58,12 +58,11 @@ namespace Net
             }
             catch (Exception e)
             {
-                LoggingAPI.Error(e);
+               LoggingAPI.FatalException(e,"Main BBS thread stopped");
             }
             finally
             {
-                LoggingAPI.LogEntry("Software shutdown.");
-                LoggingAPI.FlushQueue();
+                LoggingAPI.Information("Software shutdown.");
             }
         }
     }

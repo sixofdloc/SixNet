@@ -84,7 +84,7 @@ namespace Net_Comm.TermTypes
             return t;
         }
 
-        public string TranlateToTerminal(string s)
+        public string TranslateToTerminal(string s)
         {
             return s;
         }

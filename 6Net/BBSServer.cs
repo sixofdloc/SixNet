@@ -47,15 +47,15 @@ namespace Net
             server.Start();
         }
 
-        public void AddConnection(StateObject so)
+        public void AddConnection(StateObject stateObject)
         {
             try
             {
-                StartBBS(so);
+                StartBBS(stateObject);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in AddConnection: " + e.Message);
+                LoggingAPI.Exception(exception, new { stateObject }); 
             }
         }
 

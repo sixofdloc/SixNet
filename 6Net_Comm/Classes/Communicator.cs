@@ -93,21 +93,21 @@ namespace Net_Comm.Classes
             }
         }
 
-        public void Write(string s)
+        public void Write(string stringToWrite)
         {
             try
             {
-                string t = terminalType.TranlateToTerminal(s);
-                for (int i = 0; i < t.Length && _stateObject.connected; i++)
+                string translatedStringToWrite = terminalType.TranslateToTerminal(stringToWrite);
+                for (int i = 0; i < translatedStringToWrite.Length && _stateObject.connected; i++)
                 {
-                    if (t.Substring(i, 1) != "~")
+                    if (translatedStringToWrite.Substring(i, 1) != "~")
                     {
-                        WriteString(t.Substring(i, 1));
+                        WriteString(translatedStringToWrite.Substring(i, 1));
                     }
                     else
                     {
-                        string v = t.Substring(i, 2);
-                        string u = t.Substring(i + 2, 1);
+                        string v = translatedStringToWrite.Substring(i, 2);
+                        string u = translatedStringToWrite.Substring(i + 2, 1);
                         switch (v.ToUpper())
                         {
                             case "~K":
@@ -132,12 +132,12 @@ namespace Net_Comm.Classes
                     }
                 }
             }
-            catch (SocketException se){
-                LoggingAPI.LogEntry("Socket disconnected during write.");
+            catch (SocketException socketException){
+                LoggingAPI.Exception(socketException, new { stringToWrite }); 
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
+                LoggingAPI.Exception(exception, new { stringToWrite });
             }
         }
 

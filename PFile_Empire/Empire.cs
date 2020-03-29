@@ -125,7 +125,7 @@ namespace PFile_Empire
             }
             catch (Exception e)
             {
-                LoggingAPI.LogEntry("Exception in Empire: " + e.ToString());
+                LoggingAPI.Exception(e, new { }); 
             }
         }
 

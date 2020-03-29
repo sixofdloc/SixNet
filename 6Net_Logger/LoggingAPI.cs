@@ -2,91 +2,76 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Net_Logger
 {
     public static class LoggingAPI
     {
-        private static Logger _debugLog;
-        private static Logger _errorLog;
-        private static Logger _sysLog;
 
         public static bool Init(string logPath)
         {
             bool b = true;
-            _debugLog = new Logger("DEBUG", logPath);
-            _errorLog = new Logger("ERROR", logPath);
-            _sysLog = new Logger("SYSLOG", logPath);
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.File(logPath + "bbslog-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
             return b;
         }
 
-        public static void FlushQueue()
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static void Exception(Exception ex, object methodParams)
         {
-            _debugLog.FlushQueue();
-            _errorLog.FlushQueue();
-            _sysLog.FlushQueue();
+            var jsonStr = JsonConvert.SerializeObject(methodParams);
+            Log.Error(ex, "Exception in " + GetSendingMethod() + ", params: {jsonStr} " ,jsonStr);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void LogEntry(string entryText)
+        public static void FatalException(Exception ex, object methodParams)
         {
-            _debugLog.Entry(GetSendingMethod() + ": " + entryText);
+            var jsonStr = JsonConvert.SerializeObject(methodParams);
+            Log.Fatal(ex, "Exception in " + GetSendingMethod() + ", params: {jsonStr} ", jsonStr);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void LogEntry(string entryText, params Object[] attachments)
+        public static void Verbose(string entryText, params Object[] attachments)
         {
-            var attachText = "";
-            foreach (Object attachment in attachments)
-            {
-                attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
-            }
-            _debugLog.Entry(GetSendingMethod() + ": " + entryText + ", " + attachText);
+            Log.Verbose(GetSendingMethod() + ": " + entryText,attachments);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void Error(string errorMessage)
+        public static void Debug(string entryText, params Object[] attachments)
         {
-            _errorLog.Entry(GetSendingMethod() + ": " + errorMessage);
+            Log.Debug(GetSendingMethod() + ": " + entryText, attachments);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void Error(string errorMessage, params Object[] attachments)
+        public static void Information(string entryText, params Object[] attachments)
         {
-            var attachText = "";
-            foreach (Object attachment in attachments)
-            {
-                attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
-            }
-            _errorLog.Entry(GetSendingMethod() + ": " + errorMessage + ", ATTACHMENTS: " + attachText);
+            Log.Information(GetSendingMethod() + ": " + entryText, attachments);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void Error(Exception exception)
+        public static void Warning(string entryText, params Object[] attachments)
         {
-            try
-            {
-                _errorLog.Entry(GetSendingMethod() + ": " + JsonConvert.SerializeObject(exception));
-            } catch (Exception )
-            {
-                //Not much we can do about it.
-            }
+            Log.Warning(GetSendingMethod() + ": " + entryText, attachments);
         }
 
-        public static void SysLogEntry(string entryText)
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static void Error(string entryText, params Object[] attachments)
         {
-            _sysLog.Entry(entryText);
+            Log.Error(GetSendingMethod() + ": " + entryText, attachments);
         }
 
-        public static void SysLogEntry(string entryText, params Object[] attachments)
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static void Fatal(string entryText, params Object[] attachments)
         {
-            var attachText = "";
-            foreach (Object attachment in attachments)
-            {
-                attachText += "\r\n\r\n" + JsonConvert.SerializeObject(attachment);
-            }
-            _sysLog.Entry(entryText + ", " + attachText);
+            Log.Fatal(GetSendingMethod() + ": " + entryText, attachments);
         }
+
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static string GetSendingMethod()

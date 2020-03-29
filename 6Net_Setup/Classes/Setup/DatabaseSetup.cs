@@ -30,7 +30,7 @@ namespace Net_Setup.Classes.Setup
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LoggingAPI.Exception(ex, new { });
                 result = "";
             }
             return result;

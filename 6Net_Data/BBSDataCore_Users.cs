@@ -8,47 +8,44 @@ namespace Net_Data
 {
     public partial class BBSDataCore
     {
-
-        #region Users
-
-        public User Login(string un, string pw)
+        public User Login(string userName, string passWord)
         {
-            User u = null;
+            User user = null;
             try
             {
-                var username = Utils.ToSQL(un);
-                var password = Utils.ToSQL(pw);
+                var username = Utils.ToSQL(userName);
+                var password = Utils.ToSQL(passWord);
 
-                u = _bbsDataContext.Users.FirstOrDefault(p => p.Username.ToUpper().Equals(username.ToUpper()) && p.HashedPassword.Equals(password));
-                u.Username = Utils.FromSQL(u.Username);
-                u.HashedPassword = Utils.FromSQL(u.HashedPassword);
-                u.RealName = Utils.FromSQL(u.RealName);
-                u.Email = Utils.FromSQL(u.Email);
-                u.ComputerType = Utils.FromSQL(u.ComputerType);
+                user = _bbsDataContext.Users.FirstOrDefault(p => p.Username.ToUpper().Equals(username.ToUpper()) && p.HashedPassword.Equals(password));
+                user.Username = Utils.FromSQL(user.Username);
+                user.HashedPassword = Utils.FromSQL(user.HashedPassword);
+                user.RealName = Utils.FromSQL(user.RealName);
+                user.Email = Utils.FromSQL(user.Email);
+                user.ComputerType = Utils.FromSQL(user.ComputerType);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.Login: " + e.ToString());
-                u = null;
+                LoggingAPI.Exception(exception,new { userName });
+                user = null;
             }
-            return u;
+            return user;
         }
 
-        public bool ValidNewUsername(string s)
+        public bool ValidNewUsername(string userName)
         {
-            var b = false;
+            var result = false;
             try
             {
-                var uname = Utils.ToSQL(s);
-                b = (_bbsDataContext.Users.Count(p => p.Username.ToUpper().Equals(uname.ToUpper())) == 0);
+                var sqlUserName = Utils.ToSQL(userName);
+                result = (_bbsDataContext.Users.Count(p => p.Username.ToUpper().Equals(sqlUserName.ToUpper())) == 0);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.ValidNewUsername: " + e.ToString());
-                b = false;
+                LoggingAPI.Exception(exception,new { userName });
+                result = false;
             }
 
-            return b;
+            return result;
         }
 
         public User SaveNewUser(string userName, string password, string realName, string email, string computerType, string ip, string webPage)
@@ -56,7 +53,7 @@ namespace Net_Data
             User newUser = null;
             try
             {
-                var u = new User()
+                var user = new User()
                 {
                     Username = userName,
                     HashedPassword = password,
@@ -68,14 +65,14 @@ namespace Net_Data
                     LastDisconnection = DateTime.Now,
                     LastConnectionIP = ip
                 };
-                _bbsDataContext.Users.Add(u);
+                _bbsDataContext.Users.Add(user);
                 _bbsDataContext.SaveChanges();
                 newUser = GetUserByName(userName);
 
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
+                LoggingAPI.Exception(exception,new { userName, password, email, computerType, ip, webPage });
                 newUser = null;
             }
             return newUser;
@@ -83,17 +80,17 @@ namespace Net_Data
 
         public bool CreateUser(User user)
         {
-            bool b = false;
+            bool result = false;
             try
             {
                 _bbsDataContext.Users.Add(user);
                 _bbsDataContext.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error("Params, Exception: ", user, e);
+                LoggingAPI.Exception(exception, new { user }); 
             }
-            return b;
+            return result;
         }
 
         public User SaveUser(User user)
@@ -103,66 +100,43 @@ namespace Net_Data
             {
                 if (user.Id == 0)
                 {
-
-                    //var newUser = false;
-                    //var dbUser = GetUserById(user.Id);
-                    //if (dbUser == null)
-                    //{
-                    //    dbUser = new User();
-                    //}
-
-                    //dbUser.Username = user.Username;
-                    //dbUser.HashedPassword = user.HashedPassword;
-                    //dbUser.LastConnection = user.LastConnection;
-                    //dbUser.LastConnectionIP = user.LastConnectionIP;
-                    //dbUser.LastDisconnection = user.LastDisconnection;
-                    //dbUser.RealName = user.RealName;
-                    //dbUser.ComputerType = user.ComputerType;
-                    //dbUser.Email = user.Email;
-                    //dbUser.WebPage = user.WebPage;
-
-                    //if (newUser)
-                    //{
                     _bbsDataContext.Users.Add(user);
                 }
                 _bbsDataContext.SaveChanges();
                 result = user;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error("Params, Exception: ", user, e);
+                LoggingAPI.Exception(exception, new { user }); 
                 result = null;
             }
             return result;
         }
 
-        public User GetUserById(int id)
+        public User GetUserById(int userId)
         {
             try
             {
-                return _bbsDataContext.Users.FirstOrDefault(p => p.Id.Equals(id));
+                return _bbsDataContext.Users.FirstOrDefault(p => p.Id.Equals(userId));
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error("(" + id + ")", e);
+                LoggingAPI.Exception(exception, new { userId }); 
                 return null;
             }
         }
 
-        public User GetUserByName(string username)
+        public User GetUserByName(string userName)
         {
             try
             {
-                return _bbsDataContext.Users.FirstOrDefault(p => p.Username.ToUpper().Equals(username.ToUpper()));
+                return _bbsDataContext.Users.FirstOrDefault(p => p.Username.ToUpper().Equals(userName.ToUpper()));
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error("(" + username + ")", e);
+                LoggingAPI.Exception(exception, new { userName }); 
                 return null;
             }
         }
-
-        #endregion
-
     }
 }

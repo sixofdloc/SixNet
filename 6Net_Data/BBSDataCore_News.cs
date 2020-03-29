@@ -8,15 +8,18 @@ namespace Net_Data
 {
     public partial class BBSDataCore
     {
-        public List<NewsItem> GetNews(DateTime fromdate)
+        public List<NewsItem> GetNews(DateTime fromDate)
         {
             var newsItems = new List<NewsItem>();
             try
             {
-                newsItems = _bbsDataContext.NewsItems.Where(p => p.Posted > fromdate).OrderBy(p => p.Posted).ToList();
-            } catch (Exception ex)
+                newsItems = _bbsDataContext.NewsItems
+                                .Where(newsItem => newsItem.Posted > fromDate)
+                                .OrderBy(newsItem => newsItem.Posted)
+                                .ToList();
+            } catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.GetNews: " + ex.ToString());
+                LoggingAPI.Exception(exception, new { fromDate }); 
             }
             return newsItems;
         }

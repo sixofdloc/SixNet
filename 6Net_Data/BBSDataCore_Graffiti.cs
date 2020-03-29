@@ -8,17 +8,17 @@ namespace Net_Data
 {
     public partial class BBSDataCore
     {
-        public void AddGraffiti(string content, int userid)
+        public void AddGraffiti(string graffitiText, int userId)
         {
             try
             {
-                Graffiti graffiti = new Graffiti() { Content = content, Posted = DateTime.Now, UserId = userid };
+                Graffiti graffiti = new Graffiti() { Content = graffitiText, Posted = DateTime.Now, UserId = userId };
                 _bbsDataContext.Graffiti.Add(graffiti);
                 _bbsDataContext.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.AddGraffiti: " + e.ToString());
+                LoggingAPI.Exception(exception,new { graffitiText, userId });
             }
         }
 
@@ -26,7 +26,7 @@ namespace Net_Data
 
         public List<Tuple<string,string>> GetGraffiti()
         {
-            var glist = new List<Tuple<string,string>>();
+            var graffitiList = new List<Tuple<string,string>>();
             try
             {
                 var graffitis = _bbsDataContext.Graffiti.OrderByDescending(p => p.Posted).Take(10).ToList();
@@ -34,19 +34,19 @@ namespace Net_Data
                     if (graffiti.User == null) {
                         var user = GetUserById(graffiti.UserId);
                         if (user != null) {
-                            glist.Add(new Tuple<string, string>(user.Username, graffiti.Content));
+                            graffitiList.Add(new Tuple<string, string>(user.Username, graffiti.Content));
                         }
                     }
                     else {
-                        glist.Add(new Tuple<string, string>(graffiti.User.Username, graffiti.Content));
+                        graffitiList.Add(new Tuple<string, string>(graffiti.User.Username, graffiti.Content));
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in DataInterface.GetGraffiti: " + e.ToString());
+                LoggingAPI.Exception(exception, new { graffitiList });
             }
-            return glist;
+            return graffitiList;
         }
 
     }

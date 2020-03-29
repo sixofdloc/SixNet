@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using Net_Data.Models;
+using Net_Logger;
 
 namespace Net_Data
 {
@@ -40,7 +41,7 @@ namespace Net_Data
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    LoggingAPI.Exception(ex, new { }); 
                     result = false;
                 }
             }

@@ -41,32 +41,33 @@ namespace Net_Data
             {
                 return _bbsDataContext.AccessGroups.ToList();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
+                LoggingAPI.Exception(exception,new { });
                 return null;
             }
         }
 
         public bool CreateAccessGroup(AccessGroup accessGroup)
         {
-            bool b = false;
+            bool accessGroupCreated = false;
             try
             {
 
                 _bbsDataContext.AccessGroups.Add(accessGroup);
                 _bbsDataContext.SaveChanges();
+                accessGroupCreated = true;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error("Params, Exception: ", accessGroup, e);
+                LoggingAPI.Exception(exception, new { accessGroup }); 
             }
-            return b;
+            return accessGroupCreated;
         }
 
         public bool UpdateAccessGroup(AccessGroup accessGroup)
         {
-            bool b = false;
+            bool accessGroupUpdated = false;
             try
             {
 
@@ -82,14 +83,14 @@ namespace Net_Data
                     oldAccessGroup.Title = accessGroup.Title;
                     oldAccessGroup.Description = accessGroup.Description;
                     _bbsDataContext.SaveChanges();
-                    b = true;
+                    accessGroupUpdated = true;
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error("Params, Exception: ", accessGroup, e);
+                LoggingAPI.Exception(exception, new { accessGroup }); 
             }
-            return b;
+            return accessGroupUpdated;
         }
 
     }

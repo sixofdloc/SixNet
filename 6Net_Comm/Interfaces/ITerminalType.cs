@@ -18,7 +18,7 @@ namespace Net_Comm.Interfaces
 
 
         string MCI(String s); //Expects string to be pretranslated
-        string TranlateToTerminal(string s); //In - ASCII, Out - translated to terminalType
+        string TranslateToTerminal(string s); //In - ASCII, Out - translated to terminalType
         char TranslateToTerminal(char c);
         char TranslateFromTerminal(char c);
 

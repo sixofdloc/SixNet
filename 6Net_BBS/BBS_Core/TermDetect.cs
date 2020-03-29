@@ -65,9 +65,9 @@ namespace Net_BBS.BBS_Core
 
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in TermDetect.Detect: " + e.Message);
+                LoggingAPI.Exception(exception, new { }); 
             }
             return termtype;
         }

@@ -50,7 +50,7 @@ namespace Net_BBS.BBS_Core
             //_slackEnabled = (_dataInterface.GetUserDefinedField(0, "SLACKENABLED") == "1");
             //if (_slackEnabled) _slackIntegration = new SlackIntegration(_dataInterface);
 
-            LoggingAPI.SysLogEntry(_remoteAddress + ": User Connected");
+            LoggingAPI.Information(_remoteAddress + ": User Connected");
         }
 
         void MessageQueueTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -97,7 +97,7 @@ namespace Net_BBS.BBS_Core
                     terminalType = new TermType_Default();
                     TermDetect td = new TermDetect(this);
                     terminalType = td.Detect();
-                    LoggingAPI.SysLogEntry(_remoteAddress + ": " + terminalType.TerminalTypeName() + " terminal was detected");
+                    LoggingAPI.Information(_remoteAddress + ": " + terminalType.TerminalTypeName() + " terminal was detected");
                     Write("~s1");
                     //Welcome Screen
                     SendFileForTermType("Welcome", false);
@@ -117,7 +117,7 @@ namespace Net_BBS.BBS_Core
                     if (currentUser != null)
                     {
                         //SlackLogMessage(CurrentUser.Username + " logged on.");
-                        LoggingAPI.SysLogEntry(_remoteAddress + ": " + currentUser.Username + "(" + currentUser.Id.ToString() + ")" + " logged in.");
+                        LoggingAPI.Information(_remoteAddress + ": " + currentUser.Username + "(" + currentUser.Id.ToString() + ")" + " logged in.");
                         int CallLogId = _bbsDataCore.RecordConnection(currentUser.Id);
 
                         var lastTen = new LastTen(this, _bbsDataCore);
@@ -141,16 +141,16 @@ namespace Net_BBS.BBS_Core
                             messageQueueTimer.Enabled = false;
                             Thread.Sleep(100);
                         }
-                        catch (Exception e)
+                        catch (Exception exception)
                         {
                             //Log this?
-                            LoggingAPI.Error(e);
+                            LoggingAPI.Exception(exception, new { });
                         }
                         _bbsDataCore.RecordDisconnection(CallLogId);
 
                         //Close Out
                         WriteLine("~l1~c1Logging out~c2...");
-                        LoggingAPI.SysLogEntry(_remoteAddress + ": " + currentUser.Username + "(" + currentUser.Id.ToString() + ")" + " logged out.");
+                        LoggingAPI.Information(_remoteAddress + ": " + currentUser.Username + "(" + currentUser.Id.ToString() + ")" + " logged out.");
                         currentArea = "Logging out";
                         //Send end screen
                         SendFileForTermType("Goodbye", true);
@@ -161,9 +161,9 @@ namespace Net_BBS.BBS_Core
                     }
                     HangUp();
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    LoggingAPI.Error(e);
+                    LoggingAPI.Exception(exception, new { });
                 }
                 return true;
             }

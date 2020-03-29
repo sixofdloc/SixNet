@@ -26,7 +26,7 @@ namespace Net_Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LoggingAPI.Exception(ex, new { });
                 result = null;
             }
             return result;
@@ -43,7 +43,7 @@ namespace Net_Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LoggingAPI.Exception(ex, new { });
                 result = false;
             }
             return result;
@@ -74,7 +74,7 @@ namespace Net_Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                LoggingAPI.Exception(ex, new { });
                 result = false;
             }
             return result;

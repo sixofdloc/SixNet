@@ -61,87 +61,87 @@ namespace Net_Comm.TermTypes
             return ".seq";
         }
 
-        public string MCI(string s)
+        public string MCI(string originalString)
         {
 
-            string t = s;
+            string mciTransformedString = originalString;
             try
             {
-                t = t.Replace("~S1", "\x93"); //clear screen
-                t = t.Replace("~S2", "\x0e"); //lowercase
-                t = t.Replace("~S3", "\x8e"); //uppercase
-                t = t.Replace("~S4", "\xc0"); //divider
-                t = t.Replace("~G1", "\x07"); //bell
-                t = t.Replace("~C0", "\x90"); //black
-                t = t.Replace("~C1", "\x05"); //white
-                t = t.Replace("~C2", "\x1c"); //red
-                t = t.Replace("~C3", "\x9f"); //cyan
-                t = t.Replace("~C4", "\x9c"); //purple
-                t = t.Replace("~C5", "\x1e"); //green
-                t = t.Replace("~C6", "\x1f"); //blue
-                t = t.Replace("~C7", '\x9e'.ToString()); //yellow
-                t = t.Replace("~C8", "\x81"); //orange
-                t = t.Replace("~C9", "\x95"); //brown
-                t = t.Replace("~CA", "\x96"); //pink
-                t = t.Replace("~CB", "\x97"); //grey1
-                t = t.Replace("~CC", "\x98"); //grey2
-                t = t.Replace("~CD", "\x99"); //ltgreen
-                t = t.Replace("~CE", "\x9a"); //ltblue
-                t = t.Replace("~CF", "\x9b"); //grey3
-                t = t.Replace("~D0", "\x92"); //black
-                t = t.Replace("~D1", "\x12\x05"); //white
-                t = t.Replace("~D2", "\x12\x1c"); //red
-                t = t.Replace("~D3", "\x12\x9f"); //cyan
-                t = t.Replace("~D4", "\x12\x9c"); //purple
-                t = t.Replace("~D5", "\x12\x1e"); //green
-                t = t.Replace("~D6", "\x12\x1f"); //blue
-                t = t.Replace("~D7", "\x12" + '\x9e'.ToString()); //yellow
-                t = t.Replace("~D8", "\x12\x81"); //orange
-                t = t.Replace("~D9", "\x12\x95"); //brown
-                t = t.Replace("~DA", "\x12\x96"); //pink
-                t = t.Replace("~DB", "\x12\x97"); //grey1
-                t = t.Replace("~DC", "\x12\x98"); //grey2
-                t = t.Replace("~DD", "\x12\x99"); //ltgreen
-                t = t.Replace("~DE", "\x12\x9a"); //ltblue
-                t = t.Replace("~DF", "\x12\x9b"); //grey3
-                while (t.Contains("~L"))
+                mciTransformedString = mciTransformedString.Replace("~S1", "\x93"); //clear screen
+                mciTransformedString = mciTransformedString.Replace("~S2", "\x0e"); //lowercase
+                mciTransformedString = mciTransformedString.Replace("~S3", "\x8e"); //uppercase
+                mciTransformedString = mciTransformedString.Replace("~S4", "\xc0"); //divider
+                mciTransformedString = mciTransformedString.Replace("~G1", "\x07"); //bell
+                mciTransformedString = mciTransformedString.Replace("~C0", "\x90"); //black
+                mciTransformedString = mciTransformedString.Replace("~C1", "\x05"); //white
+                mciTransformedString = mciTransformedString.Replace("~C2", "\x1c"); //red
+                mciTransformedString = mciTransformedString.Replace("~C3", "\x9f"); //cyan
+                mciTransformedString = mciTransformedString.Replace("~C4", "\x9c"); //purple
+                mciTransformedString = mciTransformedString.Replace("~C5", "\x1e"); //green
+                mciTransformedString = mciTransformedString.Replace("~C6", "\x1f"); //blue
+                mciTransformedString = mciTransformedString.Replace("~C7", '\x9e'.ToString()); //yellow
+                mciTransformedString = mciTransformedString.Replace("~C8", "\x81"); //orange
+                mciTransformedString = mciTransformedString.Replace("~C9", "\x95"); //brown
+                mciTransformedString = mciTransformedString.Replace("~CA", "\x96"); //pink
+                mciTransformedString = mciTransformedString.Replace("~CB", "\x97"); //grey1
+                mciTransformedString = mciTransformedString.Replace("~CC", "\x98"); //grey2
+                mciTransformedString = mciTransformedString.Replace("~CD", "\x99"); //ltgreen
+                mciTransformedString = mciTransformedString.Replace("~CE", "\x9a"); //ltblue
+                mciTransformedString = mciTransformedString.Replace("~CF", "\x9b"); //grey3
+                mciTransformedString = mciTransformedString.Replace("~D0", "\x92"); //black
+                mciTransformedString = mciTransformedString.Replace("~D1", "\x12\x05"); //white
+                mciTransformedString = mciTransformedString.Replace("~D2", "\x12\x1c"); //red
+                mciTransformedString = mciTransformedString.Replace("~D3", "\x12\x9f"); //cyan
+                mciTransformedString = mciTransformedString.Replace("~D4", "\x12\x9c"); //purple
+                mciTransformedString = mciTransformedString.Replace("~D5", "\x12\x1e"); //green
+                mciTransformedString = mciTransformedString.Replace("~D6", "\x12\x1f"); //blue
+                mciTransformedString = mciTransformedString.Replace("~D7", "\x12" + '\x9e'.ToString()); //yellow
+                mciTransformedString = mciTransformedString.Replace("~D8", "\x12\x81"); //orange
+                mciTransformedString = mciTransformedString.Replace("~D9", "\x12\x95"); //brown
+                mciTransformedString = mciTransformedString.Replace("~DA", "\x12\x96"); //pink
+                mciTransformedString = mciTransformedString.Replace("~DB", "\x12\x97"); //grey1
+                mciTransformedString = mciTransformedString.Replace("~DC", "\x12\x98"); //grey2
+                mciTransformedString = mciTransformedString.Replace("~DD", "\x12\x99"); //ltgreen
+                mciTransformedString = mciTransformedString.Replace("~DE", "\x12\x9a"); //ltblue
+                mciTransformedString = mciTransformedString.Replace("~DF", "\x12\x9b"); //grey3
+                while (mciTransformedString.Contains("~L"))
                 {
-                    string l = t.Substring(t.IndexOf("~L"), 3);
-                    string p = t.Substring(0, t.IndexOf("~L"));
+                    string MCILCommand = mciTransformedString.Substring(mciTransformedString.IndexOf("~L"), 3);
+                    string everythingBeforeMCIL = mciTransformedString.Substring(0, mciTransformedString.IndexOf("~L"));
                     string q = "";
-                    int x = t.IndexOf("~L");
-                    if (x + 3 < t.Length)
+                    int positionOfMCILPreamble = mciTransformedString.IndexOf("~L");
+                    if (positionOfMCILPreamble + 3 < mciTransformedString.Length)
                     {
-                        q = t.Substring(x + 3, t.Length - (x + 3));
+                        q = mciTransformedString.Substring(positionOfMCILPreamble + 3, mciTransformedString.Length - (positionOfMCILPreamble + 3));
                     }
 
-                    if (l[2] >= '0' && l[2] <= '9')
+                    if (MCILCommand[2] >= '0' && MCILCommand[2] <= '9')
                     {
                         string r = "";
-                        for (int i = 0; i < (l[2] - 0x30); i++)
+                        for (int i = 0; i < (MCILCommand[2] - 0x30); i++)
                         {
                             r = r + CRLF();
                         }
-                        t = p + r + q;
+                        mciTransformedString = everythingBeforeMCIL + r + q;
                     }
                     else
                     {
-                        t = p + q;
+                        mciTransformedString = everythingBeforeMCIL + q;
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                t = s;
-                LoggingAPI.LogEntry("Exception in TermType_PETSCII40.MCI: " + e);
+                mciTransformedString = originalString;
+                LoggingAPI.Exception(exception, new {originalString,mciTransformedString });
             }
-            return t;
+            return mciTransformedString;
         }
 
-        public string TranlateToTerminal(string s)
+        public string TranslateToTerminal(string stringToTranslate)
         {
             string t = "";
-            foreach (char c in s)
+            foreach (char c in stringToTranslate)
             {
                 char d = c;
                 if ((byte)d <= 0x7e)
@@ -149,7 +149,7 @@ namespace Net_Comm.TermTypes
                     try
                     {
                         d = PETSCII[d];
-                    } catch(Exception ex)
+                    } catch(Exception)
                     {
                         d = c;
                     }

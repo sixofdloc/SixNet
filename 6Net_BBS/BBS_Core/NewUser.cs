@@ -65,9 +65,9 @@ namespace Net_BBS.BBS_Core
                 result = true;
 
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.LogEntry("Exception in NewUser.Application: " + e);
+                LoggingAPI.Exception(exception, new { });
             }
             return result;
 

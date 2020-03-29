@@ -15,50 +15,50 @@ namespace Net_Data
         public List<PFileDetail> PFileDetails() => _bbsDataContext.PFileDetails.ToList();
         public List<PFileDetail> PFileDetails(int? areaId) => _bbsDataContext.PFileDetails.Where(p => p.PFileAreaId == areaId).ToList();
 
-        public PFileArea GetPFileArea(int? id)
+        public PFileArea GetPFileArea(int? areaId)
         {
-            PFileArea result = null;
+            PFileArea pfileArea = null;
             try
             {
-                result = _bbsDataContext.PFileAreas.FirstOrDefault(p => p.Id == id);
+                pfileArea = _bbsDataContext.PFileAreas.FirstOrDefault(p => p.Id == areaId);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
-                result = null;
+                LoggingAPI.Exception(exception, new { areaId });
+                pfileArea = null;
             }
-            return result;
+            return pfileArea;
         }
 
-        public List<PFileDetail> ListPFilesForAreas(int? area)
+        public List<PFileDetail> ListPFilesForAreas(int? areaId)
         {
-            List<PFileDetail> pfilelist = new List<PFileDetail>();
+            List<PFileDetail> pfileDetailList = new List<PFileDetail>();
             try
             {
 
-                pfilelist = _bbsDataContext.PFileDetails.Where(p => p.PFileAreaId.Equals(area)).ToList();
+                pfileDetailList = _bbsDataContext.PFileDetails.Where(p => p.PFileAreaId.Equals(areaId)).ToList();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
-                pfilelist = new List<PFileDetail>();
+                LoggingAPI.Exception(exception, new { areaId });
+                pfileDetailList = new List<PFileDetail>();
             }
 
-            return pfilelist;
+            return pfileDetailList;
 
         }
 
-        public PFileDetail GetPFileDetailByAreaAndNumber(int? area, int number)
+        public PFileDetail GetPFileDetailByAreaAndNumber(int? areaId, int number)
         {
             PFileDetail pf = null;
             try
             {
-                pf = _bbsDataContext.PFileDetails.FirstOrDefault(p => p.PFileAreaId.Equals(area) //& p.PFileNumber.Equals(number)
+                pf = _bbsDataContext.PFileDetails.FirstOrDefault(p => p.PFileAreaId.Equals(areaId) //& p.PFileNumber.Equals(number)
                 );
             }
             catch (Exception e)
             {
-                LoggingAPI.Error(e);
+                LoggingAPI.Exception(e, new { areaId, number }); 
                 pf = null;
             }
             return pf;
@@ -82,35 +82,35 @@ namespace Net_Data
         //    }
         //    return i;
         //}
-        public List<AreaListRow> PFileListArea(int? area, int userid)
+        public List<AreaListRow> PFileListArea(int? areaId, int userId)
         {
             //List all files and areas in the current area
-            var response = new List<AreaListRow>();
+            var listForThisArea = new List<AreaListRow>();
             try
             {
 
                 //User u = GetUserById(userid);
                 //User must have at least one access group that matches the gfile area
-                List<PFileArea> pfileAreas = _bbsDataContext.PFileAreas.Where(p => p.ParentAreaId == area).ToList();
-                List<PFileDetail> pfileDetails = _bbsDataContext.PFileDetails.Where(p => p.PFileAreaId == area).ToList();
+                List<PFileArea> pfileAreas = _bbsDataContext.PFileAreas.Where(p => p.ParentAreaId == areaId).ToList();
+                List<PFileDetail> pfileDetails = _bbsDataContext.PFileDetails.Where(p => p.PFileAreaId == areaId).ToList();
                 int listId = 1;
                 foreach (PFileArea pfileArea in pfileAreas)
                 {
                     listId++;
-                    response.Add(new AreaListRow(pfileArea, listId, AreaListRowType.Area));
+                    listForThisArea.Add(new AreaListRow(pfileArea, listId, AreaListRowType.Area));
                 }
                 foreach (PFileDetail pfileDetail in pfileDetails)
                 {
 
                     listId++;
-                    response.Add(new AreaListRow(pfileDetail, listId, AreaListRowType.Entry));
+                    listForThisArea.Add(new AreaListRow(pfileDetail, listId, AreaListRowType.Entry));
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LoggingAPI.Error(e);
+                LoggingAPI.Exception(exception, new { areaId, userId, listForThisArea });
             }
-            return response;
+            return listForThisArea;
         }
 
         public bool PFileExistsInArea(int? areaid, string filename)
@@ -137,19 +137,20 @@ namespace Net_Data
             _bbsDataContext.SaveChanges();
             return pfileArea;
         }
+
         public bool AddPFileDetail(int areaId, string filePath, string fileName, string title, string description)
         {
             //filename must include relative path from bbs
             //determines file size on its own
             //Will not allow re-add of the same filename to the same area
-            bool b = false;
+            bool pfileDetailAdded = false;
             try
             {
                 if (!PFileExistsInArea(areaId, fileName))
                 {
                     if (File.Exists(filePath + fileName))
                     {
-                        PFileDetail pfd = new PFileDetail()
+                        PFileDetail pfileDetail = new PFileDetail()
                         {
                             PFileAreaId = areaId,
                             Filename = fileName,
@@ -157,18 +158,18 @@ namespace Net_Data
                             Title = title,
                             Description = description
                         };
-                        _bbsDataContext.PFileDetails.Add(pfd);
+                        _bbsDataContext.PFileDetails.Add(pfileDetail);
                         _bbsDataContext.SaveChanges();
-                        b = true;
+                        pfileDetailAdded = true;
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                b = false;
-                LoggingAPI.LogEntry("Exception in DataInterface.AddGFile: " + e);
+                pfileDetailAdded = false;
+                LoggingAPI.Exception(exception, new { areaId, filePath, fileName, title, description }); 
             }
-            return b;
+            return pfileDetailAdded;
         }
 
     }
