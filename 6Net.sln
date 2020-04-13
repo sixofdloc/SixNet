@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6Net_Setup", "6Net_Setup\6N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFile_Empire", "PFile_Empire\PFile_Empire.csproj", "{3813695F-2EB0-4B68-9C82-BC681C68F52D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6Net_Console", "6Net_Console\6Net_Console.csproj", "{95B43C69-0A9C-4849-BCD2-2488F0C5B66D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -55,5 +57,9 @@ Global
 		{3813695F-2EB0-4B68-9C82-BC681C68F52D}.Debug|x86.Build.0 = Debug|Any CPU
 		{3813695F-2EB0-4B68-9C82-BC681C68F52D}.Release|x86.ActiveCfg = Release|Any CPU
 		{3813695F-2EB0-4B68-9C82-BC681C68F52D}.Release|x86.Build.0 = Release|Any CPU
+		{95B43C69-0A9C-4849-BCD2-2488F0C5B66D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{95B43C69-0A9C-4849-BCD2-2488F0C5B66D}.Debug|x86.Build.0 = Debug|Any CPU
+		{95B43C69-0A9C-4849-BCD2-2488F0C5B66D}.Release|x86.ActiveCfg = Release|Any CPU
+		{95B43C69-0A9C-4849-BCD2-2488F0C5B66D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

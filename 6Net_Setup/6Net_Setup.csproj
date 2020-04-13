@@ -45,6 +45,7 @@
     <Compile Include="Classes\Setup\MainMenu.cs" />
     <Compile Include="Classes\Setup\BBSSetup.cs" />
     <Compile Include="Classes\Setup\DatabaseSetup.cs" />
+    <Compile Include="Banners.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\6Net_Data\6Net_Data.csproj">
@@ -54,6 +55,10 @@
     <ProjectReference Include="..\6Net_Logger\6Net_Logger.csproj">
       <Project>{743281B3-D16C-4E88-9F08-9BD23D30825E}</Project>
       <Name>6Net_Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\6Net_Console\6Net_Console.csproj">
+      <Project>{95B43C69-0A9C-4849-BCD2-2488F0C5B66D}</Project>
+      <Name>6Net_Console</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
